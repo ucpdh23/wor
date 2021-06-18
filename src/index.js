@@ -48,9 +48,9 @@ setInterval(() => {
 
 var counter = 0;
 
-const {process} = require('./workers/process')
+const process = require('./workers/process')
 
 setInterval(() => {
   //counter++;
-  process(20, status);
+  process.process(20, status);
 }, 20);

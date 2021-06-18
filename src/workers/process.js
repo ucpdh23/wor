@@ -1,5 +1,5 @@
-var process = function(delta, status) {
+function process(delta, status) {
   status.timestamp += delta;
 }
 
-module.exports = { process };
+module.exports.process = process;
