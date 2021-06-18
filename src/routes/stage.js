@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   console.log('start stage');
-  res.write('responseeee');
+  res.send('responseeee');
 });
 
 module.exports = router;
