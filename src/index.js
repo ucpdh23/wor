@@ -31,17 +31,26 @@ const Cyclist = require('./dto/cyclist')
 
 var cyclist = new Cyclist();
 
+var cyclists = [cyclist];
+
+const Status = require('./dto/status');
+var status =new Status(cyclists);
+
+
 console.log(cyclist.id);
 
 setInterval(() => {
   wss.clients.forEach((client) => {
    // client.send(new Date().toTimeString());
-   client.send(JSON.stringify(cyclist));
+   client.send(JSON.stringify(status));
   });
 }, 200);
 
 var counter = 0;
 
+const {process} = require('./workers/process')
+
 setInterval(() => {
-  counter++;
+  //counter++;
+  process(20, status);
 }, 20);
