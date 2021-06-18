@@ -27,6 +27,12 @@ wss.on('connection', (ws) => {
   ws.on('close', () => console.log('Client disconnected'));
 });
 
+const Cyclist = require('./dto/cyclist')
+
+var cyclist = new Cyclist();
+
+console.log(cyclist.id);
+
 setInterval(() => {
   wss.clients.forEach((client) => {
    // client.send(new Date().toTimeString());
@@ -38,6 +44,4 @@ var counter = 0;
 
 setInterval(() => {
   counter++;
-  
-  
 }, 20);
