@@ -7,3 +7,5 @@ router.get('/', async (req, res) => {
   console.log('start stage');
   res.write('responseeee');
 });
+
+module.exports = router;
