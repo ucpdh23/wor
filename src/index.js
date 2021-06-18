@@ -7,9 +7,14 @@ const port = process.env.PORT || 5000
 })
 */
 // Middlewares
+app.use(express.json());
 
-// Routes
+// routes
+app.use('/api/stage', require('./routes/stage'));
+
 app.use(express.static(__dirname + '/public'));
+
+
 
 // Server is listening
 app.listen(port, () => {
