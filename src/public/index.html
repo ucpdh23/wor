@@ -13,7 +13,9 @@
 
       ws.onmessage = (event) => {
         el = document.getElementById('server-time');
-        el.innerHTML = 'Server time: ' + event.data;
+        
+        var status = JSON.parse(event.data)
+        el.innerHTML = 'Server time: ' + status.timestamp;
       };
     </script>
 </head>
