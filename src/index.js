@@ -36,7 +36,7 @@ console.log(cyclist.id);
 setInterval(() => {
   wss.clients.forEach((client) => {
    // client.send(new Date().toTimeString());
-   client.send(counter);
+   client.send(JSON.stringify(cyclist));
   });
 }, 200);
 
