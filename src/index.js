@@ -29,15 +29,13 @@ wss.on('connection', (ws) => {
 
 const Cyclist = require('./dto/cyclist')
 
-var cyclist = new Cyclist();
+var cyclists = [];
 
-var cyclists = [cyclist];
+for (let id = 0; id < 100; id++)
+  cyclists.push(new Cyclist(id));
 
 const Status = require('./dto/status');
 var status =new Status(cyclists);
-
-
-console.log(cyclist.id);
 
 setInterval(() => {
   wss.clients.forEach((client) => {
