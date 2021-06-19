@@ -15,7 +15,9 @@
         el = document.getElementById('server-time');
         
         var status = JSON.parse(event.data)
-        el.innerHTML = 'Server time: ' + status.timestamo + '-' +status.cyclists.lenght;
+        
+        var time = status.timestamp/1000;
+        el.innerHTML = 'Server time: ' + time + '-' +status.cyclists.length;
       };
     </script>
 </head>
