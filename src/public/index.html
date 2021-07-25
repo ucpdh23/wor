@@ -4,7 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title>Cycling on Roads</title>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <script>
       let HOST = location.origin.replace(/^http/, 'ws')
@@ -18,16 +28,172 @@
         
         var time = status.timestamp/1000;
         el.innerHTML = 'Server time: ' + time + '-' +status.cyclists.length;
+
+        updateCyclists(status.cyclists);
+
       };
     </script>
 </head>
 
 <body>
-hello world from the space
+  <p id="id_display">hello world from the space</p>
 
 
 <p id="server-time"></p>
 
-</body>
+<script src='Utils.js'></script>
+<script src='hull.js'></script>
 
+<script src="Cyclist.js"></script>
+<script src='CyclistShow.js'></script>
+
+<script src='Group.js'></script>
+
+<script src='Clasificacion.js'></script>
+<script src='Profile.js'></script>
+<script src='Road.js'></script>
+
+<script src='Team.js'></script>
+
+<script src="sketch.js"></script>
+      
+<!--
+<a href="Menu.html">menu</a>
+
+amarillo alignment<br />
+green separation<br />
+blue cohesion<br />
+red aceleración<br />
+
+<input type="button" value="-" onclick="JavaScript:_debug_item= _debug_item-1"/><input type="button" value="+" onclick="JavaScript:_debug_item= _debug_item+1"/>
+<input type="button" value="tira" onclick="JavaScript:cyclists[_debug_item].sendMessage('tira')" />
+<input type="button" value="acelera" onclick="JavaScript:cyclists[_debug_item].sendMessage('acelera')" />
+<input type="button" value="desacelera" onclick="JavaScript:cyclists[_debug_item].sendMessage('desacelera')" />
+
+-->
+<div class="viewport">
+
+<input type=button value="air" onclick="showFeature('air')" />
+<input type=button value="pend" onclick="showFeature('pend')" />
+<input type=button value="pulse" onclick="showFeature('pulse')" />
+<input type=button value="pot" onclick="showFeature('pot')" />
+<input type=button value="vel" onclick="showFeature('vel')" />
+<input type=button value="empty" onclick="showFeature('')" />
+
+<div id="sketch-holder">
+<!-- Our sketch will go here! -->
+</div>
+</div>
+<div class="container">
+<div id='list' class="container-left">
+<div id="id_0" class="item">
+  <div class="item-header">
+    <div class="item-header-id">N</div>
+    <div class="item-header-features">abc</div>
+  </div>
+  <div class="item-body">
+    <span class="icon icon-batery"></span>
+     <span class="icon icon-heart"></span>
+     <span class="icon icon-wind"></span>
+     <span class="icon icon-watts"></span>
+  </div>
+  <div class="item-footer">
+    <div class="item-props"></div>
+    <div class="item-actions">
+    <input type="button" value="pull"  onclick="
+javascript:cyclists[_debug_item].sendMessage('tira');"/>
+    <input type="button" value="  +  "  onclick="
+javascript:cyclists[_debug_item].energy.forceCyclist += 0.2;"/>
+    <input type="button" value="  -  " onclick="
+        javascript:cyclists[_debug_item].energy.forceCyclist -= 0.2;" />
+    </div>
+  </div>
+</div>
+
+</div>
+<div id="details" class="container-right">
+<div class="details-header">
+  <div class="details-header-identification">
+      <div class="details-header-id">
+          <span id="details-header-id">4</span>
+      </div>
+      <div id="details-header-features-id" class="details-header-features"></div>
+  </div>
+  <div id="id_details_header" class="details-header-status">
+      <div class="details-header-status-item">
+          <span class="details-header-status-value" id="details-header-status-power-id">230</span>
+          <span class="details-header-status-metric">WATTS</span>
+      </div>
+      <div class="details-header-status-item">
+          <span class="details-header-status-value" id="details-header-status-pulse-id">140</span>
+          <span class="details-header-status-metric">PPM</span>
+      </div>
+      <div class="details-header-status-item">
+          <span class="details-header-status-value" id="details-header-status-velocity-id">23</span>
+          <span class="details-header-status-metric">K/M</span>
+      </div>
+      <div class="details-header-status-item">
+          <span class="details-header-status-value" id="details-header-status-distance-id">80</span>
+          <span class="details-header-status-metric">Kms</span>
+      </div>
+      <div class="details-header-status-item">
+        <span class="details-header-status-value" id="details-header-status-pts-id">80</span>
+        <span class="details-header-status-metric">Pts</span>
+      </div>
+  </div>
+    </div>
+<div class="details-body">
+  <canvas id="idForces" class="box box-1">
+  </canvas>
+  <canvas id="idPower" class="box box-2">
+  </canvas>
+  
+  <div class="box box-4">
+    <ul id="details-body-messages"
+      class="details-body-messages">
+      <il>text</il>
+    </ul>  
+  </div>
+  <div class="box box-x">
+     <div>
+       <span>slope</span>
+       <span id="details-body-slope-id">1.45</span>
+     </div>
+  </div>
+  <canvas id="idEnergy" class="box box-3"></canvas>
+  <div class="box box-x">
+    <div>
+    <span>acc</span>
+    <span id="details-body-acc-id">1.45</span>
+    </div>
+  </div>
+</div>
+<div class="details-footer">
+  <div class="details-footer-buttons">
+    <input type="button" value="pull"  onclick="
+javascript:cyclists[_debug_item].sendMessage('tira');"/>
+    <input type="button" value="  +  "  onclick="
+javascript:cyclists[_debug_item].energy.forceCyclist += 0.2;"/>
+    <input type="button" value="  -  " onclick="
+        javascript:cyclists[_debug_item].energy.forceCyclist -= 0.2;" />
+    <input type="button" value="salta" onclick="
+        javascript:cyclists[_debug_item].sendMessage('salta')" />
+  </div>
+  <div class="details-footer-sliders">
+    <div class="details-footer-sliders-item">
+  Acc: <input id="accSliderId" class="details-footer-slider" type="range" min="0" max="100" value="50"/>
+      </div>
+      <div class="details-footer-sliders-item">
+  MPwr: <input id="powerSliderId" class="details-footer-slider" type="range" min="0" max="100" value="100" onchange="maxPowerUpdate(this.value)"/>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+<div id="idStage" class="stage">
+<!-- svg width="400" height="170"  id="profile" viewbox="0 0 1000 100" xmlns="http://www.w3.org/2000/svg">
+ <-- circle cx="50" cy="50" r="40" stroke ="green" stroke-width="4" fill="yellow" / --> 
+<!-- /svg -->
+</div>
+</body>
 </html>
