@@ -1,4 +1,4 @@
-const Group = require('../dto/Group');
+const Group = require('../dto/group');
 const hull = require('../service/hull');
 
 function update(delta, stage) {
