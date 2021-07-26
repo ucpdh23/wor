@@ -39,7 +39,7 @@ setInterval(() => {
     var status = manager.resolveStatus(client);
     client.send(JSON.stringify(status));
   });
-}, 200);
+}, 100);
 
 var counter = 0;
 
@@ -47,4 +47,4 @@ const updater = require('./workers/updater')
 
 setInterval(() => {
   updater.update(20, manager.getStage(1));
-}, 100);
+}, 20);

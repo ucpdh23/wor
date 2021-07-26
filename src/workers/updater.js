@@ -2,7 +2,7 @@ const Group = require('../dto/Group');
 const hull = require('../service/hull');
 
 function update(delta, stage) {
-  var delta = 1 / 20;
+  var delta = delta / 1000;
 
   var meters = 0;
 

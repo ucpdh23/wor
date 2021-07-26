@@ -8,7 +8,7 @@ const Team = require('../dto/team');
 const Utils = require('../dto/utils');
 
 
-const NUM_CYCLISTS = 84;
+const NUM_CYCLISTS = 1;
 const NUM_CYCLISTS_TEAM = 7;
 
 function init() {

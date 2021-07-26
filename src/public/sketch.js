@@ -177,7 +177,7 @@ function draw() {
   var localHull = [];
   localHull.push([cyclists[0].position.x, cyclists[0].position.y]);
   
-  for (i=1; i < items; i++) {
+  for (i=1; i < cyclists.length; i++) {
     if (first.position.x < cyclists[i].position.x)
       first = cyclists[i];
     
@@ -198,7 +198,7 @@ function draw() {
   
   var currGroup=null;
   var prev = 1000000;
-  for (i = 0; i < items; i++) {
+  for (i = 0; i < cyclists.length; i++) {
     if (prev - list[i].position.x > 10) {
       currGroup = new Group();
     }
@@ -222,13 +222,13 @@ function draw() {
     }
     */
 
-/*  for (i = 0; i < items; i++) {
-    currMeters = cyclists[i].update(delta);
+for (i = 0; i < cyclists.length; i++) {
+    currMeters = cyclists[i].position.x;
     if (currMeters > meters)
       meters = currMeters
-  }*/
+}
 
-  meters = 0;
+  //meters = 0;
   
   background(40);
   
@@ -244,10 +244,10 @@ function draw() {
     road.update(meters, profile.computeEnvironmentByPos(meters));
   }
   
-  // road.update(meters);
+  //road.update(meters);
   reference = road.show();
   
-  for (i=0; i < items; i++)
+  for (i=0; i < cyclists.length; i++)
     cyclists[i].show(reference);
     
     
