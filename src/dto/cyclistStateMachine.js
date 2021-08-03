@@ -91,7 +91,7 @@ function createDefaultStateMachine() {
 
                         if (candidate !== null) {
                             ctx.cyclist._reduceDraftCandidate = candidate;
-                            ctx.cyclist._reduceDraftTime = time;
+                            ctx.cyclist._reduceDraftTime = ctx.cyclist.time;
 
                             return {
                                 target: 'reduceDraft',
