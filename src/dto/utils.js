@@ -5,7 +5,8 @@ function pad(num, size) {
 }
 
 function dec(num, mul){
-  return ""+(parseInt(num*mul))/mul;
+  return "" + num.toFixed(mul);
+  //return ""+((parseInt(num*mul))/mul).toFixed(2);
 }
 
 function findCyclist(id) {
@@ -59,19 +60,32 @@ function computeMedium(list) {
   return result;
 }
 
+function createOutputCyclist(item) {
+  return {id: item.id, number : item.number,
+    position : {x: item.position.x, y: item.position.y},
+    velocity: {x: item.velocity.x, y: item.velocity.y},
+    acceleration: {x: item.acceleration.x, y: item.acceleration.y},
+    energy: {llano: item.energy.llano, montana: item.energy.montana, bajada: item.energy.bajada}
+  };
+}
+
 function createOutputCyclists(list) {
   var output = []
   for (var i =0; i < list.length; i++) {
     var item = list[i];
-    output.push({id: item.id, number : item.number,
-      position : {x: item.position.x, y: item.position.y},
-      velocity: {x: item.velocity.x, y: item.velocity.y},
-      acceleration: {x: item.acceleration.x, y: item.acceleration.y},
-      energy: {llano: item.energy.llano, montana: item.energy.montana, bajada: item.energy.bajada}
-    });
+    output.push(createOutputCyclist(item));
   }
 
   return output;
+}
+
+function findCyclist(state, id) {
+  for (var i =0; i < state.cyclists.length; i++) {
+    var item = state.cyclists[i];
+    if (item.id === id) return item;
+  }
+
+  throw "not found";
 }
 
 function createOutputCyclistsForWebservice(list) {
@@ -128,5 +142,6 @@ exports.incrementalUpdate = incrementalUpdate;
 exports.dec = dec;
 exports.createOutputCyclists = createOutputCyclists;
 exports.createOutputCyclistsForWebservice = createOutputCyclistsForWebservice;
-
+exports.findCyclist = findCyclist;
 exports.strTime = strTime;
+exports.createOutputCyclist = createOutputCyclist;

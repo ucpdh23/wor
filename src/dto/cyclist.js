@@ -80,6 +80,7 @@ class Cyclist {
         message += " -pos:" + Utils.dec(this.position.x, 2) + "-" + Utils.dec(this.position.y, 2)
         message += " -vel:" + Utils.dec(this.velocity.x, 2) + "-" + Utils.dec(this.velocity.y, 2)
         message += " -acc:" + Utils.dec(this.acceleration.x, 2) + "-" + Utils.dec(this.acceleration.y, 2)
+        message += " -state:" + this._stateMachine[0].value
         /*console.log("Cyclist " + this.number + "(" + this.id + ") " + this.time)
         console.log(" -pos:" + this.position.x + "-" + this.position.y)
         console.log(" -vel:" + this.velocity.x + "-" + this.velocity.y)
@@ -238,7 +239,7 @@ class Cyclist {
         var border = this.inBorder();
 
         if (border == null) {
-            var steer = createVector(0.2, 1);
+            var steer = new Vector(0.2, 1);
             if (this.position.y < first.position.y) {
                 steer.mult(-1);
             } else {
@@ -247,7 +248,7 @@ class Cyclist {
             steer.limit(this.maxSteeringForce);
             return steer;
         } else if (border.x == 0) {
-            return createVector(0, 0);
+            return new Vector(0, 0);
         } else {
             var steer = this.seek(border);
             steer.limit(this.maxSteeringForce);
@@ -284,7 +285,7 @@ class Cyclist {
             var border = this.inBorder();
 
             if (border == null) {
-                var steer = createVector(0.2, 1);
+                var steer = new Vector(0.2, 1);
                 if (this.position.y < first.position.y) {
                     steer.mult(-1);
                 } else {
@@ -293,7 +294,7 @@ class Cyclist {
                 steer.limit(this.maxSteeringForce);
                 return steer;
             } else if (border.x == 0) {
-                return createVector(0, 0);
+                return new Vector(0, 0);
             } else {
                 var steer = this.seek(border);
                 steer.limit(this.maxSteeringForce);
@@ -310,13 +311,13 @@ class Cyclist {
                 return steer;
             }
         } else {
-            return createVector(0, 0);
+            return new Vector(0, 0);
         }
     }
 
     goAfter(target) {
 
-        var endPos = Vector.add(target.position, createVector(-1.5, 0));
+        var endPos = Vector.add(target.position, new Vector(-1.5, 0));
         //endPos.add(target.velocity);
         var diff = Vector.sub(endPos, this.position);
         var dist = diff.mag();
@@ -354,18 +355,18 @@ class Cyclist {
         }
 
         if (item != -1) {
-            if (item == 0) return createVector(0, 0)
+            if (item == 0) return new Vector(0, 0)
 
             if (item == globalHull.length - 1) {
-                return createVector(
+                return new Vector(
                     globalHull[0][0],
                     globalHull[0][1]
                 );
             } else {
-                if (globalHull[item - 1][0] > this.position.x) return createVector(
+                if (globalHull[item - 1][0] > this.position.x) return new Vector(
                     globalHull[item - 1][0],
                     globalHull[item - 1][1] + 0.75);
-                else return createVector(
+                else return new Vector(
                     globalHull[item + 1][0],
                     globalHull[item + 1][1] - 0.75);
             }
@@ -378,7 +379,7 @@ class Cyclist {
     goodPositionInsideGroup(first) {
         if (this.position.x < first.position.x - this._mGoodPosition) {
             if (!this.canGoForward()) {
-                var steer = createVector(0.2, 1);
+                var steer = new Vector(0.2, 1);
                 if (this.position.y < first.position.y) {
                     steer.mult(-1);
                 }
@@ -388,13 +389,13 @@ class Cyclist {
                 var newY = first.position.y;
                 var newX = random(this._mGoodPosition - 2);
 
-                var steer = this.seek(createVector(first.position.x - 2 - newX, newY));
+                var steer = this.seek(new Vector(first.position.x - 2 - newX, newY));
                 steer.limit(this.maxSteeringForce)
                 return steer;
             }
         }
 
-        return createVector(0, 0);
+        return new Vector(0, 0);
     }
 
     canGoForward() {
@@ -523,14 +524,13 @@ class Cyclist {
         var result = new Vector(0, 0);
 
         var futurePos = this.velocity.get().mult(3)
-
-        futurePos = this.position.get().add(futurePos);
+        futurePos = Vector.add(this.position, futurePos);
 
         if (futurePos.y > (this.roadWidth * 0.8)) {
-            result.add(createVector(0, -1))
+            result.add(new Vector(0, -1))
         } else if (futurePos.y < -(this.roadWidth * 0.8)) {
             result.add(
-                createVector(0, 1));
+                new Vector(0, 1));
         }
         result.limit(this.maxSteeringForce);
 
@@ -557,7 +557,7 @@ class Cyclist {
                 this.enabled = true;
             }
 
-            return createVector(this.selfAccLevel
+            return new Vector(this.selfAccLevel
                 * Math.sin(diffTime), 0);
         }
 
@@ -632,7 +632,7 @@ class Cyclist {
             }
         }
 
-        return createVector(0, 0);
+        return new Vector(0, 0);
     }
 
     findCandidateToReduceDraft(angle, meters) {
@@ -678,27 +678,34 @@ class Cyclist {
         return vel / inRange.length;
     }
 
-
+    checkVector(vector, type) {
+        if (Number.isNaN(vector.x)) {
+            console.log(type + " X is Nan");
+            throw 41;
+        } else if (Number.isNaN(vector.y)) {
+            console.log(type+ " Y is Nan");
+            throw 42;
+        } 
+    }
 
     update(time) {
         this.time = this.time + time;
 
         var vector = this.velocity.get();
+        this.checkVector(vector, "velocity")
         vector.mult(time);
         this.position.add(vector);
 
 
         vector = this.acceleration.get();
+        this.checkVector(vector, "acc");
         vector.mult(time);
         this.velocity.add(vector);
-
-
 
         vector = this.acc_physics.get();
+        this.checkVector(vector, "acc_physics");
         vector.mult(time);
         this.velocity.add(vector);
-
-
 
         this.velocity.limit(this.maxSpeed);
 

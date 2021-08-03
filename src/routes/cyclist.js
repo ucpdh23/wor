@@ -16,6 +16,25 @@ router.get('/', async (req, res) => {
   res.send(JSON.stringify(Utils.createOutputCyclists(stage.cyclists)));
 });
 
+router.post('/:id', async (req, res) => {
+  console.log('ID:', req.params.id);
+
+  var stage = manager.getStage(1);
+  var cyclist = Utils.findCyclist(stage, parseInt(req.params.id));
+
+  var debug = stage.debug;
+
+  if (debug && debug.cyclist && debug.cyclist.id === cyclist.id) {
+    stage.debug.cyclist = undefined;
+  } else {
+    stage.debug =  { ...debug, cyclist: cyclist};
+  }
+
+
+  
+  res.send(JSON.stringify(Utils.createOutputCyclist(cyclist)));
+});
+
 
 function createObject(list) {
   var output = []

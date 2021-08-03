@@ -22,6 +22,7 @@ Cyclist.prototype.show = function(reference) {
                 diffClickedY > -7) {
                  // console.log("sel:"+ this.id)
                   _debug_item = this.id;
+                  _clicked_item = this.id;
                 }
           }
   

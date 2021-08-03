@@ -94,6 +94,11 @@ function update(delta, stage) {
       currGroup.addCyclist(list[i]);
     }
     */
+    if (stage.debug && stage.debug.cyclist) {
+      stage.debug.cyclist.logCyclist();
+    }
+
+    
   for (i = 0; i < items; i++) {
     currMeters = cyclists[i].update(delta);
     if (currMeters > meters)
@@ -113,6 +118,7 @@ function update(delta, stage) {
 
   sumTime += diff;
   counter++;
+
 
 }
 

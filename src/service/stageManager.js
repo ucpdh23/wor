@@ -26,8 +26,17 @@ function init() {
     populateProfile(stage);
     populateCyclists(stage);
     populateTeams(stage);
+    populateTeamsStrategy(stage);
 
     stages[1] = stage;
+}
+
+function populateTeamsStrategy(stage) {
+    var profile = stage.profile;
+    for (var team of stage.teams) {
+        team.computeMedium();
+        team.build(profile);
+    }
 }
 
 function populateTeams(stage) {

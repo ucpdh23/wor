@@ -8,7 +8,7 @@ Cyclist.prototype.addAction=function(json){
     let payload = json.payload;
     
     this.actions[from]=json;
-    this.actionMeters.push((int)(from));
+    this.actionMeters.push(parseInt(from));
     this.actionMeters.sort();
   }
   
@@ -22,8 +22,8 @@ Cyclist.prototype.addAction=function(json){
   }
   
   Cyclist.prototype.proceedAction=function(meters) {
-    if ((int)(meters) in this.actions) {
-      let json = this.actions[(int)(meters)];
+    if (parseInt(meters) in this.actions) {
+      let json = this.actions[parseInt(meters)];
       if (json.enabled == false) return;
       
       json.enabled=false;
@@ -39,11 +39,11 @@ Cyclist.prototype.addAction=function(json){
             location=json.from+distance*delta;
           }
           console.log('location'+ location)
-          if ((int)(location)==(int)(meters)){
+          if (parseInt(location)==parseInt(meters)){
             this.runAction(json);
           } else {
             this.addAction({
-              from: (int)(location),
+              from: parseInt(location),
               prob: 100,
               action: json.action,
               payload: json.payload

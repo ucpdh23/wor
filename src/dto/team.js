@@ -11,7 +11,23 @@ class Team {
       this.cyclists.push(item);
     }
     
-    setMedium(medium) {
+    computeMedium() {
+
+      var medium = {montana: 0, llano: 0 ,sprint: 0};
+      var counter = 0;
+
+      for (var cyclist of this.cyclists) {
+        medium.montana += cyclist.montana;
+        medium.llano += cyclist.llano;
+        medium.sprint += cyclist.sprint;
+
+        counter++;
+      }
+
+      medium.montana /= counter;
+      medium.llano /= counter;
+      medium.sprint /= counter;
+
       this.medium=medium;
     }
     

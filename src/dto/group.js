@@ -1,8 +1,11 @@
 class Group {
     cyclists = [];
     cyclistsId = [];
-    
+
+    tirando = []
+
     constructor() {
+      this.id = 10000;
     }
     
     addCyclist(cyclist){
@@ -10,6 +13,9 @@ class Group {
       this.cyclistsId.push(cyclist.id);
       
       cyclist.group = this;
+      if (this.id > cyclist.id) {
+        this.id = cyclist.id;
+      }
     }
     
     indexOf(id){

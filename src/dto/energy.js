@@ -6,11 +6,11 @@ class Energy {
     constructor(cyclist) {
       this.cyclist = cyclist;
       this.pulse = 80;
-        this.llano = 60 + Math.random(30);
-        this.montana = 60 + Math.random(30);
-        this.bajada = 70 + Math.random(10);
-        this.estadoForma = 80 + Math.random(20);
-        this.sprint = 60 + Math.random(30);
+        this.llano = 60 + Math.random() * 30;
+        this.montana = 60 + Math.random() * 30;
+        this.bajada = 70 + Math.random() * 10;
+        this.estadoForma = 80 + Math.random() * 20;
+        this.sprint = 60 + Math.random() * 30;
       this.refProp = 15 + this.llano / 10;
         this.lastAcc = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       this.lastAccIndex = 0;
@@ -66,6 +66,13 @@ class Energy {
            // this.r_pend,
             //expected_r_pend);
           this.r_pend = expected_r_pend;
+
+          if (Number.isNaN(this.r_pend)) {
+            console.log("this.slope" + this.slope)
+            console.log("this.montana" + this.montana)
+            console.log("multFactor" + multFactor)
+            console.log("bajada" + this.bajada)
+          }
           
           this.r_vel = this.cyclist.velocity.x;
           
@@ -82,6 +89,15 @@ class Energy {
           
           this.f_acel = 0;
           const newForce = this.r_air + this.r_mec + this.r_pend + this.f_acel + this.r_vel;
+
+          if (Number.isNaN(newForce)) {
+            console.log("this.r_air:" + this.r_air);
+            console.log("this.r_mec:" + this.r_mec);
+            console.log("this.r_pend:" + this.r_pend);
+            console.log("this.f_acel:" + this.f_acel);
+            console.log("this.r_vel:" + this.r_vel);
+          }
+
   
           this.preForce = this.force;
           this.force = newForce;
@@ -145,6 +161,16 @@ class Energy {
           const accRes = negAcc - accCyclist;
   
          // this.cyclist.log = 'accres:' + accRes;
+
+         if (Number.isNaN(accRes)) {
+           console.log("accRes is nan");
+           console.log("negAcc:" + negAcc);
+           console.log("this.force:" + this.force);
+           console.log("accCyclist:" + accCyclist);
+           console.log("forceCyclist:" + forceCyclist);
+           console.log("velAvg:" + velAvg);
+           
+         }
   
           return new Vector(-accRes, 0);
       }

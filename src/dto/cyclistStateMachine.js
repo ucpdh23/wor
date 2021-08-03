@@ -272,12 +272,12 @@ function createDefaultStateMachine() {
 
                 },
                 onExecute(ctx) {
-                    if (tirando.includes(ctx.cyclist)) return;
+                    if (ctx.cyclist.group.tirando.includes(ctx.cyclist)) return;
 
 
 
                     if (ctx.first.id == ctx.cyclist.id) {
-                        tirando.push(ctx.cyclist);
+                        ctx.cyclist.group.tirando.push(ctx.cyclist);
 
                     } else {
                         ctx.cyclist._mGoodPosition = 0;
@@ -316,7 +316,7 @@ function createDefaultStateMachine() {
                       target: 'gotoFirst',
                       action() { }
                   };
-              } else */ if (tirando.includes(ctx.cyclist)) {
+              } else */ if (ctx.cyclist.group.tirando.includes(ctx.cyclist)) {
                     return {
                         target: 'pulling',
                         action() { }

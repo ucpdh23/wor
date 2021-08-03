@@ -6,6 +6,7 @@ let meters;
 let time = 0;
 let _debug = false;
 let _debug_item = 0;
+let _clicked_item = -1;
 let _drawHull = false;
 
 
@@ -178,6 +179,11 @@ function draw() {
   
   var first = cyclists[0];
   var last = cyclists[0];
+
+  if (_clicked_item > -1) {
+    updateSelected(_clicked_item);
+    _clicked_item = -1;
+  }
   
   
   //var localHull = [];
@@ -270,6 +276,14 @@ for (i = 0; i < cyclists.length; i++) {
 }
 
 display=''
+
+function updateSelected(item) {
+  fetch('api/cyclist/' + item, {method: "POST"})
+    .then(response => response.json())
+    .then(data => {
+    
+    });
+}
 
 function showFeature(fet) {
   display=fet;
