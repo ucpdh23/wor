@@ -34,6 +34,9 @@
         dx = v.x - this.x;
         dy = v.y - this.y;
         dz = v.z - this.z;
+
+        if (Number.isNaN(dz)) dz = 0;
+
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
       };
       Vector.prototype.dot = function(v) {
@@ -49,14 +52,19 @@
         }
       };
       Vector.prototype.mag = function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        var x = this.x;
+        var y = this.y;
+        var z = this.z;
+        if (Number.isNaN(z)) z = 0;
+        
+        return Math.sqrt(x * x + y * y + z * z);
       };
-      Vector.prototype.multScalar = function(value) {
+      Vector.prototype.mult = function(value) {
         this.x *= value;
         this.y *= value;
         return this.z *= value;
       };
-      Vector.prototype.mult = function(v) {
+      Vector.prototype.multVector = function(v) {
         this.x *= v.x;
         this.y *= v.y;
         return this.z *= v.z;
@@ -93,6 +101,18 @@
     };
     Vector.cross = function(v1, v2) {
       return v1.cross(v2);
+    };
+    Vector.sub = function(v1, v2) {
+      var v1_clone = v1.get();
+      v1_clone.sub(v2);
+
+      return v1_clone;
+    };
+    Vector.add = function(v1, v2) {
+      var v1_clone = v1.get();
+      v1_clone.add(v2);
+
+      return v1_clone;
     };
     Vector.angleBetween = function(v1, v2) {
       return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));

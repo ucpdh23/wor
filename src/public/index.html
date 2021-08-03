@@ -26,10 +26,11 @@
         
         var status = JSON.parse(event.data)
         
-        var time = status.timestamp/1000;
+        var time = status.timestamp;
         el.innerHTML = 'Server time: ' + time + '-' +status.cyclists.length;
 
         updateCyclists(status.cyclists);
+        updateTimestamp(status.timestamp);
 
       };
     </script>
@@ -44,6 +45,7 @@
 <script src='Utils.js'></script>
 <script src='hull.js'></script>
 
+<script src="Energy.js"></script>
 <script src="Cyclist.js"></script>
 <script src='CyclistShow.js'></script>
 

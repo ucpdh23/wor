@@ -1,7 +1,14 @@
 const Group = require('../dto/group');
 const hull = require('../service/hull');
 
+var nextTime = 0;
+
+var counter = 0;
+var sumTime = 0;
+
 function update(delta, stage) {
+  var one_timestamp = new Date().getTime()
+
   var delta = delta / 1000;
 
   var meters = 0;
@@ -16,6 +23,7 @@ function update(delta, stage) {
 
   var localHull = [];
   localHull.push([cyclists[0].position.x, cyclists[0].position.y]);
+
 
   for (i = 1; i < items; i++) {
     if (first.position.x < cyclists[i].position.x)
@@ -35,13 +43,29 @@ function update(delta, stage) {
     return b.position.x - a.position.x;
   });
 
+  if (stage.timestamp  > nextTime) {
+    var avg = sumTime / counter
+    console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
+    for (i = 0; i < items; i++) {
+      list[i].logCyclist();
+    }
+
+    counter = 0;
+    sumTime=0;
+
+    
+    nextTime = nextTime + 10;
+  }
+
+
 
   var currGroup = null;
   var prev = 1000000;
   for (i = 0; i < items; i++) {
     if (prev - list[i].position.x > 10) {
       currGroup = new Group();
-    }
+    } 
+
     prev = list[i].position.x;
     currGroup.addCyclist(list[i]);
   }
@@ -82,6 +106,14 @@ function update(delta, stage) {
   })
 
   stage.timestamp += delta;
+
+  var two_timestamp = new Date().getTime()
+
+  var diff = two_timestamp - one_timestamp;
+
+  sumTime += diff;
+  counter++;
+
 }
 
 module.exports.update = update;

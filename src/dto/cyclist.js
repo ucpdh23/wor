@@ -1,6 +1,7 @@
 
 //const Vector = require('./vector')
 var Vector = require('./NewVector').Vector;
+var Utils = require('./utils');
 
 const Energy = require('./energy')
 const CyclistStateMachine = require('./cyclistStateMachine')
@@ -32,11 +33,13 @@ class Cyclist {
 
         this.texts = [];
 
+        this.time = 0;
+
         this._mGoodPosition = 7;
         this._mDemarrajeGoodPosition = 3;
         this.selfAccTimer = 3;
 
-        this.position = new Vector(0 - Math.random(ITEMS / 1.5), 3 - Math.random(6));
+        this.position = new Vector(0 - Math.random() * ITEMS / 1.5, 3 - Math.random() * 6);
         this.velocity = new Vector(9, 0);
         this.acceleration = new Vector(0, 0);
         this.acc_physics = new Vector(0, 0);
@@ -68,14 +71,26 @@ class Cyclist {
 
         require('./cyclistStrategy')
         require('./cyclistComputeForces')
+
+    }
+
+    logCyclist() {
+        var message = "";
+        message += "Cyclist " + this.number + "(" + this.id + ") "
+        message += " -pos:" + Utils.dec(this.position.x, 2) + "-" + Utils.dec(this.position.y, 2)
+        message += " -vel:" + Utils.dec(this.velocity.x, 2) + "-" + Utils.dec(this.velocity.y, 2)
+        message += " -acc:" + Utils.dec(this.acceleration.x, 2) + "-" + Utils.dec(this.acceleration.y, 2)
+        /*console.log("Cyclist " + this.number + "(" + this.id + ") " + this.time)
+        console.log(" -pos:" + this.position.x + "-" + this.position.y)
+        console.log(" -vel:" + this.velocity.x + "-" + this.velocity.y)
+        console.log(" -acc:" + this.acceleration.x + "-" + this.acceleration.y)
+        console.log(" -state:" + this._stateMachine[0].value)*/
+        console.log(message)
     }
 
     setViewingAngle(angle) {
         this.viewingAngle = angle * (Math.PI / 180);
     }
-
-
-
 
     isColliding(other) {
         var myRect1 = this.getRectangle1();
@@ -137,7 +152,7 @@ class Cyclist {
             if (this.inBoidViewRange(other) && this.isColliding(other)) {
                 var dist = this.position.dist(other.position)
 
-                diff = p5.Vector.sub(this.position, other.position)
+                diff = Vector.sub(this.position, other.position)
                 steer.add(diff)
                 count++;
 
@@ -183,6 +198,7 @@ class Cyclist {
         var diff = new Vector(0, 0)
         var count = 0
 
+        //console.log("this.neighbour.length" + this.neighbour.length)
         for (var i = this.neighbour.length - 1; i >= 0; i--) {
             var other = this.neighbour[i]
 
@@ -190,7 +206,7 @@ class Cyclist {
 
 
             if (dist < this._mSeparation && this.inBoidViewRange(other)) {
-                diff = p5.Vector.sub(this.position, other.position)
+                diff = Vector.sub(this.position, other.position)
                 diff.div(dist)
                 steer.add(diff)
                 count++
@@ -300,9 +316,9 @@ class Cyclist {
 
     goAfter(target) {
 
-        var endPos = p5.Vector.add(target.position, createVector(-1.5, 0));
+        var endPos = Vector.add(target.position, createVector(-1.5, 0));
         //endPos.add(target.velocity);
-        var diff = p5.Vector.sub(endPos, this.position);
+        var diff = Vector.sub(endPos, this.position);
         var dist = diff.mag();
         diff.normalize();
 
@@ -313,7 +329,7 @@ class Cyclist {
         speed = Math.min(speed, target.velocity.x * 1.1);
         this.log = "follow:" + target.id + " dist:" + dist
 
-        var diffVel = p5.Vector.sub(target.velocity, this.velocity);
+        var diffVel = Vector.sub(target.velocity, this.velocity);
         diffVel.mult(-1)
 
         diff.mult(speed);
@@ -443,9 +459,7 @@ class Cyclist {
     }
 
     seek(mass) {
-        var diff = mass.get();
-
-        diff.sub(this.position);
+        var diff = Vector.sub(mass, this.position);
 
         diff.normalize();
         diff.mult(this.maxSpeed);
@@ -667,19 +681,21 @@ class Cyclist {
 
 
     update(time) {
+        this.time = this.time + time;
+
         var vector = this.velocity.get();
-        vector.multScalar(time);
+        vector.mult(time);
         this.position.add(vector);
 
 
         vector = this.acceleration.get();
-        vector.multScalar(time);
+        vector.mult(time);
         this.velocity.add(vector);
 
 
 
         vector = this.acc_physics.get();
-        vector.multScalar(time);
+        vector.mult(time);
         this.velocity.add(vector);
 
 
@@ -734,6 +750,7 @@ class Cyclist {
         for (i = 0; i < cyclists.length; i++) {
             if (this !== cyclists[i]) {
                 let dist = this.position.dist(cyclists[i].position);
+                //console.log("dist" + dist)
                 //print("dist("+this.id+"):"+dist);
                 if (dist < this.neighborDist && cyclists[i].enabled) {
                     this.neighbour.push(cyclists[i]);
@@ -783,18 +800,18 @@ class Cyclist {
 
     managePort() {
         if (this.message == 'startPort') {
-            this.texts.push(strTime(time) + '-Starting port:' + this.msgPayload.kms + 'kms at ' + dec(this.msgPayload.slope, 10) + '%');
+            this.texts.push(Utils.strTime(this.time) + '-Starting port:' + this.msgPayload.kms + 'kms at ' + Utils.dec(this.msgPayload.slope, 10) + '%');
 
             var portInfo = Object.assign({}, this.msgPayload);
 
-            portInfo.time = time;
+            portInfo.time = this.time;
             this.ports.push(portInfo);
         } else if (this.message == 'endPort') {
             var portInfo = this.ports.pop();
-            var elapseTime = time - portInfo.time;
+            var elapseTime = this.time - portInfo.time;
             var velAvg = portInfo.kms / (elapseTime / 3600);
 
-            this.texts.push(strTime(time) + '-Finidhed port in ' + strTime(elapseTime) + ' ' + dec(velAvg, 100));
+            this.texts.push(Utils.strTime(this.time) + '-Finidhed port in ' + Utils.strTime(elapseTime) + ' ' + Utils.dec(velAvg, 100));
         }
     }
 

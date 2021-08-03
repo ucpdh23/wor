@@ -8,8 +8,13 @@ const Team = require('../dto/team');
 const Utils = require('../dto/utils');
 
 
-const NUM_CYCLISTS = 1;
+const NUM_CYCLISTS = 84;
 const NUM_CYCLISTS_TEAM = 7;
+
+const positions = [
+    {x: -1, y: 0},
+    {x: -3, y: 2}
+];
 
 function init() {
     console.log('init manager')
@@ -65,6 +70,12 @@ function populateCyclists(stage) {
     var number = 1;
     for (var i = 0; i < NUM_CYCLISTS; i++) {
         var cyclist = new Cyclist(i, number);
+
+        if (i < positions.length ) {
+            cyclist.position.x = positions[i].x;
+            cyclist.position.y = positions[i].y;
+        }
+
         cyclists.push(cyclist);
 
         if (number % 10 == NUM_CYCLISTS_TEAM) {
@@ -80,7 +91,7 @@ function populateCyclists(stage) {
 function resolveStatus(client) {
     var stage = getStage(1);
 
-    var status = new Status(Utils.createOutputCyclists(stage.cyclists));
+    var status = new Status(Utils.createOutputCyclistsForWebservice(stage.cyclists));
     status.timestamp = stage.timestamp;
 
     return status;

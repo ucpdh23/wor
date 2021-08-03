@@ -1,6 +1,6 @@
 class Cyclist {
 
-    constructor(id, number) {
+    constructor(id, number, energy) {
         this.id = id;
         this.number=number;
         
@@ -8,6 +8,8 @@ class Cyclist {
         this.velocity = createVector(9, 0);
         this.acceleration = createVector(0, 0)
         this.acc_physics = createVector(0, 0);
+        
+        this.energy = energy;
     }
   
     update(data) {

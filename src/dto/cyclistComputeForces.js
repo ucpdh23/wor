@@ -2,7 +2,7 @@ var Cyclist = require('./cyclist');
 
 const Vector = require('./NewVector').Vector;
 
-Cyclist.prototype.computeForces= function(mAlig, mSep, mCoh, actionVector=null) {
+Cyclist.prototype.computeForces = function(mAlig, mSep, mCoh, actionVector=null) {
     this._selfAcc = this.selfAcc();
     var allActions = new Vector(0,0);
     allActions.add(this._selfAcc);
@@ -26,11 +26,11 @@ Cyclist.prototype.computeForces= function(mAlig, mSep, mCoh, actionVector=null) 
 
        
        
-    this._alignment.multScalar(mAlig);
-    this._separation.multScalar(mSep);
-    this._cohesion.multScalar(mCoh);
+    this._alignment.mult(mAlig);
+    this._separation.mult(mSep);
+    this._cohesion.mult(mCoh);
         
-    this.acceleration.multScalar(0);
+    this.acceleration.mult(0);
 
         
     if (this._selfAcc.x !== 0) {
@@ -39,8 +39,7 @@ Cyclist.prototype.computeForces= function(mAlig, mSep, mCoh, actionVector=null) 
       this._cohesion.x /= 2;
     }
   
-    this.acc_physics =
-      this._forcesCompensation;
+    this.acc_physics = this._forcesCompensation;
         
     this.acceleration.add(this._separation);
 
@@ -50,7 +49,13 @@ Cyclist.prototype.computeForces= function(mAlig, mSep, mCoh, actionVector=null) 
         
     this.acceleration.add(this._borderAvoid);
 
-
+    /*
+    console.log("this.id:" + this.id + " this._forcesCompensation:" + this._forcesCompensation.x  + "-" + this._forcesCompensation.y)
+    console.log("this.id:" + this.id + " this.acceleration:" + this.acceleration.x  + "-" + this.acceleration.y + " mAlig:" + mAlig + " mSep:" + mSep + " mCoh:" + mCoh)
+    console.log("this.id:" + this.id + " this._alignment:" + this._alignment.x  + "-" + this._alignment.y)
+    console.log("this.id:" + this.id + " this._separation:" + this._separation.x  + "-" + this._separation.y)
+    console.log("this.id:" + this.id + " this._cohesion:" + this._cohesion.x  + "-" + this._cohesion.y)
+  */
   }
   
   
@@ -83,7 +88,7 @@ Cyclist.prototype.computeForces= function(mAlig, mSep, mCoh, actionVector=null) 
           
           this.acceleration.add(this._wander);
           this.acceleration.add(this._drive);
-          
+
           this.acceleration.limit(this.maxSteeringForce);
         }  
       }

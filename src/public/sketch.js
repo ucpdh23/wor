@@ -53,7 +53,10 @@ function updateCyclists(cyclists) {
     cyclists_index[it.id].position.x = it.position.x;
     cyclists_index[it.id].position.y = it.position.y;
   });
+}
 
+function updateTimestamp(timestamp) {
+  time = timestamp;
 }
 
 function displayMessage(text) {
@@ -77,7 +80,9 @@ function loadCyclists() {
           teams.push(team);
         }
 
-        var cyclist = new Cyclist(element.id, element.number);
+        var energy = new Energy(element.energy);
+        var cyclist = new Cyclist(element.id, element.number, energy);
+
         team.addCyclist(cyclist);
         cyclists.push(cyclist);
         cyclists_index[cyclist.id] = cyclist;
@@ -174,8 +179,9 @@ function draw() {
   var first = cyclists[0];
   var last = cyclists[0];
   
-  var localHull = [];
-  localHull.push([cyclists[0].position.x, cyclists[0].position.y]);
+  
+  //var localHull = [];
+  //localHull.push([cyclists[0].position.x, cyclists[0].position.y]);
   
   for (i=1; i < cyclists.length; i++) {
     if (first.position.x < cyclists[i].position.x)
@@ -184,8 +190,9 @@ function draw() {
     if (last.position.x > cyclists[i].position.x)
       last =cyclists[i];
     
-    localHull.push([cyclists[i].position.x, cyclists[i].position.y]);
+    //localHull.push([cyclists[i].position.x, cyclists[i].position.y]);
   }
+  
   
   globalFirst = first;
   
@@ -207,20 +214,12 @@ function draw() {
   }
   
   
-  
-  /*
-
-  var hullPoints = hull(localHull, 10);
-  globalHull = hullPoints;
-  
-    for (i = 0; i < items; i++) {
-        var environment = profile.computeEnvironment(cyclists[i]);
-        cyclists[i].computeNeighbour(cyclists, i, first, last, environment);
-        if (i < 7) {
-          updateBox(document.getElementById('id_'+i), cyclists[i]);
-        }
+  for (i = 0; i < items; i++) {
+    if (i < 7) {
+      updateBox(document.getElementById('id_'+i), cyclists[i]);
     }
-    */
+  }
+
 
 for (i = 0; i < cyclists.length; i++) {
     currMeters = cyclists[i].position.x;
@@ -250,18 +249,6 @@ for (i = 0; i < cyclists.length; i++) {
   for (i=0; i < cyclists.length; i++)
     cyclists[i].show(reference);
     
-    
-    if (_drawHull) {
-        for (i = 0; i < hullPoints.length - 1; i++) {
-            var startX = reference - hullPoints[i][0];
-            var startY = 160 + hullPoints[i][1] * 10;
-            var endX = reference - hullPoints[i + 1][0];
-            var endY = 160 + hullPoints[i + 1][1] * 10;
-            line(startX * 10, startY,
-                endX * 10, endY)
-        }
-    }
-
     text(strTime(time), 30, 13);
 
     time = time + delta;
@@ -380,10 +367,12 @@ function updateBox(item, cyclist) {
     color = getColorForPercentage(1-cyclist.energy.r_air/20, percentColors);
     item.getElementsByClassName('icon-wind')
     [0].style.backgroundColor = "rgb("+color.r+","+color.g+","+color.b+")";
- 
+
+    /*
     color = getColorForPercentage(1-cyclist.energy.getPower()/100, percentColors);
     item.getElementsByClassName('icon-watts')
     [0].style.backgroundColor = "rgb("+color.r+","+color.g+","+color.b+")";
+    */
 
     if (selected === item) {
         showSelected(cyclist);
@@ -490,6 +479,7 @@ function drawEnergy(ctx, energy){
 }
 
 function buildUl(element, cyclist) {
+  /*
   var arr = cyclist.texts;
   
   element.innerHTML = '';
@@ -500,7 +490,7 @@ function buildUl(element, cyclist) {
     li.innerHTML = arr[i];
     li.setAttribute('style', 'display: block;');
     element.appendChild(li);
-  }
+  }*/
   
   /*for (i = 0; i <= arr.length - 1; i++) {
      /*   var li = document.createElement('li');     // create li element.

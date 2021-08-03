@@ -31,8 +31,8 @@ function rgbToHex(rgb) {
 };
 
 function strTime(time){
-  var mins = (int)(time / 60);
-  var secs = (int)(time) % 60;
+  var mins = parseInt(time / 60);
+  var secs = parseInt(time) % 60;
   
   return pad(mins, 2) + ":" + pad(secs, 2);
 }
@@ -60,6 +60,21 @@ function computeMedium(list) {
 }
 
 function createOutputCyclists(list) {
+  var output = []
+  for (var i =0; i < list.length; i++) {
+    var item = list[i];
+    output.push({id: item.id, number : item.number,
+      position : {x: item.position.x, y: item.position.y},
+      velocity: {x: item.velocity.x, y: item.velocity.y},
+      acceleration: {x: item.acceleration.x, y: item.acceleration.y},
+      energy: {llano: item.energy.llano, montana: item.energy.montana, bajada: item.energy.bajada}
+    });
+  }
+
+  return output;
+}
+
+function createOutputCyclistsForWebservice(list) {
   var output = []
   for (var i =0; i < list.length; i++) {
     var item = list[i];
@@ -112,3 +127,6 @@ function inRange(value, range) {
 exports.incrementalUpdate = incrementalUpdate;
 exports.dec = dec;
 exports.createOutputCyclists = createOutputCyclists;
+exports.createOutputCyclistsForWebservice = createOutputCyclistsForWebservice;
+
+exports.strTime = strTime;

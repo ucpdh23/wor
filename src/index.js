@@ -39,12 +39,14 @@ setInterval(() => {
     var status = manager.resolveStatus(client);
     client.send(JSON.stringify(status));
   });
-}, 100);
+}, 75);
 
 var counter = 0;
 
 const updater = require('./workers/updater')
 
+console.log("STARTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
 setInterval(() => {
-  updater.update(20, manager.getStage(1));
-}, 20);
+  updater.update(25, manager.getStage(1));
+}, 25);
