@@ -41,6 +41,7 @@ let button;
 let buttonPlus;
 let buttonLess;
 
+let sound;
 
 let teams = [];
 
@@ -113,7 +114,13 @@ function loadProfile() {
     });
 }
 
+function preload() {
+  soundFormats('mp3');
+  song = loadSound('assets/race.mp3');
+}
+
 function setup() {
+
   displayMessage("loading...");
 
   var canvas = createCanvas(canvasWidth, canvasHeight);
@@ -126,6 +133,8 @@ function setup() {
   
   frameRate(20)
   
+  song.setVolume(0.5);
+  song.loop();
   /*
   var unidades=1;
   var decenas=0;
@@ -162,7 +171,14 @@ function setup() {
   // drawProfile();
 }
 
+playing = false;
+
 function draw() {
+  if (!song.isPlaying()) {
+    console.log("Not playing")
+    song.play();
+  }
+
   let prevOrientation = orientation;
   orientation=detectOrientation();
   

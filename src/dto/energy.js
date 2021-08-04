@@ -53,7 +53,11 @@ class Energy {
   
           // Resistencia Pendiente
           this.preSlope = this.slope;
-          this.slope = this.cyclist.slope;
+          if (this.cyclist.slope === undefined) {
+            this.slope = 0;
+          } else {
+            this.slope = this.cyclist.slope;
+          }
           //this.r_pend = (this.cyclist.slope > 0) ? this.cyclist.slope * 400 / this.montana : 0;
           //var multFactor = (this.cyclist.slope > 0)? 450 : 200;
           var multFactor = (this.slope < 0)?

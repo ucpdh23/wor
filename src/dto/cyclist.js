@@ -541,7 +541,7 @@ class Cyclist {
     selfAcc() {
         if (this.startSelfAcc) {
             //print('selfAcc')
-            this._selfAccInit = time;
+            this._selfAccInit = this.time;
             this.selfStartedSelfAcc = true;
             this.startSelfAcc = undefined;
             if (this.energy.pulse2 > 160) {
@@ -549,7 +549,7 @@ class Cyclist {
                     this.selfAccLevel /= 2;
             }
         } else if (this.selfStartedSelfAcc) {
-            var diffTime = (time - this._selfAccInit) / this.selfAccTimer;
+            var diffTime = (this.time - this._selfAccInit) / this.selfAccTimer;
 
 
             if (diffTime > Math.PI) {
