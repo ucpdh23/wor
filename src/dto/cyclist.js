@@ -531,7 +531,8 @@ class Cyclist {
     borderAvoid() {
         var result = new Vector(0, 0);
 
-        var futurePos = this.velocity.get().mult(3)
+        var futurePos = this.velocity.get()
+        futurePos.mult(3);
         futurePos = Vector.add(this.position, futurePos);
 
         if (futurePos.y > (this.roadWidth)) {

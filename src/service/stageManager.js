@@ -1,6 +1,8 @@
 const stages = {};
 
 const Cyclist = require('../dto/cyclist');
+const Clasificacion = require('../dto/clasificacion');
+
 const Stage = require('../dto/stage');
 const Profile = require('../dto/profile')
 const Status = require('../dto/status');
@@ -69,6 +71,7 @@ function populateTeams(stage) {
 function populateProfile(stage) {
     var etapa = [0, 2, 4, 7, 2, -3, -5, -5, -3, 0, 0, 0, 0, 4, 5, 7, 8, 6, 7, 8, 9, 10, -3, -6, -6, -6, -7, -2, -5, -7, -9, -2, 0, 0, 0, 0, 0, 4, 0, 6, 7, 12, 15, 3];
 
+    var clasificacion = new Clasificacion();
     var profile = new Profile(null, etapa, 1000);
 
     stage.profile = profile;
