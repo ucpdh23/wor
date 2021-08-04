@@ -215,7 +215,7 @@ class Energy {
   
   
       resolvePercentage() {
-        return (int)(this.forceCyclist * 100 / this.maxForce);
+        return parseInt(this.forceCyclist * 100 / this.maxForce);
       }
       
       update(delta) {

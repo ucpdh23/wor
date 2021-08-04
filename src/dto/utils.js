@@ -5,7 +5,8 @@ function pad(num, size) {
 }
 
 function dec(num, mul){
-  return "" + num.toFixed(mul);
+  var aux = (num < 0)? "" : "+";
+  return aux + num.toFixed(mul);
   //return ""+((parseInt(num*mul))/mul).toFixed(2);
 }
 

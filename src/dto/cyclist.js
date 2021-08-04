@@ -81,6 +81,15 @@ class Cyclist {
         message += " -vel:" + Utils.dec(this.velocity.x, 2) + "-" + Utils.dec(this.velocity.y, 2)
         message += " -acc:" + Utils.dec(this.acceleration.x, 2) + "-" + Utils.dec(this.acceleration.y, 2)
         message += " -state:" + this._stateMachine[0].value
+        message += " -neighbour:" + this.neighbour.length
+        message += " -ll:" + Utils.dec(this.energy.llano, 2)
+        message += " -mo:" + Utils.dec(this.energy.montana, 2)
+        message += " -sp:" + Utils.dec(this.energy.sprint, 2)
+        message += " -r_air:" + Utils.dec(this.energy.r_air, 2)
+        message += " -r_vel:" + Utils.dec(this.energy.r_vel, 2)
+        message += " -r_mo:" + Utils.dec(this.energy.r_pend, 2)
+        message += " -pul:" + Utils.dec(this.energy.pulse2, 2)
+        
         /*console.log("Cyclist " + this.number + "(" + this.id + ") " + this.time)
         console.log(" -pos:" + this.position.x + "-" + this.position.y)
         console.log(" -vel:" + this.velocity.x + "-" + this.velocity.y)
@@ -183,7 +192,6 @@ class Cyclist {
         var steer = this.seek(new Vector(
             this.position.x + distance + driveX,
             driveY
-
         ));
 
         this.driveTheta = theta + Math.PI / 10000;
@@ -526,13 +534,16 @@ class Cyclist {
         var futurePos = this.velocity.get().mult(3)
         futurePos = Vector.add(this.position, futurePos);
 
-        if (futurePos.y > (this.roadWidth * 0.8)) {
+        if (futurePos.y > (this.roadWidth)) {
+            result.add(new Vector(0, -2))
+        } else if (futurePos.y > (this.roadWidth * 0.8)) {
             result.add(new Vector(0, -1))
+        } else if (futurePos.y < -(this.roadWidth)) {
+            result.add(new Vector(0, 2));
         } else if (futurePos.y < -(this.roadWidth * 0.8)) {
-            result.add(
-                new Vector(0, 1));
+            result.add(new Vector(0, 1));
         }
-        result.limit(this.maxSteeringForce);
+        //result.limit(this.maxSteeringForce);
 
         return result;
 

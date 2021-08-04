@@ -156,7 +156,7 @@ function createDefaultStateMachine() {
                     return {
                         target: 'pulling',
                         action() {
-                            tirando.push(ctx.cyclist);
+                            ctx.cyclist.isTirando = true;
                         },
                     };
 
@@ -173,7 +173,6 @@ function createDefaultStateMachine() {
         pulling: {
             actions: {
                 onEnter(ctx) {
-                    print('tirando');
                     if (ctx._pullingLevel == null) {
                         ctx._pullingLevel = 60;
                     }
@@ -182,7 +181,7 @@ function createDefaultStateMachine() {
                     ctx._pullingLevel = undefined;
                 },
                 onExecute(ctx) {
-                    if (tirando.includes(ctx.cyclist)) {
+                    if (ctx.cyclist.isTirando) {
                         let level = ctx.cyclist.energy.resolvePercentage();
 
                         // ctx.cyclist.log = ''+(ctx.cyclist.energy.force - ctx.cyclist.energy.forceCyclist);
@@ -228,8 +227,7 @@ function createDefaultStateMachine() {
                     ctx.cyclist.startSelfAcc = true;
                     ctx.cyclist.selfAccLevel = val;
                 } else if (ctx.first.id != ctx.cyclist.id) {
-                    // && tirando.length == 1) {
-                    tirando = [];
+                    ctx.cyclist.isTirando = undefined;
 
                     return {
                         target: 'preparePulling',
@@ -273,13 +271,12 @@ function createDefaultStateMachine() {
 
                 },
                 onExecute(ctx) {
-                    if (ctx.cyclist.group.tirando.includes(ctx.cyclist)) return;
+                    if (ctx.cyclist.isTirando) return;
 
 
 
                     if (ctx.first.id == ctx.cyclist.id) {
-                        ctx.cyclist.group.tirando.push(ctx.cyclist);
-
+                        ctx.cyclist.isTirando = true;
                     } else {
                         ctx.cyclist._mGoodPosition = 0;
                         ctx.cyclist.computeForces_2(ctx.cyclist.group.getFirst());
@@ -317,7 +314,7 @@ function createDefaultStateMachine() {
                       target: 'gotoFirst',
                       action() { }
                   };
-              } else */ if (ctx.cyclist.group.tirando.includes(ctx.cyclist)) {
+              } else */ if (ctx.cyclist.isTirando) {
                     return {
                         target: 'pulling',
                         action() { }
@@ -394,7 +391,8 @@ function createDefaultStateMachine() {
                 }
                 if (ctx.cyclist.selfStartedSelfAcc === false) {
                     if (ctx.first.id === ctx.cyclist.id) {
-                        tirando.push(ctx.cyclist);
+                        ctx.cyclist.isTirando = true;
+
                         return {
                             target: 'pulling',
                             action() { }
@@ -433,7 +431,8 @@ function createDefaultStateMachine() {
             computeTransition(ctx) {
                 if (ctx.cyclist.selfStartedSelfAcc === false) {
                     if (ctx.first.id === ctx.cyclist.id) {
-                        tirando.push(ctx.cyclist);
+                        ctx.cyclist.isTirando = true;
+
                         return {
                             target: 'pulling',
                             action() { }
@@ -468,14 +467,10 @@ function createDefaultStateMachine() {
                     ctx.cyclist._mSeparation = ctx.cyclist.tmpSeparation;
                 },
                 onExecute(ctx) {
-                    if (tirando.includes(ctx.cyclist)) return;
-
-
-
+                    if (ctx.cyclist.isTirando) return;
 
                     ctx.cyclist._mGoodPosition = 6;
                     ctx.cyclist.computeForces_2(ctx.first);
-
 
                 }
 
@@ -557,9 +552,8 @@ function createPreparePulling(target) {
                 onEnter(ctx) { print('tirando'); },
                 onExit(ctx) { },
                 onExecute(ctx) {
-                    if (tirando.includes(ctx.cyclist)) {
+                    if (ctx.cyclist.isTirando) {
                         ctx.cyclist.computeForces_0(ctx.first);
-
                     }
 
 
@@ -589,12 +583,11 @@ function createPreparePulling(target) {
                     ctx.cyclist._mSeparation = ctx.cyclist.tmpSeparation;
                 },
                 onExecute(ctx) {
-                    if (tirando.includes(ctx.cyclist)) return;
+                    if (ctx.cyclist.isTirando = true) return;
 
 
                     if (ctx.first.id == ctx.cyclist.id) {
-                        tirando.push(ctx.cyclist);
-
+                        ctx.cyclist.isTirando = true;
                     } else {
 
 
@@ -606,7 +599,7 @@ function createPreparePulling(target) {
 
             },
             computeTransition(ctx) {
-                if (tirando.includes(ctx.cyclist))
+                if (ctx.cyclist.isTirando)
                     return {
                         target: 'pulling',
                         action() { }
@@ -634,14 +627,10 @@ function createPreparePulling(target) {
                     ctx.cyclist._mSeparation = ctx.cyclist.tmpSeparation;
                 },
                 onExecute(ctx) {
-                    if (tirando.includes(ctx.cyclist)) return;
-
-
-
+                    if (ctx.cyclist.isTirando) return;
 
                     ctx.cyclist._mGoodPosition = 6;
                     ctx.cyclist.computeForces_2(ctx.first);
-
 
                 }
 
