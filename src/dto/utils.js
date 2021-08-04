@@ -145,3 +145,4 @@ exports.createOutputCyclistsForWebservice = createOutputCyclistsForWebservice;
 exports.findCyclist = findCyclist;
 exports.strTime = strTime;
 exports.createOutputCyclist = createOutputCyclist;
+exports.inRange = inRange;

@@ -1,4 +1,5 @@
 const StateMachine = require('./stateMachine')
+const Utils = require('../dto/utils')
 
 function createDefaultStateMachine() {
     return StateMachine.createMachine({
@@ -298,7 +299,7 @@ function createDefaultStateMachine() {
                 if (diff < ctx._preparePullingMeters) {
 
                     var diffVel = first.velocity.x - curr.velocity.x;
-                    if (inRange(diffVel, ctx._preparePullingRange)) {
+                    if (Utils.inRange(diffVel, ctx._preparePullingRange)) {
                         return {
                             target: ctx._preparePullingNext,
                             action() { }

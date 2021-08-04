@@ -52,7 +52,7 @@ let orientation = 'desktop'
 
 function updateCyclists(cyclists) {
   if (cyclists_index === undefined) return;
-  
+
   cyclists.forEach(it => {
     cyclists_index[it.id].position.x = it.position.x;
     cyclists_index[it.id].position.y = it.position.y;
@@ -176,6 +176,8 @@ function setup() {
 playing = false;
 
 function draw() {
+  if (cyclists.length == 0) return;
+
   if (!song.isPlaying()) {
     console.log("Not playing")
     song.play();
