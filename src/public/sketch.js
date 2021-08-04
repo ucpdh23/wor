@@ -51,6 +51,8 @@ let profile = null;
 let orientation = 'desktop'
 
 function updateCyclists(cyclists) {
+  if (cyclists_index === undefined) return;
+  
   cyclists.forEach(it => {
     cyclists_index[it.id].position.x = it.position.x;
     cyclists_index[it.id].position.y = it.position.y;

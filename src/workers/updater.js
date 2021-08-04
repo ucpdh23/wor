@@ -44,17 +44,7 @@ function update(delta, stage) {
   });
 
   if (stage.timestamp  > nextTime) {
-    var avg = sumTime / counter
-    console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
-    for (i = 0; i < items; i++) {
-      list[i].logCyclist();
-    }
-
-    counter = 0;
-    sumTime=0;
-
-    
-    nextTime = nextTime + 10;
+    displayMetrics(stage, items, list);
   }
 
 
@@ -120,6 +110,21 @@ function update(delta, stage) {
   counter++;
 
 
+}
+
+function displayMetrics(stage, items, list) {
+  var avg = sumTime / counter
+
+  console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
+  for (i = 0; i < items; i++) {
+    list[i].logCyclist();
+  }
+
+  counter = 0;
+  sumTime=0;
+
+  
+  nextTime = nextTime + 10;
 }
 
 module.exports.update = update;
