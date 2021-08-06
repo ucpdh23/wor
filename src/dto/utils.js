@@ -96,7 +96,8 @@ function createOutputCyclistsForWebservice(list) {
     output.push({id: item.id, number : item.number,
       position : {x: item.position.x, y: item.position.y},
       velocity: {x: item.velocity.x, y: item.velocity.y},
-      acceleration: {x: item.acceleration.x, y: item.acceleration.y}
+      acceleration: {x: item.acceleration.x, y: item.acceleration.y},
+      pulse: item.energy.pulse2
     });
   }
 

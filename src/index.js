@@ -1,4 +1,6 @@
 const express = require('express')
+var log = require('loglevel');
+log.setLevel("debug")
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -7,7 +9,6 @@ const { Server } = require('ws');
 
 const manager = require('./service/stageManager');
 manager.init();
-
 
 // Middlewares
 app.use(express.json());
@@ -41,12 +42,10 @@ setInterval(() => {
   });
 }, 75);
 
-var counter = 0;
-
 const updater = require('./workers/updater')
-
-console.log("STARTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 setInterval(() => {
   updater.update(25, manager.getStage(1));
 }, 25);
+
+log.info("started server!!!!!!!!!!!!!!!!!");

@@ -8,12 +8,13 @@ class Clasificacion {
       }
       this.items[meters].push(
         {
-          timestamp: time,
+          timestamp: cyclist.time,
           cyclist: cyclist
         }
       );
       
       let list = this.items[meters];
+      /*
       length = list.length;
       if (length == 1) {
         var first = list[0];
@@ -23,7 +24,7 @@ class Clasificacion {
         var last = list[length-1];
         console.log(''+ last.cyclist.number + ' a '+ strTime(last.timestamp - first.timestamp));
       }
-        
+        */
     }
   }
 

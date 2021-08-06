@@ -1,0 +1,50 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    color: blanchedalmond;
+    background-color: #303030;
+}
+
+canvas {
+    display: block;
+}
+
+.clock {
+    font-size: x-large;
+    
+}
+
+.stage-top {
+    display: flex;
+    flex-direction: row;
+    
+    justify-content: space-between;
+}
+
+.stage-top-profile {
+    width: 300px;
+    height: 200px;
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.stage-top-profile-content {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.stage-top-profile-content-axisWhite {
+    color: blanchedalmond;
+}
+
+.stage-top-profile-content-axisWhite line {
+    stroke: blanchedalmond !important;
+}
+
+.stage-top-profile-content-axisWhite text {
+    fill: blanchedalmond !important;
+}

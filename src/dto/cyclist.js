@@ -80,15 +80,15 @@ class Cyclist {
         message += " -pos:" + Utils.dec(this.position.x, 2) + "-" + Utils.dec(this.position.y, 2)
         message += " -vel:" + Utils.dec(this.velocity.x, 2) + "-" + Utils.dec(this.velocity.y, 2)
         message += " -acc:" + Utils.dec(this.acceleration.x, 2) + "-" + Utils.dec(this.acceleration.y, 2)
-        message += " -state:" + this._stateMachine[0].value
-        message += " -neighbour:" + this.neighbour.length
+        message += " -st:" + this._stateMachine[0].value
+        message += " -ne:" + this.neighbour.length
         message += " -ll:" + Utils.dec(this.energy.llano, 2)
         message += " -mo:" + Utils.dec(this.energy.montana, 2)
         message += " -sp:" + Utils.dec(this.energy.sprint, 2)
-        message += " -r_air:" + Utils.dec(this.energy.r_air, 2)
-        message += " -r_vel:" + Utils.dec(this.energy.r_vel, 2)
-        message += " -r_mo:" + Utils.dec(this.energy.r_pend, 2)
-        message += " -pul:" + Utils.dec(this.energy.pulse2, 2)
+        message += " -rAir:" + Utils.dec(this.energy.r_air, 2)
+        message += " -rVel:" + Utils.dec(this.energy.r_vel, 2)
+        message += " -rMo:" + Utils.dec(this.energy.r_pend, 2)
+        message += " -ppm:" + Utils.dec(this.energy.pulse2, 2)
         
         /*console.log("Cyclist " + this.number + "(" + this.id + ") " + this.time)
         console.log(" -pos:" + this.position.x + "-" + this.position.y)
