@@ -11,7 +11,7 @@ define([
           options.vent.bind("updatedStatus", this.updatedStatus, this);
           this.viewport = null;
           this.features = {
-            canvasWidth: $( window ).width(),
+            canvasWidth: Math.max($( window ).width(), 1000),
             canvasHeight: $( window ).height() * 0.6,
             backgroundColor: 40,
             maxSizeViewPort: 100,

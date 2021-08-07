@@ -11,8 +11,8 @@ define([
     el: $('#container'),
 
     initialize(options) {
-      options.vent.bind("createStage", this.drawProfile, this);
-      options.vent.bind("updatedStatus", this.update, this);
+      options.vent.bind("createStage", this.drawProfile2, this);
+      //options.vent.bind("updatedStatus", this.update, this);
     },
 
     render: function () {
@@ -20,6 +20,73 @@ define([
 
       var compiledTemplate = _.template(template, data);
       this.$el.html(compiledTemplate);
+    },
+
+    drawProfile2: function() {
+      var profileData = this.model.get("profile");
+
+      let elevGain = profileData.data.reduce((acc, cur, idx, arr) => {
+        if (idx > 0 && (cur.y > arr[idx - 1].y)) {
+          acc += cur.y - arr[idx - 1].y;
+        }
+        return acc;
+      }, 0);
+
+      let canvas = document.getElementById("profileCanvas");
+      this.resizeCanvasToDisplaySize(canvas);
+
+      let cx = canvas.getContext("2d");
+
+      let canvasWidth = canvas.width; //$('#profileCanvas').width();
+      let canvasHeight = canvas.height; //$('#profileCanvas').height();
+
+      let centerX = canvasWidth / 2;
+      let centerY = canvasHeight / 2;
+
+      let margenX = 10;
+      let margenBottom = 10;
+
+      var kms = profileData.data.length;
+      let scaleX = (canvasWidth - margenX*2) / kms;
+
+      cx.beginPath();
+      cx.strokeRect(margenX, canvasHeight - margenBottom, canvasWidth - margenX*2, -5);
+
+      for (var i =0; i <= kms; i++) {
+        var cota = -10;
+        if (i%5 == 0) {
+          cx.fillText("" + i, margenX + scaleX * i, canvasHeight - margenBottom / 2);
+          cota = -15;
+        }
+
+        cx.strokeRect(margenX + scaleX * i, canvasHeight - margenBottom, 1, cota);
+      }
+
+
+      // base line
+
+      //cx.arc(centerX, centerY, Math.min(centerX, centerY), 0, 2 * Math.PI, false);
+      cx.fillText("kms:" + kms, centerX, centerY);
+      cx.fill();
+
+    },
+
+    resizeCanvasToDisplaySize: function(canvas) {
+      // Lookup the size the browser is displaying the canvas in CSS pixels.
+      const displayWidth  = canvas.clientWidth;
+      const displayHeight = canvas.clientHeight;
+     
+      // Check if the canvas is not the same size.
+      const needResize = canvas.width  !== displayWidth ||
+                         canvas.height !== displayHeight;
+     
+      if (needResize) {
+        // Make the canvas the same size
+        canvas.width  = displayWidth;
+        canvas.height = displayHeight;
+      }
+     
+      return needResize;
     },
 
     drawProfile: function () {
