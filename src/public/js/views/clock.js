@@ -11,12 +11,6 @@ define([
           options.vent.bind("updatedStatus", this.render, this);
       },
 
-      updatedStatus: function(status) {
-
-        //console.log(this.model.get("cyclists"));
-        // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      },
-
       render: function(){
         var timestamp = this.model.get("clock");
         var data = {

@@ -14,6 +14,7 @@ define([
             this.set("cyclists_index", data.cyclists_index);
             this.set("profile", data.profile);
             this.set("teams", data.teams);
+            this.set("myTeam", data.teams[data.myTeam]);
             this.set("clock", 0);
 
             this.vent.trigger("createStage", data);

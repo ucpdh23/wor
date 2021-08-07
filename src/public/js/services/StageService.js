@@ -9,6 +9,7 @@ define([
         initStage(callback) {
             output = {
                 teams: [],
+                myTeam: 0,
                 cyclists: [],
                 cyclists_index: {},
                 profile: []
