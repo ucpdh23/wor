@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 
   var stage = manager.getStage(1);
   
-  res.send(JSON.stringify(stage.profile));
+  res.send(JSON.stringify({etapa: stage.profile.etapa}));
 });
 
 module.exports = router;

@@ -29,6 +29,15 @@ define([
             return hex;
         },
 
+        padAndRound(num, size, decimals) {
+            var intValue = Math.floor(num);
+            var decimalValue = num - intValue;
+
+            var item = parseInt(decimalValue * (10**decimals));
+
+            return this.pad(intValue, size) + "." + this.pad(item, decimals);
+        },
+
         pad(num, size) {
             var s = num + "";
             while (s.length < size) s = "0" + s;

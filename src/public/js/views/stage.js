@@ -3,6 +3,7 @@ define([
   'underscore',
   'backbone',
   'text!templates/stage.html',
+  'text!templates/stage_mobile.html',
   /*'p5',
   'p5_sound',*/
   'services/StageService',
@@ -10,7 +11,7 @@ define([
   'views/arena',
   'views/profile',
   'views/clock'
-], function ($, _, Backbone, stageTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView) {
+], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView) {
 
   var globalVent = _.extend({}, Backbone.Events);
 

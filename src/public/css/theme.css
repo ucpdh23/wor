@@ -25,11 +25,9 @@ canvas {
     width: 25vw;
     height: 100%;
     overflow: hidden;
-    background-color: blueviolet;
 }
 
 #profileCanvas {
-    border: solid 1px blue;  
     width: 100%;
     height: 100%;
   }

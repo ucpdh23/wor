@@ -25,17 +25,32 @@ define([
     drawProfile2: function() {
       var profileData = this.model.get("profile");
 
+      var accMin = 0;
+      var accMax = 0;
+
       let elevGain = profileData.data.reduce((acc, cur, idx, arr) => {
         if (idx > 0 && (cur.y > arr[idx - 1].y)) {
           acc += cur.y - arr[idx - 1].y;
+
+          accMin = Math.min(accMin, acc);
+          accMax = Math.max(accMax, acc);
         }
+
         return acc;
       }, 0);
+
+      console.log("accMin:" + accMin)
+      console.log("accMax:" + accMax)
+      console.log("elevGain:" + elevGain)
+      
+      
 
       let canvas = document.getElementById("profileCanvas");
       this.resizeCanvasToDisplaySize(canvas);
 
       let cx = canvas.getContext("2d");
+
+      cx.font = "10px Orbitron";
 
       let canvasWidth = canvas.width; //$('#profileCanvas').width();
       let canvasHeight = canvas.height; //$('#profileCanvas').height();
@@ -48,28 +63,87 @@ define([
 
       var kms = profileData.data.length;
       let scaleX = (canvasWidth - margenX*2) / kms;
+      let scaleY = (canvasHeight - margenBottom) / (accMax - accMin) ;
 
-      cx.beginPath();
-      cx.strokeRect(margenX, canvasHeight - margenBottom, canvasWidth - margenX*2, -5);
+      let startX = margenX;
+      let startY = canvasHeight - margenBottom - accMin - 10;
 
-      for (var i =0; i <= kms; i++) {
-        var cota = -10;
-        if (i%5 == 0) {
-          cx.fillText("" + i, margenX + scaleX * i, canvasHeight - margenBottom / 2);
-          cota = -15;
-        }
 
-        cx.strokeRect(margenX + scaleX * i, canvasHeight - margenBottom, 1, cota);
-      }
+      cx.strokeStyle = "#FF0000";
+      cx.fillStyle = "blanchedalmond";
 
+      this.drawRuler(cx, scaleX, scaleY, startX, startY + 3, profileData.data);
 
       // base line
 
       //cx.arc(centerX, centerY, Math.min(centerX, centerY), 0, 2 * Math.PI, false);
-      cx.fillText("kms:" + kms, centerX, centerY);
+
+      cx.fillText("kms:" + kms, startX, 20);
+
+      this.drawLine(cx, scaleX, scaleY, startX, startY, profileData.data);
+
+      this.drawPortInfo(cx, scaleX, scaleY, startX, startY, profileData, canvasWidth);
+    },
+
+    drawRuler: function(cx, scaleX, scaleY, startX, startY, data) {
+      cx.strokeRect(startX, startY, data.length * scaleX, -1);
+
+      cx.font = "9px Orbitron";
+
+      for (var i =0; i <= data.length; i++) {
+        var cota = 2;
+        if (i%5 == 0) {
+          let ret = (i < 10)? 2 : 5;
+
+          cx.strokeStyle = "#550000";
+          cx.strokeRect(startX + scaleX * i, startY, 0, - startY + 40);
+
+          cx.fillText("" + i, startX + scaleX * i - ret, startY + 10);
+          cota = 3;
+        }
+
+        cx.strokeRect(startX + scaleX * i, startY, 1, cota);
+      }
+    },
+
+    drawLine: function(cx, scaleX, scaleY, startX, startY, data) {
+      cx.beginPath();
+      cx.strokeStyle = "#FF0000";
+      
+
+      var x = startX;
+      var y = startY
+      cx.moveTo(x, y);
+
+      for (i=0; i < data.length; i++) {
+        x = x + scaleX;
+        y = startY - data[i].y * scaleY
+
+        cx.lineTo(x, y);
+      }
+
+      cx.lineTo(x, startY);
+
+
       cx.fill();
 
     },
+
+    drawPortInfo: function(cx, scaleX, scaleY, startX, startY, profile, canvasWidth) {
+      for (var portInfo of profile.portInfos) {
+        cx.strokeRect(startX + portInfo.endKms * scaleX, startY, 1, -startY + 50);
+        cx.fillStyle = "#AA0000";
+        var textX = startX + portInfo.endKms * scaleX
+        if (canvasWidth < textX + 20) {
+          textX = textX - 35;
+        }
+        cx.fillRect(textX - 3, 50 + 7, 45, - 20);
+        cx.fillStyle = "blanchedalmond";
+        cx.fillText("%: " + UtilsService.padAndRound(portInfo.slopeAvg, 2, 1), textX, 50);
+      }
+    },
+
+
 
     resizeCanvasToDisplaySize: function(canvas) {
       // Lookup the size the browser is displaying the canvas in CSS pixels.
@@ -92,10 +166,17 @@ define([
     drawProfile: function () {
       var profileData = this.model.get("profile");
 
+      var accMin = 0;
+      var accMax = 0;
+
       let elevGain = profileData.data.reduce((acc, cur, idx, arr) => {
         if (idx > 0 && (cur.y > arr[idx - 1].y)) {
           acc += cur.y - arr[idx - 1].y;
+
+          accMin = Math.min(accMin, acc);
+          accMax = Math.max(accMax, acc);
         }
+
         return acc;
       }, 0);
       elevGain = Math.round(elevGain * 3.28084);
