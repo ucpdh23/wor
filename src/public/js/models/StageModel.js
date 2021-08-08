@@ -35,6 +35,8 @@ define([
             cyclists.forEach(it => {
                 cyclists_index[it.id].position.x = it.position.x;
                 cyclists_index[it.id].position.y = it.position.y;
+                cyclists_index[it.id].velocity.x = it.velocity.x;
+                cyclists_index[it.id].velocity.y = it.velocity.y;
             });
 
             var list = cyclists.slice(0)

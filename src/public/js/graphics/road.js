@@ -30,8 +30,8 @@ define([], function () {
             p5.stroke(255);
             p5.fill(255)
             p5.textSize(13 * this.features.scale)
-            p5.text("meters:" + parseInt(this.meters), 30 , 30 + this.features.scale*5)
-            // text("speed:" + ((int)(globalFirst.velocity.x*3600))/1000, 30, 45)
+            //p5.text("meters:" + parseInt(this.meters), 30 , 30 + this.features.scale*5)
+            //text("speed:" + ((int)(globalFirst.velocity.x*3600))/1000, 30, 45)
 
             p5.line(0, this.y1, this.features.canvasWidth, this.y1);
             p5.line(0, this.y2, this.features.canvasWidth, this.y2);

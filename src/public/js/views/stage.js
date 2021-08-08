@@ -10,8 +10,9 @@ define([
   'models/StageModel',
   'views/arena',
   'views/profile',
-  'views/clock'
-], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView) {
+  'views/clock',
+  'views/team'
+], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView) {
 
   var globalVent = _.extend({}, Backbone.Events);
 
@@ -63,6 +64,9 @@ define([
 
       var clock = new ClockView({ el: $('#clock'), vent: this.vent, model: this.model});
       clock.render();
+
+      var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
+      team.render();
 
     }
   });
