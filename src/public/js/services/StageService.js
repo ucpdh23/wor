@@ -3,8 +3,9 @@ define([
     'models/Energy',
     'models/Cyclist',
     'models/Profile',
-    'models/Clasificacion'
-], function (Team, Energy, Cyclist, Profile, Clasificacion) {
+    'models/Clasificacion',
+    'constants'
+], function (Team, Energy, Cyclist, Profile, Clasificacion, Constants) {
     const StageService = {
         initStage(callback) {
             output = {
@@ -15,7 +16,7 @@ define([
                 profile: []
             };
 
-            fetch('api/cyclist')
+            fetch(Constants.url + 'api/cyclist')
                 .then(response => response.json())
                 .then(data => {
                     var teamId = 0;
@@ -41,7 +42,7 @@ define([
         },
 
         loadProfile(output, callback) {
-            fetch('api/profile')
+            fetch(Constants.url + 'api/profile')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data.etapa);
