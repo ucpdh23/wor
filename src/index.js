@@ -12,6 +12,10 @@ manager.init();
 
 // Middlewares
 app.use(express.json());
+app.use(function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+	next();
+});
 
 // routes
 app.use('/api/stage', require('./routes/stage'));

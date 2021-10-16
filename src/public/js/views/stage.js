@@ -11,8 +11,9 @@ define([
   'views/arena',
   'views/profile',
   'views/clock',
-  'views/team'
-], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView) {
+  'views/team',
+  'Constants'
+], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView, Constants) {
 
   var globalVent = _.extend({}, Backbone.Events);
 
@@ -38,7 +39,8 @@ define([
     },
 
     createWS: function () {
-      let HOST = location.origin.replace(/^http/, 'ws')
+      //let HOST = location.origin.replace(/^http/, 'ws')
+      let HOST = Constants.url.replace(/^http(s)?/, 'ws')
       let ws = new WebSocket(HOST);
 
       let that = this;
