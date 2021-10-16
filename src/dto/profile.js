@@ -11,6 +11,7 @@ class Profile {
     constructor(clasificacion, etapa, segment) {
         this.etapa = etapa;
         this.segment = segment;
+        this.totalMeters = this.etapa.length * this.segment;
 
         var prevSlope = 0;
         var port = 0;
@@ -41,6 +42,7 @@ class Profile {
                 }, port);
 
                 portInfo = {
+                    startingMeter: i * segment,
                     id: port,
                     kms: 0,
                     slope: 0
@@ -83,6 +85,14 @@ class Profile {
 
             this.portInfos.push(portInfo);
         }
+
+        this._computePortsInfo();
+       
+        console.log("desnivel acumulado :" + this.desnivelAcumulado);
+    }
+
+    getLengthInMeters() {
+        return this.data.length * this.segment;
     }
 
     listeners = {};
@@ -140,6 +150,15 @@ class Profile {
         };
     }
 
+    computeStatistics(posX) {
+        return {
+            stageKms: this.data.length * this.segment,
+            stageAngle: this.desnivelAcumulado,
+            pendingKms: this.data.length * this.segment - posX,
+            pendingAngle: this._computePendingDesnivel(posX)
+        };
+    }
+
 
     computeSlope(position) {
         var index = parseInt(position / this.segment);
@@ -149,6 +168,42 @@ class Profile {
         } else {
             return 0;
         }
+    }
+
+    _computePendingDesnivel(position) {
+        var desnivelAcumulado = 0;
+        for (var port of this.portInfos) {
+            if (position > port.startingMeter + port.kms * 1000)
+                continue;
+
+            var kms = port.kms;
+            if (port.startingMeter < position && position < port.startingMeter + port.kms * 1000) {
+                var meters = port.startingMeter + port.kms * 1000 - position;
+                kms = meters / 1000;
+            }
+
+            var slope = port.slope;
+
+            var desnivel = kms * slope * 10;
+
+            desnivelAcumulado += desnivel;
+        }
+
+        return desnivelAcumulado;
+    }
+
+    _computePortsInfo() {
+        var desnivelAcumulado = 0;
+        for (var port of this.portInfos) {
+            var kms = port.kms;
+            var slope = port.slope;
+
+            var desnivel = kms * slope * 10;
+
+            desnivelAcumulado += desnivel;
+        }
+
+        this.desnivelAcumulado = desnivelAcumulado;
     }
 }
 

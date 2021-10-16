@@ -43,10 +43,12 @@ function update(delta, stage) {
     return b.position.x - a.position.x;
   });
 
+  // Quitar aquellos que ya hayan acabado la etapa.
+  list = list.filter(cyclist => cyclist.position.x < profile.getLengthInMeters());
+
   if (stage.timestamp  > nextTime) {
     displayMetrics(stage, items, list);
   }
-
 
 
   var currGroup = null;
@@ -85,7 +87,7 @@ function update(delta, stage) {
     }
     */
     if (stage.debug && stage.debug.cyclist) {
-      stage.debug.cyclist.logCyclist();
+      stage.debug.cyclist.logCyclist(profile);
     }
 
     
@@ -110,6 +112,7 @@ function update(delta, stage) {
   counter++;
 
 
+  return true;
 }
 
 function displayMetrics(stage, items, list) {

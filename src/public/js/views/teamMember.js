@@ -9,9 +9,14 @@ define([
       tagName: "div",
       className: "teamMember",
 
+      events: {
+        'click .teamMember-member' : 'selectCyclist'
+      },
+
       initialize(options) {
         options.vent.bind("updatedStatus", this.render, this);
         this.model = options.model;
+
       },
 
       render: function(){
@@ -22,7 +27,13 @@ define([
         };
         var compiledTemplate = _.template( template, data);
         this.$el.html( compiledTemplate );
-      }
+      },
+
+      selectCyclist: function() {
+        console.log("selected:" + this.model.number)
+      },
+
+
     });
 
     return TeamMemberView;

@@ -1,4 +1,5 @@
 const stages = {};
+const intervals = {};
 
 const Cyclist = require('../dto/cyclist');
 const Clasificacion = require('../dto/clasificacion');
@@ -31,6 +32,14 @@ function init() {
     populateTeamsStrategy(stage);
 
     stages[1] = stage;
+}
+
+function setInterval(stageId, intervalId) {
+    intervals[stageId] = intervalId;
+}
+
+function getInterval(stageId) {
+    return intervals[stageId];
 }
 
 function populateTeamsStrategy(stage) {
@@ -81,7 +90,7 @@ function populateCyclists(stage) {
     var cyclists = [];
     var number = 1;
     for (var i = 0; i < NUM_CYCLISTS; i++) {
-        var cyclist = new Cyclist(i, number);
+        var cyclist = new Cyclist(i, number, stage);
 
         if (i < positions.length ) {
             cyclist.position.x = positions[i].x;
@@ -116,3 +125,5 @@ function getStage(id) {
 exports.init = init;
 exports.getStage = getStage;
 exports.resolveStatus = resolveStatus;
+exports.setInterval = setInterval;
+exports.getInterval = getInterval;

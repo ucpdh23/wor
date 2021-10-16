@@ -12,7 +12,7 @@ define([], function () {
         this.colliding = false;
         this.number = cyclist.number;
 
-        this.visualConditions = context.computeVisualConditions(cyclist);
+        this.visualConditions = context.computeVisualConditions(cyclist, this);
 
 
         this.draw = function (p5) {

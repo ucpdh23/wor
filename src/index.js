@@ -44,8 +44,16 @@ setInterval(() => {
 
 const updater = require('./workers/updater')
 
-setInterval(() => {
-  updater.update(25, manager.getStage(1));
+var internal = setInterval(() => {
+  var continueStage = updater.update(25, manager.getStage(1));
+
+  if (!continueStage) {
+    console.log("Stage 1 finished");
+    clearInterval(manager.getInterval(1));
+  }
+
 }, 25);
+
+manager.setInterval(1, internal);
 
 log.info("started server!!!!!!!!!!!!!!!!!");

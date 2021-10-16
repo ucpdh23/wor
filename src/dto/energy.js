@@ -178,13 +178,29 @@ class Energy {
   
           return new Vector(-accRes, 0);
       }
+
+      map(scaled_value, scale_0, scale_100, value_0, value_100) {
+        var scale_offset = scale_0;
+
+        var value_without_offset = scaled_value - scale_offset;
+
+        var scale_0_without_offset = 0;
+        var scale_100_without_offset = scale_100 - scale_0;
+
+        var scale_proportion = value_without_offset / scale_100_without_offset;
+
+        var value_range = value_100 - value_0;
+        var value = value_range * scale_proportion;
+
+        return value_0 + value;
+      }
       
       limitForce(slope) {
         let ref_maxForce = 40+ this.estadoForma*0.05;
         
-        let r_mF_a = (this.anaerobicPoints < 50)? map(this.anaerobicPoints, ref_maxForce, ref_maxForce * 0.5, 50, 0) : ref_maxForce;
+        let r_mF_a = (this.anaerobicPoints < 50)? this.map(this.anaerobicPoints, ref_maxForce, ref_maxForce * 0.5, 50, 0) : ref_maxForce;
         
-        let r_mF_p = (this.points < 30)? map(this.points, 30, 0, r_mF_a, r_mF_a * 0.5 ) : r_mF_a;
+        let r_mF_p = (this.points < 30)? this.map(this.points, 30, 0, r_mF_a, r_mF_a * 0.5 ) : r_mF_a;
         
         this.maxForce = r_mF_p;
         this.cyclist.log = 'maxFroce:' + Utils.dec(this.maxForce, 100) + '-' + Utils.dec(ref_maxForce, 100);

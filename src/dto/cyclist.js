@@ -1,7 +1,10 @@
-
-//const Vector = require('./vector')
+var CSV = require('winston-csv-format').default;
 var Vector = require('./NewVector').Vector;
 var Utils = require('./utils');
+
+var { createLogger, transports } = require('winston');
+
+console.log(CSV)
 
 const Energy = require('./energy')
 const CyclistStateMachine = require('./cyclistStateMachine')
@@ -14,10 +17,20 @@ const ANGLE = 210;
 const ITEMS = 100;
 
 
+const dataLogger = createLogger({
+    level: 'info',
+    format: CSV([ 'posX', 'posY', 'velX', 'velY', 'accX', 'accY', 'feaLla', 'feaMon', 'feaSpr', 'resAir', 'resVel', 'resMon', 'pulse', 'neighbour', 'state', 'stageKms', 'stageAngle', 'pendingKms', 'pendingAngle', 'leader','innovador','metodico','gregario', 'inquieto'], { delimiter: ',' }),
+    transports: [
+      new transports.File({ filename: 'tmp/data.csv' }),
+    ],
+  });
+
+
 class Cyclist {
-    constructor(id, number) {
+    constructor(id, number, stage) {
         this.id = id;
         this.number = number;
+        this.stage = stage;
 
         this.enabled = true;
 
@@ -43,6 +56,8 @@ class Cyclist {
         this.velocity = new Vector(9, 0);
         this.acceleration = new Vector(0, 0);
         this.acc_physics = new Vector(0, 0);
+
+        this.inquieto = 25;
 
         this.actions = {};
         this.actionMeters = [];
@@ -74,7 +89,47 @@ class Cyclist {
 
     }
 
+    setPsicology(leader, innovador, metodico, gregario) {
+        this.psicology = {
+            leader: leader,
+            innovador: innovador,
+            metodico: metodico,
+            gregario: gregario
+        };
+    }
+
     logCyclist() {
+        let profileStatistics = this.stage.profile.computeStatistics(this.position.x);
+
+        let jsonMessage = {
+            posX: Utils.dec(this.position.x, 2),
+            posY: Utils.dec(this.position.y, 2),
+            velX: Utils.dec(this.velocity.x, 2),
+            velY: Utils.dec(this.velocity.y, 2),
+            accX: Utils.dec(this.acceleration.x, 2),
+            accY: Utils.dec(this.acceleration.y, 2),
+            feaLla: Utils.dec(this.energy.llano, 2),
+            feaMon: Utils.dec(this.energy.montana, 2),
+            feaSpr: Utils.dec(this.energy.sprint, 2),
+            resAir: Utils.dec(this.energy.r_air, 2),
+            resVel: Utils.dec(this.energy.r_vel, 2),
+            resMon: Utils.dec(this.energy.r_pend, 2),
+            pulse: Utils.dec(this.energy.pulse2, 2),
+            neighbour: this.neighbour.length,
+            state: this._stateMachine[0].value,
+            stageKms: Utils.dec(profileStatistics.stageKms, 2),
+            stageAngle: Utils.dec(profileStatistics.stageAngle, 2),
+            pendingKms: Utils.dec(profileStatistics.pendingKms, 2),
+            pendingAngle: Utils.dec(profileStatistics.pendingAngle, 2),
+            leader: Utils.dec(this.psicology.leader, 2),
+            innovador: Utils.dec(this.psicology.innovador, 2),
+            metodico: Utils.dec(this.psicology.metodico, 2),
+            gregario: Utils.dec(this.psicology.gregario, 2),
+            inquieto: Utils.dec(this.inquieto, 2)
+        };
+
+        dataLogger.log('info', jsonMessage);
+
         var message = "";
         message += "Cyclist " + this.number + "(" + this.id + ") "
         message += " -pos:" + Utils.dec(this.position.x, 2) + "-" + Utils.dec(this.position.y, 2)
@@ -90,11 +145,6 @@ class Cyclist {
         message += " -rMo:" + Utils.dec(this.energy.r_pend, 2)
         message += " -ppm:" + Utils.dec(this.energy.pulse2, 2)
         
-        /*console.log("Cyclist " + this.number + "(" + this.id + ") " + this.time)
-        console.log(" -pos:" + this.position.x + "-" + this.position.y)
-        console.log(" -vel:" + this.velocity.x + "-" + this.velocity.y)
-        console.log(" -acc:" + this.acceleration.x + "-" + this.acceleration.y)
-        console.log(" -state:" + this._stateMachine[0].value)*/
         console.log(message)
     }
 
@@ -742,6 +792,7 @@ class Cyclist {
 
     computeNeighbour(cyclists, i, first, last, environment) {
         this.first = first;
+        this.environment = environment;
         var slope = environment.slope;
         this.roadWidth = environment.width;
 

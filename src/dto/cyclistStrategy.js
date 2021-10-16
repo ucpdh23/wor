@@ -38,6 +38,7 @@ Cyclist.prototype.addAction=function(json){
             let distance = json.to - json.from;
             location=json.from+distance*delta;
           }
+          this.inquieto = 100;
           console.log('location'+ location)
           if (parseInt(location)==parseInt(meters)){
             this.runAction(json);
@@ -59,4 +60,5 @@ Cyclist.prototype.addAction=function(json){
   Cyclist.prototype.runAction=function(json){
     console.log('sendmessage'+json.action)
     this.sendMessage(json.action, json.payload);
+    this.inquieto = 50;
   }
