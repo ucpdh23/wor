@@ -51,16 +51,22 @@ function update(delta, stage) {
   }
 
 
+  var groups = [];
   var currGroup = null;
   var prev = 1000000;
+  var groupIndex = 0;
   for (i = 0; i < items; i++) {
     if (prev - list[i].position.x > 10) {
-      currGroup = new Group();
+      currGroup = new Group(prev - list[i].position.x, groupIndex++);
+      groups.push(currGroup);
     } 
 
     prev = list[i].position.x;
     currGroup.addCyclist(list[i]);
   }
+
+  stage.groups = groups;
+
 
   var hullPoints = hull(localHull, 10);
   globalHull = hullPoints;

@@ -12,8 +12,9 @@ define([
   'views/profile',
   'views/clock',
   'views/team',
+  'views/groups',
   'Constants'
-], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView, Constants) {
+], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView, GroupsView, Constants) {
 
   var globalVent = _.extend({}, Backbone.Events);
 
@@ -24,6 +25,9 @@ define([
     el: $('#container'),
 
     model: stageModel,
+
+    events: {
+    },
 
     initialize() {
       this.vent = globalVent;
@@ -67,10 +71,16 @@ define([
       var clock = new ClockView({ el: $('#clock'), vent: this.vent, model: this.model});
       clock.render();
 
+      var groups = new GroupsView({ el: $('#groups'), vent: this.vent, model: this.model});
+      groups.render();
+
       var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
       team.render();
 
-    }
+
+
+    },
+
   });
 
   return StageView;

@@ -7,6 +7,7 @@ define([
         this.cyclists = {};
 
         this.selected = null;
+        this.preselectedNumber = null;
 
         this.computeHeading = function(cyclist, sequence) {
             var heading = 0;
@@ -42,10 +43,11 @@ define([
             
             var p5 = drawableCyclist.p5;
 
-            if ((Math.abs(p5.mouseX - drawableCyclist.posX) < 5 || (p5.mouseX - drawableCyclist.posX > 0 && p5.mouseX - drawableCyclist.posX < 40) )
+            if (this.preselectedNumber == cyclist.number) {
+                this.selected = drawableCyclist;
+            } else if ((Math.abs(p5.mouseX - drawableCyclist.posX) < 5 || (p5.mouseX - drawableCyclist.posX > 0 && p5.mouseX - drawableCyclist.posX < 40) )
                 && Math.abs(p5.mouseY - drawableCyclist.posY) < 10) {
                 this.selected = drawableCyclist;
-                //console.log("selected")
             }
 
             return cyclistContext;
@@ -62,9 +64,22 @@ define([
 
         this.selectedItem = null;
 
+        this.setPreselectedNumber = function(number) {
+            console.log("preselected:" + number);
+            if (this.preselectedNumber == number) {
+                this.preselectedNumber = undefined;
+            } else {
+                this.preselectedNumber = number;
+            }
+        };
+
+        this.cleanPreselectedNumber = function() {
+            this.preselectedNumber = undefined;
+        };
 
         this.updateViewport = function(model, meters) {
             this.context.selected = null;
+            this.context.preselectedNumber = this.preselectedNumber;
 
             this.road.update(meters, {slope : 0, width: 8});
 

@@ -9,25 +9,32 @@ define([
 
       initialize(options) {
         options.vent.bind("createStage", this.loadTeam, this);
-        //options.vent.bind("updatedStatus", this.render, this);
         this.vent = options.vent;
+
+        this.firstTime = true;
       },
       
 
       loadTeam: function() {
         this.myTeam = this.model.get("myTeam");
-        console.log(this.myTeam);
 
         this.render();
       },
 
-      render: function(){
-        //var compiledTemplate = _.template( template, data);
-        this.el.innerHTML = "";
 
-        for (var member of this.myTeam.cyclists) {
+
+      render: function(){
+        if (this.firstTime) {
+          this.el.innerHTML = "";
+
+          if (this.myTeam == undefined) return;
+
+          for (var member of this.myTeam.cyclists) {
             var childView = new TeamMemberView({vent: this.vent, model: member});
             this.el.append(childView.el);
+          }
+
+          this.firstTime = false;
         }
       }
     });

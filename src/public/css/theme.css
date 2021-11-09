@@ -65,5 +65,9 @@ canvas {
     flex-direction: column;
     border-width: thin;
     border-color: cornsilk;
+}
 
+.teamMember-properties {
+    display: flex;
+    flex-direction: column;
 }

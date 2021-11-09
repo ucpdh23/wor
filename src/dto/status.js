@@ -1,8 +1,9 @@
 class Status {
   
-  constructor(cyclists) {
+  constructor(cyclists, groups) {
     this.cyclists = cyclists;
-    this.timestamp=0;
+    this.groups = groups;
+    this.timestamp = 0;
   }
 }
 

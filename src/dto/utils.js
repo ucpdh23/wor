@@ -104,6 +104,19 @@ function createOutputCyclistsForWebservice(list) {
   return output;
 }
 
+function createOutputGroupsForWebSocket(list) {
+  var output = []
+  for (var i =0; i < list.length; i++) {
+    var item = list[i];
+    output.push({id: item.id,
+      name : item.name,
+      gap: item.gapMeters
+    });
+  }
+
+  return output;
+}
+
 
 function getColorForPercentage(pct, percentColors) {
     for (var i = 1; i < percentColors.length - 1; i++) {
@@ -148,3 +161,4 @@ exports.findCyclist = findCyclist;
 exports.strTime = strTime;
 exports.createOutputCyclist = createOutputCyclist;
 exports.inRange = inRange;
+exports.createOutputGroupsForWebSocket = createOutputGroupsForWebSocket;

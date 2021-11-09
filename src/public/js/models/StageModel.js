@@ -22,6 +22,7 @@ define([
 
         updateStatus: function (status) {
             this.updateCyclists(status.cyclists);
+            this.updateGroups(status.groups);
             this.updateTimestamp(status.timestamp);
 
             this.vent.trigger("updatedStatus", status);
@@ -46,6 +47,12 @@ define([
 
             this.set("sortedCyclists", list);
             this.set("maxMeters", list[0].position.x);
+
+            return list;
+        },
+
+        updateGroups: function (groups) {
+            this.set("groups", groups);
         },
 
         updateTimestamp: function (timestamp) {

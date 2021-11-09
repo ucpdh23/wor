@@ -7,6 +7,8 @@ define([
   ], function($, _, Backbone, template, UtilsService){
     var ClockView = Backbone.View.extend({
 
+      template: _.template(template),
+
       initialize(options) {
           options.vent.bind("updatedStatus", this.render, this);
       },
@@ -17,9 +19,7 @@ define([
           clock: UtilsService.timestampToString(timestamp)
         };
 
-        var compiledTemplate = _.template( template, data);
-        this.$el.html( compiledTemplate );
-
+        this.$el.html( this.template(data) );
       }
     });
 

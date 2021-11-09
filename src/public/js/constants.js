@@ -4,6 +4,6 @@ define([
     'backbone'
   ], function($, _, Backbone){
     return {
-      url: 'https://xantest.herokuapp.com/'
+      url: 'http://localhost:5000/'
     };
   });

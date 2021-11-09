@@ -8,6 +8,7 @@ class Stage {
   
   cyclists = [];
   teams = [];
+  groups = [];
   profile = null;
 }
 

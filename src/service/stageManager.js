@@ -112,7 +112,7 @@ function populateCyclists(stage) {
 function resolveStatus(client) {
     var stage = getStage(1);
 
-    var status = new Status(Utils.createOutputCyclistsForWebservice(stage.cyclists));
+    var status = new Status(Utils.createOutputCyclistsForWebservice(stage.cyclists), Utils.createOutputGroupsForWebSocket(stage.groups));
     status.timestamp = stage.timestamp;
 
     return status;

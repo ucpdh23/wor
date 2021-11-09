@@ -9,6 +9,8 @@ define([
 
       initialize(options) {
           options.vent.bind("updatedStatus", this.updatedStatus, this);
+          options.vent.bind("selectedCyclist", this.selectedCyclist, this);
+          
           this.viewport = null;
           this.features = {
             canvasWidth: Math.max($( window ).width(), 1000),
@@ -28,14 +30,31 @@ define([
         }
       },
 
+      selectedCyclist: function(number) {
+        if (this.viewport != null) {
+          this.viewport.setPreselectedNumber(number);
+        }
+      },
+
       render: function(){
         var data = {};
 
         var compiledTemplate = _.template( template, data );
         this.$el.html( compiledTemplate );
 
+        var song;
+        var race;
+
         let sketch = p => {
+            p.preload = () => {
+              song = p.loadSound('assets/music.ogg')
+              race = p.loadSound('assets/race.mp3')
+            }
+
             p.setup = () => {
+                song.play();
+                race.play();
+
                 var canvas = p.createCanvas(this.features.canvasWidth, this.features.canvasHeight);
                 canvas.parent('sketch-holder')
 
@@ -43,6 +62,7 @@ define([
             }
 
             p.draw = () => {
+
               p.background(this.features.backgroundColor);
 
               this.viewport.draw(p);
