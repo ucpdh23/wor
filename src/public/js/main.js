@@ -21,9 +21,9 @@ require.config({
         }*/
     },
     paths: {
-      jquery: "//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min",
-      underscore: "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min",
-      backbone: "//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min",
+      jquery: "//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min",
+      underscore: "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min",
+      backbone: "//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min",
       text: "//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.12/text.min",
       d3: "//d3js.org/d3.v4.min",
       //p5: "//cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min",
