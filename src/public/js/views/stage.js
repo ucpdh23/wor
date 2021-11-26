@@ -13,7 +13,7 @@ define([
   'views/clock',
   'views/team',
   'views/groups',
-  'Constants'
+  'constants'
 ], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView, GroupsView, Constants) {
 
   var globalVent = _.extend({}, Backbone.Events);
