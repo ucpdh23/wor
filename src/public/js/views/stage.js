@@ -44,7 +44,7 @@ define([
 
     createWS: function () {
       //let HOST = location.origin.replace(/^http/, 'ws')
-      let HOST = Constants.url.replace(/^http(s)?/, 'ws')
+      let HOST = Constants.url.replace(/^http(s)?/, 'wss')
       let ws = new WebSocket(HOST);
 
       let that = this;
