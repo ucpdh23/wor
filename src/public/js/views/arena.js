@@ -6,6 +6,8 @@ define([
     'graphics/ViewportManager'
   ], function($, _, Backbone, template, ViewportManager){
     var ArenaView = Backbone.View.extend({
+      
+      template: _.template(template),
 
       initialize(options) {
           options.vent.bind("updatedStatus", this.updatedStatus, this);
@@ -39,8 +41,7 @@ define([
       render: function(){
         var data = {};
 
-        var compiledTemplate = _.template( template, data );
-        this.$el.html( compiledTemplate );
+        this.$el.html(this.template(data) );
 
         var song;
         var race;
@@ -52,7 +53,7 @@ define([
             }
 
             p.setup = () => {
-                song.play();
+                song.loop();
                 race.play();
 
                 var canvas = p.createCanvas(this.features.canvasWidth, this.features.canvasHeight);

@@ -25,9 +25,10 @@ define([
 
       render: function(){
         if (this.firstTime) {
-          this.el.innerHTML = "";
 
           if (this.myTeam == undefined) return;
+          
+          this.el.innerHTML = "";
 
           for (var member of this.myTeam.cyclists) {
             var childView = new TeamMemberView({vent: this.vent, model: member});
