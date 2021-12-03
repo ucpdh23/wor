@@ -66,7 +66,8 @@ function createOutputCyclist(item) {
     position : {x: item.position.x, y: item.position.y},
     velocity: {x: item.velocity.x, y: item.velocity.y},
     acceleration: {x: item.acceleration.x, y: item.acceleration.y},
-    energy: {llano: item.energy.llano, montana: item.energy.montana, bajada: item.energy.bajada}
+    energy: {llano: item.energy.llano, montana: item.energy.montana, bajada: item.energy.bajada},
+    state: {value: item.peekStateMachine().value}
   };
 }
 
