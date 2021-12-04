@@ -1,5 +1,9 @@
 .content {
     background-image: url('/assets/peloton.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left;
+
     width: 100%;
     height: 100%;
     _position: relative;
@@ -11,6 +15,7 @@
     justify-content: center;
     align-items: center;
 }
+
 
 .box {
     __position: absolute;
@@ -45,7 +50,7 @@
     margin: 5px;
 
     font-weight: 700;
-    font-size: 10vw;
+    font-size: 6vw;
     
     _-webkit-text-stroke-width: 1px;
     _-webkit-text-stroke-color: #000;
@@ -73,10 +78,24 @@
 
     font-weight: 700;
     font-size: large;
+}
 
+.button:hover {
+    background-color: rgb(49, 48, 48);
+    cursor: pointer;
 }
 
 .button:focus {     
     background-color: white;
     color: black;
+}
+
+@media only screen and (max-width: 600px) {
+    .content {
+        background-position: left;
+    }
+
+    .tittle {
+       font-size: 10vw;
+    }
 }
