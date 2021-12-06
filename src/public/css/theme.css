@@ -67,6 +67,12 @@ canvas {
     border-color: cornsilk;
 }
 
+@media only screen and (max-width: 600px) {
+    .teamMember {
+        font-size: xx-small;
+    }
+}
+
 .teamMember-properties {
     display: flex;
     flex-direction: column;
