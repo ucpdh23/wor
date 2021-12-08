@@ -51,8 +51,6 @@ define([
       },
 
       selectCyclist: function() {
-        console.log("Working")
-        console.log("selected in teamMember:" + this.model.number)
         this.vent.trigger("selectedCyclist", this.model.number);
       },
 

@@ -9,9 +9,11 @@ define([
 
       initialize(options) {
         options.vent.bind("createStage", this.loadTeam, this);
+        options.vent.bind("selectedCyclist", this.selectItem, this);
         this.vent = options.vent;
 
         this.firstTime = true;
+        this.selected = null;
       },
       
 
@@ -21,6 +23,19 @@ define([
         this.render();
       },
 
+      selectItem: function(number) {
+        if (this.selected == null) {
+          this.selected = number;
+          $('#teamMember_' + number).toggleClass("teamMember-selected");
+        } else if (this.selected === number) {
+          $('#teamMember_' + number).toggleClass("teamMember-selected");
+          this.selected = null;
+        } else {
+          $('#teamMember_' + this.selected).toggleClass("teamMember-selected");
+          $('#teamMember_' + number).toggleClass("teamMember-selected");
+          this.selected = number;
+        }
+      },
 
 
       render: function(){
