@@ -32,6 +32,11 @@ define([
     initialize() {
       this.vent = globalVent;
 
+      this.mobile = false;
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        this.mobile = true;
+       }
+
       StageService.initStage(output => {
         this.loadStageData(output);
         this.createWS();
@@ -56,9 +61,21 @@ define([
       };
     },
 
-    render: function () {
-      var data = {};
+    renderMobile: function(data) {
+      var compiledTemplate = _.template(stageMobileTemplate, data);
+      this.$el.html(compiledTemplate);
 
+      var arena = new ArenaView({ el: $('#arena'), vent: this.vent, model: this.model });
+      arena.render();
+
+      var clock = new ClockView({ el: $('#clock'), vent: this.vent, model: this.model});
+      clock.render();
+
+      var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
+      team.render();
+    },
+
+    renderDesktop: function(data) {
       var compiledTemplate = _.template(stageTemplate, data);
       this.$el.html(compiledTemplate);
 
@@ -76,9 +93,16 @@ define([
 
       var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
       team.render();
+    },
 
+    render: function () {
+      var data = {};
 
-
+      if (this.mobile) {
+        this.renderMobile(data);
+      } else {
+        this.renderDesktop(data);
+      }
     },
 
   });
