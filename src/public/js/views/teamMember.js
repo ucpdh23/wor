@@ -8,7 +8,7 @@ define([
   ], function($, _, Backbone, template, UtilsService, TeamMemberDataView){
     var TeamMemberView = Backbone.View.extend({
       tagName: "div",
-      className: "teamMember",
+      className: "teamMemberWrapper",
 
       template: _.template( template),
 

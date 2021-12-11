@@ -26,13 +26,13 @@ define([
       selectItem: function(number) {
         if (this.selected == null) {
           this.selected = number;
-          $('#teamMember_' + number).toggleClass("teamMember-selected");
+          $('#teamMember_' + number).parent().toggleClass("teamMember-selected");
         } else if (this.selected === number) {
-          $('#teamMember_' + number).toggleClass("teamMember-selected");
+          $('#teamMember_' + number).parent().toggleClass("teamMember-selected");
           this.selected = null;
         } else {
-          $('#teamMember_' + this.selected).toggleClass("teamMember-selected");
-          $('#teamMember_' + number).toggleClass("teamMember-selected");
+          $('#teamMember_' + this.selected).parent().toggleClass("teamMember-selected");
+          $('#teamMember_' + number).parent().toggleClass("teamMember-selected");
           this.selected = number;
         }
       },
