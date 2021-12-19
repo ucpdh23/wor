@@ -22,6 +22,7 @@ router.post('/:id', async (req, res) => {
   var stage = manager.getStage(1);
   var cyclist = Utils.findCyclist(stage, parseInt(req.params.id));
 
+  /*
   var debug = stage.debug;
 
   if (debug && debug.cyclist && debug.cyclist.id === cyclist.id) {
@@ -29,7 +30,7 @@ router.post('/:id', async (req, res) => {
   } else {
     stage.debug =  { ...debug, cyclist: cyclist};
   }
-
+ */
 
   
   res.send(JSON.stringify(Utils.createOutputCyclist(cyclist)));

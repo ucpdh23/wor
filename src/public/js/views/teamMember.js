@@ -5,7 +5,8 @@ define([
     'text!templates/teamMember.html',
     'services/UtilsService',
     'views/teamMemberData',
-  ], function($, _, Backbone, template, UtilsService, TeamMemberDataView){
+    'views/teamMemberActions',
+  ], function($, _, Backbone, template, UtilsService, TeamMemberDataView, TeamMemberActionsView){
     var TeamMemberView = Backbone.View.extend({
       tagName: "div",
       className: "teamMemberWrapper",
@@ -42,6 +43,9 @@ define([
   
           var teamMemberData = new TeamMemberDataView({ el: $('#teamMemberData_' + data.number), vent: this.vent, model: this.model });
           teamMemberData.render();
+
+          var teamMemberActions = new TeamMemberActionsView({ el: $('#teamMemberActions_' + data.number), vent: this.vent, model: this.model });
+          teamMemberActions.render();
 
           this.firstTime = false;
         }

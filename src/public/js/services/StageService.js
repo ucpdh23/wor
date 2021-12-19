@@ -54,7 +54,16 @@ define([
 
                     callback(output);
                 });
+        },
+
+        getCyclist(cyclistId, callback) {
+            fetch(Constants.url + 'api/cyclist/' + cyclistId, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    callback(data);
+                });
         }
+
     };
 
     return StageService;

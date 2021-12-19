@@ -29,6 +29,10 @@ function createMachine(stateMachineDefinition) {
             machine.value = destinationState
             return machine.value
         },
+        getCurrentOperations() {
+            const currentStateDefinition = stateMachineDefinition[machine.value];
+            return currentStateDefinition.operations;
+        }
     }
     return machine
 }

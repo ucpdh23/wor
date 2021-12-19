@@ -14,6 +14,7 @@ function createDefaultStateMachine() {
                     ctx.cyclist.computeForces_1(ctx.first);
                 }
             },
+            operations: ['pull', 'takeUp', 'takeDown'],
             computeTransition(ctx) {
                 if (ctx.message == 'tira') {
                     var targetName = 'preparePulling';
