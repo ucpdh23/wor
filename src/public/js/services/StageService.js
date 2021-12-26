@@ -62,6 +62,14 @@ define([
                 .then(data => {
                     callback(data);
                 });
+        },
+        
+        runOperation(cyclistId, operation) {
+          fetch(Constants.url + 'api/cyclist/' + cyclistId + '/operation/' + operation, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    // callback(data);
+                });
         }
 
     };

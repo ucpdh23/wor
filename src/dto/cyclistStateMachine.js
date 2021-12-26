@@ -16,7 +16,8 @@ function createDefaultStateMachine() {
             },
             operations: ['pull', 'takeUp', 'takeDown'],
             computeTransition(ctx) {
-                if (ctx.message == 'tira') {
+                if (ctx.message == 'tira'
+                    || ctx.message == 'pull') {
                     var targetName = 'preparePulling';
 
                     if (ctx.first.id == ctx.cyclist.id) targetName = 'pulling';
@@ -30,7 +31,7 @@ function createDefaultStateMachine() {
 
                         },
                     };
-                } else if (ctx.message === 'salta') {
+                } else if (ctx.message === 'salta' || ctx.message === 'takeUp') {
                     //dependiendo de lo lejos puede saltar o no
                     return {
                         target: 'preparePulling',

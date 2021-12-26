@@ -126,7 +126,7 @@ function displayMetrics(stage, items, list) {
 
   console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
   for (i = 0; i < items; i++) {
-    list[i].logCyclist();
+    // list[i].logCyclist();
   }
 
   counter = 0;

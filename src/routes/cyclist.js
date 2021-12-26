@@ -36,6 +36,17 @@ router.post('/:id', async (req, res) => {
   res.send(JSON.stringify(Utils.createOutputCyclist(cyclist)));
 });
 
+router.post('/:id/operation/:operation', async (req, res) => {
+  console.log('ID:' + req.params.id);
+  console.log('operation:' + req.params.operation);
+  
+  var stage = manager.getStage(1);
+  var cyclist = Utils.findCyclist(stage, parseInt(req.params.id));
+  
+  cyclist.sendMessage(req.params.operation, {});
+  
+});
+
 
 function createObject(list) {
   var output = []

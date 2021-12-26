@@ -3,10 +3,15 @@ define([
     'underscore',
     'backbone',
     'text!templates/teamMemberActions.html',
-    'services/UtilsService'
-  ], function($, _, Backbone, template, UtilsService){
+    'services/UtilsService',
+    'services/StageService'
+  ], function($, _, Backbone, template, UtilsService, StageService){
     var TeamMemberActionsView = Backbone.View.extend({
 
+      events: {
+        "click .action-operation": "runOperation"
+      },
+      
       template: _.template( template),
 
       initialize(options) {
@@ -29,6 +34,14 @@ define([
         this.$el.html( this.template(data) );
 
         return this;
+      },
+      
+      runOperation: function(ev) {
+        //console.log('operation' + $(ev.target).attr('action'));
+        //console.log('id:'+this.model.id);
+        StageService.runOperation(
+          this.model.id,
+          $(ev.target).attr('action'));
       },
 
     });

@@ -4,6 +4,7 @@ define([
     'backbone'
   ], function($, _, Backbone){
     return {
-      url: 'https://xantest.herokuapp.com/'
+      _url: 'https://xantest.herokuapp.com/',
+      url: location.protocol + '//' + location.host +'/'
     };
   });

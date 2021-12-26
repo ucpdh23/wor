@@ -1,5 +1,5 @@
 <% _.each(operations, function(operation){ %>
     <div class="menu-item">
-        <a href="#"><%= operation %></a>
+        <button class='action-operation' action='<%= operation %>'><%= operation %></button>
     </div>
 <% }); %>

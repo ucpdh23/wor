@@ -65,7 +65,7 @@ define([
         this.selectedItem = null;
 
         this.setPreselectedNumber = function(number) {
-            console.log("preselected:" + number);
+            //console.log("preselected:" + number);
             if (this.preselectedNumber == number) {
                 this.preselectedNumber = undefined;
             } else {
@@ -127,7 +127,7 @@ define([
             }
 
             if (this.context.selected != null) {
-                console.log("selected:" + this.context.selected.number);
+                //console.log("selected:" + this.context.selected.number);
             }
 
         };
