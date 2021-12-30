@@ -38,6 +38,7 @@ define([
                 cyclists_index[it.id].position.y = it.position.y;
                 cyclists_index[it.id].velocity.x = it.velocity.x;
                 cyclists_index[it.id].velocity.y = it.velocity.y;
+                cyclists_index[it.id].pulse = it.pulse;
             });
 
             var list = cyclists.slice(0)

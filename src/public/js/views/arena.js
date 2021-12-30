@@ -19,7 +19,7 @@ define([
             canvasHeight: $( window ).height() * 0.6,
             backgroundColor: 40,
             maxSizeViewPort: 100,
-            reference: 10 * 1.5,
+            reference: 5, //10 * 1.5,
             scale: ($( window ).height() > 300)? 1.8 : 1.1,
           };
       },

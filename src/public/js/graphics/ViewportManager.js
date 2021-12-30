@@ -76,6 +76,18 @@ define([
         this.cleanPreselectedNumber = function() {
             this.preselectedNumber = undefined;
         };
+        
+        this.addCyclists = function(cyclists, meters, selNumber, output) {
+          for (var cyclist of cyclists) {
+                if (cyclist.position.x <= meters) {
+                    if (cyclist.position.x < meters - this.features.maxSizeViewPort) {
+                        break;
+                    }
+
+                    output.push(new Cyclist(this.p5, this.features, cyclist, meters, this.context));
+                }
+            }
+        };
 
         this.updateViewport = function(model, meters) {
             this.context.selected = null;
@@ -85,9 +97,11 @@ define([
 
             var items = [this.road];
 
-            
             var cyclists = model.get("sortedCyclists");
-
+            
+            this.addCyclists(cyclists, meters, this.context.preselectedNumber,
+              items);
+/*
             for (var cyclist of cyclists) {
                 if (cyclist.position.x <= meters) {
                     if (cyclist.position.x < meters - this.features.maxSizeViewPort) {
@@ -97,7 +111,7 @@ define([
                     items.push(new Cyclist(this.p5, this.features, cyclist, meters, this.context));
                 }
             }
-
+*/
             if (this.context.selected != null) {
                 if (this.selectedCyclist != null && this.selectedCyclist.number == this.context.selected.number) {
                     this.selectedCyclist.update(1);

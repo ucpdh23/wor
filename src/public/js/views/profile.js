@@ -12,7 +12,7 @@ define([
 
     initialize(options) {
       options.vent.bind("createStage", this.drawProfile2, this);
-      //options.vent.bind("updatedStatus", this.update, this);
+      options.vent.bind("updatedStatus", this.update, this);
     },
 
     render: function () {
@@ -47,6 +47,8 @@ define([
 
       let canvas = document.getElementById("profileCanvas");
       this.resizeCanvasToDisplaySize(canvas);
+      let canvas2 = document.getElementById("profileCanvasTokens");
+      this.resizeCanvasToDisplaySize(canvas2);
 
       let cx = canvas.getContext("2d");
 
@@ -83,6 +85,27 @@ define([
       this.drawLine(cx, scaleX, scaleY, startX, startY, profileData.data);
 
       this.drawPortInfo(cx, scaleX, scaleY, startX, startY, profileData, canvasWidth);
+      
+      //this.drawTokens();
+      console.log('draws')
+    },
+    
+    drawTokens: function() {
+      let svg = document.getElementById("svgProfileCanvas");
+      
+      svg.append(this.drawToken(1));
+      
+    },
+    
+    drawToken: function(id) {
+      var newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
+      newLine.setAttribute('id','token_'+id);
+      newLine.setAttribute('x1','50');
+      newLine.setAttribute('y1','50');
+      newLine.setAttribute('x2','200');
+      newLine.setAttribute('y2','200');
+      newLine.setAttribute("stroke", "white")
+      return newLine;
     },
 
     drawRuler: function(cx, scaleX, scaleY, startX, startY, data) {
@@ -162,7 +185,7 @@ define([
      
       return needResize;
     },
-
+/*
     drawProfile: function () {
       var profileData = this.model.get("profile");
 
@@ -195,6 +218,7 @@ define([
       console.log(chartWidth)
       console.log(chartHeight)
 */
+/*
       const chartWidth = 200;
       const chartHeight = 100;
       const width = chartWidth - chartMargins.right - chartMargins.left;
@@ -244,7 +268,7 @@ define([
         .call(xAxisGenerator)
 
     },
-
+*/
     
     triangles: [],
     percentColorsProfile:[
@@ -254,11 +278,23 @@ define([
       { pct: 1.0, color: { r: 0x00, g: 0x00, b: 0 } }],
 
     update: function () {
-      var cyclists = this.model.get("cyclists");
+      var cyclists = this.model.get("myTeam").cyclists;
       var etapa = this.model.get("profile").etapa;
+      //console.log(cyclists.length);
+      //return;
+      
+      let canvas = document.getElementById("profileCanvasTokens");
+      let cx = canvas.getContext("2d");
 
-      for (i = 0; i < 7 && i < cyclists.length; i++) {
-        if (this.triangles[i] == null) {
+      for (var item of cyclists) {
+        if (this.triangles[0] == null) {
+          //console.log(item)
+          
+          cx.strokeRect(item.position.x/1000, 50, 5, 5);
+           //let svg = document.getElementById("svgProfileCanvas");
+      
+     // svg.append(this.drawToken(1));
+          return;
           var sym =
             d3.symbol().type(d3.symbolTriangle).size(25);
           this.triangles[i] = this.svg.append('path');
@@ -266,6 +302,7 @@ define([
             .attr("transform", function (d) { return "translate(" + 10 + "," + 10 + ")"; })
             .style("fill", "#AABBCC");
         } else {
+          return;
           const value = 10 + this.xScale(cyclists[i].position.x);
 
           var index = parseInt(cyclists[i].position.x / this.segment);

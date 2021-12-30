@@ -73,6 +73,9 @@ define([
 
       var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
       team.render();
+      
+      var profile = new ProfileView({ el: $('#profile'), vent: this.vent, model: this.model});
+      profile.render();
     },
 
     renderDesktop: function(data) {

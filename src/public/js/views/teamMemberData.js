@@ -16,12 +16,6 @@ define([
         this.model = options.model;
         this.vent = options.vent;
 
-        var data = {
-          number: this.model.number,
-          position: parseInt(this.model.position.x) / 1000,
-          velocity: parseInt(this.model.velocity.x * 3600 / 1000)
-        };
-
       },
 
       render: function(){
@@ -29,7 +23,8 @@ define([
         var data = {
           number: this.model.number,
           position: parseInt(this.model.position.x) / 1000,
-          velocity: parseInt(this.model.velocity.x * 3600 / 1000)
+          velocity: parseInt(this.model.velocity.x * 3600 / 1000),
+          pulse: parseInt(this.model.pulse)
         };
 
         this.$el.html( this.template(data) );
