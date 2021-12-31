@@ -64,11 +64,15 @@ define([
       let margenBottom = 10;
 
       var kms = profileData.data.length;
-      let scaleX = (canvasWidth - margenX*2) / kms;
-      let scaleY = (canvasHeight - margenBottom) / (accMax - accMin) ;
+      this.scaleX = (canvasWidth - margenX*2) / kms;
+      let scaleX = this.scaleX;
+      this.scaleY = (canvasHeight - margenBottom) / (accMax - accMin) ;
+      let scaleY = this.scaleY;
 
-      let startX = margenX;
-      let startY = canvasHeight - margenBottom - accMin - 10;
+      this.startX = margenX;
+      let startX = this.startX;
+      this.startY = canvasHeight - margenBottom - accMin - 10;
+      let startY = this.startY;
 
 
       cx.strokeStyle = "#FF0000";
@@ -85,16 +89,7 @@ define([
       this.drawLine(cx, scaleX, scaleY, startX, startY, profileData.data);
 
       this.drawPortInfo(cx, scaleX, scaleY, startX, startY, profileData, canvasWidth);
-      
-      //this.drawTokens();
-      console.log('draws')
-    },
-    
-    drawTokens: function() {
-      let svg = document.getElementById("svgProfileCanvas");
-      
-      svg.append(this.drawToken(1));
-      
+
     },
     
     drawToken: function(id) {
@@ -185,90 +180,6 @@ define([
      
       return needResize;
     },
-/*
-    drawProfile: function () {
-      var profileData = this.model.get("profile");
-
-      var accMin = 0;
-      var accMax = 0;
-
-      let elevGain = profileData.data.reduce((acc, cur, idx, arr) => {
-        if (idx > 0 && (cur.y > arr[idx - 1].y)) {
-          acc += cur.y - arr[idx - 1].y;
-
-          accMin = Math.min(accMin, acc);
-          accMax = Math.max(accMax, acc);
-        }
-
-        return acc;
-      }, 0);
-      elevGain = Math.round(elevGain * 3.28084);
-
-      const chartMargins = {
-        top: 10,
-        right: 10,
-        bottom: 10,
-        left: 10
-      };
-
-/*      
-      const chartWidth = $( '#idStage' ).width();
-      const chartHeight =  200; // $( '#idStage' ).height();
-
-      console.log(chartWidth)
-      console.log(chartHeight)
-*/
-/*
-      const chartWidth = 200;
-      const chartHeight = 100;
-      const width = chartWidth - chartMargins.right - chartMargins.left;
-      const height = chartHeight - chartMargins.top - chartMargins.bottom;
-
-      const svg = d3.select('#idStage').append('svg')
-//        .attr('width', '100%') //chartWidth)
-//        .attr('height', '100%')
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 200 200")
-        .classed("stage-top-profile-content", true); //chartHeight);
-      //const svg = profile;
-      this.svg = svg;
-
-      const g = svg.append('g')
-        .attr('transform', "translate(" + chartMargins.left + "," + chartMargins.top + ")");
-
-      const xScale = d3.scaleLinear()
-        .range([0, width])
-        // .domain(d3.extent(data, d => d.x));
-        .domain([0, profileData.data.length * 1000])
-      this.xScale = xScale;
-
-      const yScale = d3.scaleLinear()
-        .range([height, 0])
-        .domain(d3.extent(profileData.data, d => d.y));
-
-      const areaFn = d3.area()
-        .x(d => xScale(d.x))
-        .y0(yScale(d3.min(profileData.data, d => d.y)))
-        .y1(d => yScale(d.y))
-        .curve(d3.curveBasis);
-
-      g.append('path')
-        .datum(profileData.data)
-        //.attr('fill', 'steelblue')
-        .attr('fill', '#A48434')
-        .attr('d', areaFn);
-
-      let xAxisGenerator = d3.axisBottom(xScale);
-
-      xAxisGenerator.tickFormat(d3.format(".2s"));
-
-      g.append('g')
-        .attr("class", "stage-top-profile-content-axisWhite")
-        .attr('transform', `translate(0, ${height})`)
-        .call(xAxisGenerator)
-
-    },
-*/
     
     triangles: [],
     percentColorsProfile:[
@@ -279,51 +190,29 @@ define([
 
     update: function () {
       var cyclists = this.model.get("myTeam").cyclists;
+      var allCyclists = this.model.get("sortedCyclists");
       var etapa = this.model.get("profile").etapa;
-      //console.log(cyclists.length);
-      //return;
       
       let canvas = document.getElementById("profileCanvasTokens");
       let cx = canvas.getContext("2d");
+      let canvasWidth = canvas.width;
+      let canvasHeight = canvas.height;
+      
+      cx.clearRect(0,0, canvasWidth, canvasHeight);
+      
+      let first = allCyclists[0].position.x;
+      let firstPos = this.startX + first * this.scaleX/ 1000;
+      cx.strokeStyle = '#ff0000';
+      cx.strokeRect(firstPos, 50, 1, 250);
 
       for (var item of cyclists) {
-        if (this.triangles[0] == null) {
-          //console.log(item)
-          
-          cx.strokeRect(item.position.x/1000, 50, 5, 5);
-           //let svg = document.getElementById("svgProfileCanvas");
-      
-     // svg.append(this.drawToken(1));
-          return;
-          var sym =
-            d3.symbol().type(d3.symbolTriangle).size(25);
-          this.triangles[i] = this.svg.append('path');
-          this.triangles[i].attr("d", sym)
-            .attr("transform", function (d) { return "translate(" + 10 + "," + 10 + ")"; })
-            .style("fill", "#AABBCC");
-        } else {
-          return;
-          const value = 10 + this.xScale(cyclists[i].position.x);
-
-          var index = parseInt(cyclists[i].position.x / this.segment);
-          var desn = etapa[index]
-
-          this.triangles[i].attr("transform", function (d) {
-            return "translate(" +
-              // this.xScale(this.cyclists[i].position.x) 
-              value + "," + 100 + ")";
-          });
-
-          var percent = (desn + 30) / 60;
-          var color = UtilsService.getColorForPercentage(
-            percent,
-            this.percentColorsProfile)
-          var colorCode = '#' + UtilsService.rgbToHex(color.r) + UtilsService.rgbToHex(color.g) + UtilsService.rgbToHex(color.b);
-
-          this.triangles[i].style("fill", colorCode);
-
-        }
-
+        let position = this.startX + item.position.x * this.scaleX/ 1000;
+        cx.beginPath();
+        cx.moveTo(position, 50);
+        cx.lineTo(position, 250);
+        cx.strokeStyle = '#ffff00'
+        cx.stroke();
+        //cx.strokeRect(position, 50, 0, 250);
       }
     }
   });

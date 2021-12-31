@@ -19,9 +19,15 @@ define([
       },
 
       render: function(){
+        
+        let pos = parseInt(this.model.position.x) / 1000;
+        let kms = Math.floor(pos);
+        let meters = parseInt((pos - kms)*1000);
 
         var data = {
           number: this.model.number,
+          kms: kms,
+          meters: UtilsService.pad(meters, 3),
           position: parseInt(this.model.position.x) / 1000,
           velocity: parseInt(this.model.velocity.x * 3600 / 1000),
           pulse: parseInt(this.model.pulse)

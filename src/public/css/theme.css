@@ -32,6 +32,11 @@ canvas {
     width: 100%;
     height: 100%;
   }
+  
+  #profileCanvasTokens {
+    width: 100%;
+    height: 100%;
+  }
 
 .stage-top-profile-content {
     display: inline-block;
@@ -225,6 +230,13 @@ canvas {
     flex-direction: column;
 }
 
-.teamMember-properties > span {
+.teamMember-properties > div > span.big {
     align-self: flex-end;
+    
 }
+
+.teamMember-properties > div > span.small {
+    align-self: flex-end;
+    font-size: 0.7em;
+}
+
