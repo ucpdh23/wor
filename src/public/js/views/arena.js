@@ -15,7 +15,7 @@ define([
           
           this.viewport = null;
           this.features = {
-            canvasWidth: Math.max($( window ).width(), 1000),
+            canvasWidth: Math.max($( window ).width(), 1500),
             canvasHeight: $( window ).height() * 0.6,
             backgroundColor: 40,
             maxSizeViewPort: 100,

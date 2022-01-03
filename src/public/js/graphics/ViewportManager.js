@@ -92,6 +92,15 @@ define([
         this.updateViewport = function(model, meters) {
             this.context.selected = null;
             this.context.preselectedNumber = this.preselectedNumber;
+            
+            if (this.preselectedNumber) {
+              let selectedCyclist = model.getByNumber(this.preselectedNumber);
+              if (meters - selectedCyclist.position.x > 100) {
+                meters = selectedCyclist.position.x;
+              }
+            }
+            
+            // buscamos el cyclista por su numero, y actyalizamos los metros considerando la diferencia con los metros actuales.
 
             this.road.update(meters, {slope : 0, width: 8});
 
@@ -101,17 +110,7 @@ define([
             
             this.addCyclists(cyclists, meters, this.context.preselectedNumber,
               items);
-/*
-            for (var cyclist of cyclists) {
-                if (cyclist.position.x <= meters) {
-                    if (cyclist.position.x < meters - this.features.maxSizeViewPort) {
-                        break;
-                    }
-
-                    items.push(new Cyclist(this.p5, this.features, cyclist, meters, this.context));
-                }
-            }
-*/
+              
             if (this.context.selected != null) {
                 if (this.selectedCyclist != null && this.selectedCyclist.number == this.context.selected.number) {
                     this.selectedCyclist.update(1);

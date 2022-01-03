@@ -12,13 +12,13 @@ define([], function () {
     var dist = 0;
 
     this.clasificacion = clasificacion;
-
+/*
     this.data.push(
       {
         x: dist,
         y: elevation
       }
-    );
+    );*/
 
     var portInfo = null;
     var prevSlope = 0;
@@ -38,8 +38,8 @@ define([], function () {
           totalKms: 0,
         };
       } else if (prevSlope > 0 && slope < 0 && portInfo != null) {
-        portInfo.endKms = i + 1;
-        portInfo.totalKms = portInfo.endKms - 1 - portInfo.startKms;
+        portInfo.endKms = i;
+        portInfo.totalKms = portInfo.endKms - portInfo.startKms;
         portInfo.slopeAvg = portInfo.slopeAvg / portInfo.totalKms;
 
         this.portInfos.push(portInfo);
@@ -57,7 +57,7 @@ define([], function () {
 
 
     if (portInfo != null) {
-      portInfo.endKms = i + 1;
+      portInfo.endKms = i;
       portInfo.totalKms = portInfo.endKms - portInfo.startKms;
       portInfo.slopeAvg = portInfo.slopeAvg / portInfo.totalKms;
 

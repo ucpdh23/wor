@@ -13,6 +13,7 @@ define([
                 myTeam: 0,
                 cyclists: [],
                 cyclists_index: {},
+                index_by_number: {},
                 profile: []
             };
 
@@ -34,6 +35,7 @@ define([
                         team.addCyclist(cyclist);
                         output.cyclists.push(cyclist);
                         output.cyclists_index[cyclist.id] = cyclist;
+                        output.index_by_number[cyclist.number] = cyclist;
                     });
 
                     this.loadProfile(output, callback);

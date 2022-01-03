@@ -12,6 +12,7 @@ define([
         initStage: function (data) {
             this.set("cyclists", data.cyclists);
             this.set("cyclists_index", data.cyclists_index);
+            this.set("cyclists_by_number", data.index_by_number);
             this.set("profile", data.profile);
             this.set("teams", data.teams);
             this.set("myTeam", data.teams[data.myTeam]);
@@ -50,6 +51,10 @@ define([
             this.set("maxMeters", list[0].position.x);
 
             return list;
+        },
+        
+        getByNumber: function(number) {
+          return this.get("cyclists_by_number")[number];
         },
 
         updateGroups: function (groups) {

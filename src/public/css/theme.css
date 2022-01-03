@@ -60,9 +60,31 @@ canvas {
 .stage-bottom {
     height: 10vh;
     display: flex;
-    flex-direction: row;
-    
-    justify-content: space-between;   
+    flex-direction: column;
+    position: relative;
+}
+
+.teamMemberSelectedVisible {
+  display: flex !important;
+}
+
+.teamMemberSelected {
+  display: none;
+  position: absolute;
+  height: 22vh;
+  width: 100%;
+  margin-top: -25vh;
+  background-color: azure;
+  opacity: 70%;
+  z-index: 200;
+  color: black;
+}
+
+.team-stage-bottom {
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between
 }
 
 .teamMember {
@@ -240,3 +262,29 @@ canvas {
     font-size: 0.7em;
 }
 
+.details-box {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.details-box-header{
+  display: flex;
+  flex-direction: row;
+  __justify-content: space-between;
+}
+
+.details-box-header > .number {
+  font-size: x-large;
+  margin: 5px;
+}
+
+.details-box-header > .name {
+  height: 100%;
+  __vertical-align: center;
+  display: table-cell;
+  __vertical-align: bottom;
+  align-self: center;
+}

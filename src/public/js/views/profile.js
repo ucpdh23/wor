@@ -132,6 +132,9 @@ define([
       var x = startX;
       var y = startY
       cx.moveTo(x, y);
+      /*cx.lineTo(x-1, y-100);
+      cx.lineTo(x-1,y+100);
+      cx.lineTo(x,y);*/
 
       for (i=0; i < data.length; i++) {
         x = x + scaleX;
@@ -188,6 +191,18 @@ define([
       { pct: 0.75, color: { r: 0xff, g: 0x00, b: 0 } },
       { pct: 1.0, color: { r: 0x00, g: 0x00, b: 0 } }],
 
+    drawCard: function(cx, posX,
+        canvasWidth, text) {
+      if (canvasWidth < posX + 20) {
+          posX = posX - 35;
+        }
+        cx.fillStyle = "#AA0000";
+        cx.fillRect(posX - 3, 50 + 7, 45, - 20);
+        cx.fillStyle = "blanchedalmond";
+        cx.fillText(text, posX, 50);
+    },
+
+
     update: function () {
       var cyclists = this.model.get("myTeam").cyclists;
       var allCyclists = this.model.get("sortedCyclists");
@@ -201,9 +216,12 @@ define([
       cx.clearRect(0,0, canvasWidth, canvasHeight);
       
       let first = allCyclists[0].position.x;
+      let profileIndex = Math.floor(first/ 1000);
       let firstPos = this.startX + first * this.scaleX/ 1000;
       cx.strokeStyle = '#ff0000';
       cx.strokeRect(firstPos, 50, 1, 250);
+      
+      this.drawCard(cx, firstPos, canvasWidth, "%: " + UtilsService.padAndRound(etapa[profileIndex], 2, 1));
 
       for (var item of cyclists) {
         let position = this.startX + item.position.x * this.scaleX/ 1000;

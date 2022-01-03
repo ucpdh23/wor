@@ -4,8 +4,9 @@ define([
     'backbone',
     'services/UtilsService',
     'services/StageService',
-    'views/teamMember'
-  ], function($, _, Backbone, UtilsService, StageService, TeamMemberView){
+    'views/teamMember',
+    'views/teamMemberSelected'
+  ], function($, _, Backbone, UtilsService, StageService, TeamMemberView, TeamMemberSelectedView){
     var TeamView = Backbone.View.extend({
 
       initialize(options) {
@@ -52,7 +53,10 @@ define([
             cyclist.operations = data.operations;
             $('#teamMember_' + this.selected).parent().toggleClass("teamMember-selected");
             this.vent.trigger("updatedActions_" + this.selected, cyclist);
+            this.vent.trigger("teamMemberSelected", cyclist)
           });
+        } else {
+          this.vent.trigger("teamMemberSelected", null);
         }
       },
 
@@ -70,6 +74,9 @@ define([
             var childView = new TeamMemberView({vent: this.vent, model: member});
             this.el.append(childView.el);
           }
+          
+          var selected = new TeamMemberSelectedView({ el: $('#teamMemberSelectedID'), vent: this.vent, model: this.model});
+          selected.render();
 
           this.firstTime = false;
         }
