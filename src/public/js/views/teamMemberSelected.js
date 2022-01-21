@@ -4,8 +4,9 @@ define([
     'backbone',
     'text!templates/teamMemberSelected.html',
     'services/UtilsService',
-    'services/StageService'
-  ], function($, _, Backbone, template, UtilsService, StageService){
+    'services/StageService',
+    'views/teamMemberActions',
+  ], function($, _, Backbone, template, UtilsService, StageService, TeamMemberActionsView){
     var TeamMemberSelectedView = Backbone.View.extend({
 
       events: {
@@ -63,6 +64,9 @@ define([
         };
 
         this.$el.html( this.template(data) );
+
+        var teamMemberSelectedActions = new TeamMemberActionsView({ el: $('#teamMemberActions'), vent: this.vent, model: this.model });
+        teamMemberSelectedActions.render();
 
         return this;
       },

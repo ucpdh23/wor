@@ -44,8 +44,8 @@ define([
           var teamMemberData = new TeamMemberDataView({ el: $('#teamMemberData_' + data.number), vent: this.vent, model: this.model });
           teamMemberData.render();
 
-          var teamMemberActions = new TeamMemberActionsView({ el: $('#teamMemberActions_' + data.number), vent: this.vent, model: this.model });
-          teamMemberActions.render();
+          //var teamMemberActions = new TeamMemberActionsView({ el: $('#teamMemberActions_' + data.number), vent: this.vent, model: this.model });
+          //teamMemberActions.render();
 
           this.firstTime = false;
         }

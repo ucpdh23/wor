@@ -212,9 +212,15 @@ function createDefaultStateMachine() {
                 }
 
             },
+            operations: ['harder', 'soft', 'rest'],
             computeTransition(ctx) {
-                if (ctx.message == 'tira' ||
-                    ctx.message == 'no_tira') {
+                if (ctx.message == 'harder') {
+                    ctx._pullingLevel += 5;
+                } else if (ctx.message == 'soft') {
+                    ctx._pullingLevel -= 5;
+                } else if (ctx.message == 'tira' ||
+                    ctx.message == 'no_tira' || 
+                    ctx.message == 'rest') {
                     ctx.cyclist.startSelfAcc = true;
                     ctx.cyclist.selfAccLevel = -3;
                     ctx.cyclist.enabled = false;

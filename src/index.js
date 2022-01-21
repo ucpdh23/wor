@@ -10,6 +10,9 @@ const { Server } = require('ws');
 const manager = require('./service/stageManager');
 manager.init();
 
+// static files
+app.use(express.static(__dirname + '/public'));
+
 // Middlewares
 app.use(express.json());
 app.use(function (req, res, next) {
@@ -21,8 +24,6 @@ app.use(function (req, res, next) {
 app.use('/api/stage', require('./routes/stage'));
 app.use('/api/cyclist', require('./routes/cyclist'));
 app.use('/api/profile', require('./routes/profile'));
-
-app.use(express.static(__dirname + '/public'));
 
 
 // Server is listening
