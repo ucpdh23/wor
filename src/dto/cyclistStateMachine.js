@@ -187,8 +187,9 @@ function createDefaultStateMachine() {
                         let level = ctx.cyclist.energy.resolvePercentage();
 
                         // ctx.cyclist.log = ''+(ctx.cyclist.energy.force - ctx.cyclist.energy.forceCyclist);
-
+//console.log('tirando at ' + level + '(' + ctx._pullingLevel + ')')
                         if (level < ctx._pullingLevel) {
+                          console.log('can go harder:' + level + '(' + ctx._pullingLevel + ')')
                             let delta = ctx.cyclist.energy.maxForce / 1000;
                             // let diff = ctx._pullingLevel - level;
                             ctx.cyclist.energy.forceCyclist += delta;
@@ -217,7 +218,9 @@ function createDefaultStateMachine() {
                 if (ctx.message == 'harder') {
                     ctx._pullingLevel += 5;
                 } else if (ctx.message == 'soft') {
+                  let level = ctx.cyclist.energy.resolvePercentage()
                     ctx._pullingLevel -= 5;
+                   console.log('soft:'+level +'('+ctx._pullingLevel+')')
                 } else if (ctx.message == 'tira' ||
                     ctx.message == 'no_tira' || 
                     ctx.message == 'rest') {
@@ -359,7 +362,9 @@ function createDefaultStateMachine() {
                 onEnter(ctx) {
                     ctx._gotoFirstNext = undefined;
                     if (ctx.cyclist.energy.resolvePercentage() >= ctx._pullingLevel - 15) {
-                        console.log('cannot pull');
+                        let curr = ctx.cyclist.energy.resolvePercentage();
+                        let expected = ctx._pullingLevel;
+                        console.log('cannot pull:' + curr + '(' + expected + ')');
                         ctx._gotoFirstNext = 'init';
                         return;
                     }
@@ -421,6 +426,7 @@ function createDefaultStateMachine() {
                 onEnter(ctx) {
                     var diff = ctx.cyclist.velocity.x - ctx.first.velocity.x;
 
+// y si acelero en proporción a lo que puedo hacer?
                     var acceleration = 3;
 
                     ctx.cyclist._gotoFirstDefaultTime = ctx.cyclist.selfAccTimer;
@@ -440,7 +446,7 @@ function createDefaultStateMachine() {
                 if (ctx.cyclist.selfStartedSelfAcc === false) {
                     if (ctx.first.id === ctx.cyclist.id) {
                         ctx.cyclist.isTirando = true;
-
+// verificar quien me sigue para ver si voy mas fuerte, si paro o si pulling
                         return {
                             target: 'pulling',
                             action() { }

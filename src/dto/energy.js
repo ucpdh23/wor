@@ -109,7 +109,15 @@ class Energy {
           this.prePot = this.pot;
       }
   
+      setForceMax(tpc) { // tanto por ciento
+        this.maxTcp = tcp;
+        this.minTcp = 0;
+      }
       
+      setForceRange(minTcp, maxTcp) { // tanto por ciento
+        this.maxTcp = maxTcp;
+        this.minTcp = minTcp;
+      }
   
       forceCompensation(velAvg = 0, selfAcc=0) {
         var negAcc = this.force / 8;
@@ -151,6 +159,8 @@ class Energy {
         
         let max = this.limitForce(this.cyclist.slope);
         
+        let currTcp = this.computeTcp(this.forceCyclist, max);
+        
         if (this.forceCyclist > max){
           this.forceCyclist = Utils.incrementalUpdate(this.forceCyclist, max);
         }
@@ -177,6 +187,10 @@ class Energy {
          }
   
           return new Vector(-accRes, 0);
+      }
+      
+      computeTcp(level, max) {
+        return level / max * 100;
       }
 
       map(scaled_value, scale_0, scale_100, value_0, value_100) {

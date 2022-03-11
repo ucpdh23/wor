@@ -1,5 +1,6 @@
 const express = require('express');
 const Utils = require('../dto/utils')
+const EnergyUtils =require('../dto/energyUtils');
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
 
   var stage = manager.getStage(1);
   
-  res.send(JSON.stringify(Utils.createOutputCyclists(stage.cyclists)));
+  res.end(JSON.stringify(Utils.createOutputCyclists(stage.cyclists)));
 });
 
 router.post('/:id', async (req, res) => {
@@ -33,18 +34,28 @@ router.post('/:id', async (req, res) => {
  */
 
   
-  res.send(JSON.stringify(Utils.createOutputCyclist(cyclist)));
+  res.end(JSON.stringify(Utils.createOutputCyclist(cyclist)));
+  console.log("done")
 });
 
 router.post('/:id/operation/:operation', async (req, res) => {
+  let operation = req.params.operation;
   console.log('ID:' + req.params.id);
-  console.log('operation:' + req.params.operation);
+  console.log('operation:' + operation);
   
   var stage = manager.getStage(1);
   var cyclist = Utils.findCyclist(stage, parseInt(req.params.id));
   
-  cyclist.sendMessage(req.params.operation, {});
+  var payload = {};
+  if (operation === 'pulling') {
+    var level = EnergyUtils.computeLevelPull(cyclist);
+    console.log('level:'+level)
+    payload = level;
+  }
   
+  cyclist.sendMessage(req.params.operation,payload);
+  console.log('done op:'+operation)
+  res.end();
 });
 
 

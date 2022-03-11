@@ -13,6 +13,15 @@ manager.init();
 // static files
 app.use(express.static(__dirname + '/public'));
 
+app.use(function(req, res, next){
+    res.setTimeout(15000, function(){
+        console.log('Request has timed out.');
+            res.send(408);
+        });
+
+    next();
+});
+
 // Middlewares
 app.use(express.json());
 app.use(function (req, res, next) {
