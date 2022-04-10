@@ -27,10 +27,11 @@ const dataLogger = createLogger({
 
 
 class Cyclist {
-    constructor(id, number, stage) {
+    constructor(id, number, stage, input) {
         this.id = id;
         this.number = number;
         this.stage = stage;
+        this.name = (input)? input.name : "name_" + id;
 
         this.enabled = true;
 
@@ -76,7 +77,7 @@ class Cyclist {
 
         this.pushStateMachine(CyclistStateMachine.createDefaultStateMachine());
 
-        this.energy = new Energy(this);
+        this.energy = new Energy(this, input);
 
         if (this.energy.llano < 80) {
             this._mSeparation = this._mSeparation + 0.2;

@@ -1,9 +1,10 @@
 define([
     'models/Vector'
 ], function (Vector) {
-    var cyclistClass = function (id, number, energy) {
+    var cyclistClass = function (id, number, energy, name) {
         this.id = id;
         this.number = number;
+        this.name = name;
         this.energy = energy;
 
         this.position = new Vector(0 ,0);

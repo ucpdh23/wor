@@ -10,31 +10,75 @@ const Status = require('../dto/status');
 const Team = require('../dto/team');
 const Utils = require('../dto/utils');
 
+const { MongoClient } = require('mongodb');
+
 
 const NUM_CYCLISTS = 84;
 const NUM_CYCLISTS_TEAM = 7;
+const NUM_TEMS = 12;
 
 const positions = [
     {x: -1, y: 0},
     {x: -3, y: 2}
 ];
 
-function init() {
-    console.log('init manager')
-    console.log("starting")
+var client = null;
 
+async function init() {
+    console.log('init manager...');
+    if (process.env.MONGODB_URI) {
+        client = new MongoClient(process.env.MONGODB_URI);
+        await client.connect();
+    }
+    console.log('init manager');
+}
+
+async function createStage(features) {
+    console.log("creating Stage...");
 
     var stage = new Stage(1);
-
+    
     populateProfile(stage);
-    populateCyclists(stage);
+
+    let cyclists = await resolveCyclists();
+    populateCyclists(stage, cyclists);
     populateTeams(stage);
     populateTeamsStrategy(stage);
 
+    stage.status = 1;
+
     stages[1] = stage;
+
+    console.log("created stage");
+
+    return stage;
 }
 
-function setInterval(stageId, intervalId) {
+function startStage(stageId) {
+    // Updater for a stage
+    const updater = require('../workers/updater')
+
+    var stage = getStage(stageId);
+
+    var internal = setInterval(() => {
+        if (stage.status == 2) {
+            var continueStage = updater.update(25, getStage(stageId));
+
+            if (!continueStage) {
+                console.log("Stage " + stageId + " finished");
+                clearInterval(getInterval(stageId));
+                stage.status = 3;
+            }
+        }
+
+    }, 25);
+
+    setIntervals(stageId, internal);
+
+    stage.status = 2;
+}
+
+function setIntervals(stageId, intervalId) {
     intervals[stageId] = intervalId;
 }
 
@@ -86,11 +130,19 @@ function populateProfile(stage) {
     stage.profile = profile;
 }
 
-function populateCyclists(stage) {
+function resolveCyclists() {
+    if (client != null)
+        return client.db('cycling').collection('cyclist').find({"code" : {$gte: 0}}).sort( { code: 1 } ).toArray();
+    else
+        return new Promise((resolve, reject) => {resolve()});
+}
+
+function populateCyclists(stage, inputs) {
     var cyclists = [];
     var number = 1;
+
     for (var i = 0; i < NUM_CYCLISTS; i++) {
-        var cyclist = new Cyclist(i, number, stage);
+        var cyclist = new Cyclist(i, number, stage, (inputs)? inputs[i] : null);
 
         if (i < positions.length ) {
             cyclist.position.x = positions[i].x;
@@ -112,9 +164,13 @@ function populateCyclists(stage) {
 function resolveStatus(client) {
     var stage = getStage(1);
 
-    var status = new Status(Utils.createOutputCyclistsForWebservice(stage.cyclists), Utils.createOutputGroupsForWebSocket(stage.groups));
-    status.timestamp = stage.timestamp;
+    var status = {};
 
+    if (stage.status == 2) {
+        status = new Status(Utils.createOutputCyclistsForWebservice(stage.cyclists), Utils.createOutputGroupsForWebSocket(stage.groups));
+        status.timestamp = stage.timestamp;
+    }
+    
     return status;
 }
 
@@ -127,3 +183,5 @@ exports.getStage = getStage;
 exports.resolveStatus = resolveStatus;
 exports.setInterval = setInterval;
 exports.getInterval = getInterval;
+exports.startStage = startStage;
+exports.createStage = createStage;

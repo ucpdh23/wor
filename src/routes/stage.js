@@ -13,12 +13,19 @@ router.get('/', async (req, res) => {
   
   
   const worker = new Worker(__dirname + "/../workers/stage.js", {workerData: {num: 4}});
-worker.once("message", result => {
-  console.log(`th Fibonacci Number: ${result}`);
-});
-
+  worker.once("message", result => {
+    console.log(`th Fibonacci Number: ${result}`);
+  });
   
   res.send('responseeee');
+});
+
+router.get('/start', async (req, res) => {
+  manager.createStage("features").then(stage => {
+    manager.startStage(stage.id);
+  });
+
+  res.end('starting');
 });
 
 router.get('/store', async (req, res) => {

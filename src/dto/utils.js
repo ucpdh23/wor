@@ -62,7 +62,7 @@ function computeMedium(list) {
 }
 
 function createOutputCyclist(item) {
-  return {id: item.id, number : item.number,
+  return {id: item.id, number : item.number, name : item.name,
     position : {x: item.position.x, y: item.position.y},
     velocity: {x: item.velocity.x, y: item.velocity.y},
     acceleration: {x: item.acceleration.x, y: item.acceleration.y},
@@ -101,7 +101,7 @@ function createOutputCyclistsForWebservice(list) {
   var output = []
   for (var i =0; i < list.length; i++) {
     var item = list[i];
-    output.push({id: item.id, number : item.number,
+    output.push({id: item.id, number : item.number, name : item.name,
       position : {x: item.position.x, y: item.position.y},
       velocity: {x: item.velocity.x, y: item.velocity.y},
       acceleration: {x: item.acceleration.x, y: item.acceleration.y},

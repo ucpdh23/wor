@@ -30,7 +30,7 @@ define([
                         }
 
                         var energy = new Energy(element.energy);
-                        var cyclist = new Cyclist(element.id, element.number, energy);
+                        var cyclist = new Cyclist(element.id, element.number, energy, element.name);
 
                         team.addCyclist(cyclist);
                         output.cyclists.push(cyclist);

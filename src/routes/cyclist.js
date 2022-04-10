@@ -10,11 +10,14 @@ const manager = require('../service/stageManager');
 
 
 router.get('/', async (req, res) => {
-  console.log('get cyclists');
-
   var stage = manager.getStage(1);
+
+  if (!stage || stage.status < 1) {
+    res.end(JSON.stringify({}));
+  } else {
+    res.end(JSON.stringify(Utils.createOutputCyclists(stage.cyclists)));
+  }
   
-  res.end(JSON.stringify(Utils.createOutputCyclists(stage.cyclists)));
 });
 
 router.post('/:id', async (req, res) => {

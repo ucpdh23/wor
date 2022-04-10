@@ -4,6 +4,7 @@ class Stage {
   constructor(id) {
     this.id = id;
     this.timestamp = 0;
+    this.status = 0;
   }
   
   cyclists = [];

@@ -3,6 +3,8 @@ var log = require('loglevel');
 log.setLevel("debug")
 
 const app = express()
+require('dotenv').config();
+
 const port = process.env.PORT || 5000
 
 const { Server } = require('ws');
@@ -48,7 +50,7 @@ wss.on('connection', (ws) => {
   ws.on('close', () => console.log('Client disconnected'));
 });
 
-
+// Communication with web clients
 setInterval(() => {
   wss.clients.forEach((client) => {
     var status = manager.resolveStatus(client);
@@ -56,18 +58,5 @@ setInterval(() => {
   });
 }, 75);
 
-const updater = require('./workers/updater')
-
-var internal = setInterval(() => {
-  var continueStage = updater.update(25, manager.getStage(1));
-
-  if (!continueStage) {
-    console.log("Stage 1 finished");
-    clearInterval(manager.getInterval(1));
-  }
-
-}, 25);
-
-manager.setInterval(1, internal);
 
 log.info("started server!!!!!!!!!!!!!!!!!");

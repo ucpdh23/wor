@@ -35,6 +35,7 @@ define([
         if (this.firstTime) {
           var data = {
             number: this.model.number,
+            name: this.model.name,
             position: parseInt(this.model.position.x) / 1000,
             velocity: parseInt(this.model.velocity.x * 3600 / 1000)
           };

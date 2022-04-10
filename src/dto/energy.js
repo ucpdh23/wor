@@ -3,14 +3,15 @@ const Vector = require('./NewVector').Vector
 
 
 class Energy {
-    constructor(cyclist) {
+    constructor(cyclist, input) {
       this.cyclist = cyclist;
       this.pulse = 80;
-        this.llano = 60 + Math.random() * 30;
-        this.montana = 60 + Math.random() * 30;
-        this.bajada = 70 + Math.random() * 10;
+        this.llano = (input)? input.flat : 60 + Math.random() * 30;
+        this.montana = (input)? input.climb : 60 + Math.random() * 30;
+        this.bajada = (input)? input.descend : 70 + Math.random() * 10;
         this.estadoForma = 80 + Math.random() * 20;
-        this.sprint = 60 + Math.random() * 30;
+        this.sprint = (input)? input.sprint : 60 + Math.random() * 30;
+        
       this.refProp = 15 + this.llano / 10;
         this.lastAcc = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       this.lastAccIndex = 0;
