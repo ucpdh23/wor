@@ -42,6 +42,7 @@ define([
         var bajada = '-';
         var estadoForma = '-';
         var sprint = '-';
+        var name = '-';
         if (this.model) {
           if (this.model.energy) {
             llano = parseInt(this.model.energy.llano);
@@ -51,11 +52,13 @@ define([
             sprint = parseInt(this.model.energy.sprint);
           }
           number = this.model.number;
+          name = this.model.name;
         }
         
         
         var data = {
           number: number,
+          name: name,
           llano: llano,
           montana: montana,
           bajada: bajada,
