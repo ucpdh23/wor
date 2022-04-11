@@ -11,6 +11,8 @@ define([], function () {
 
         this.colliding = false;
         this.number = cyclist.number;
+        this.name = cyclist.name;
+        //this.starts = Object.keys(cyclist) ; //(cyclist.energy.llano + cyclist.energy.montana + cyclist.energy.sprint + cyclist.energy.bajada) / 4 * 5 / 100;
 
         this.visualConditions = context.computeVisualConditions(cyclist, this);
 

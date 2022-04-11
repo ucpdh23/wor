@@ -7,6 +7,8 @@ define([], function () {
         this.posY = cyclist.posY
 
         this.number = cyclist.number;
+        this.name = cyclist.name;
+        this.starts = cyclist.starts;
         this.step = 5
         this.secuence = 0
 
@@ -30,11 +32,15 @@ define([], function () {
             }
 
             if (this.secuence >= 20) {
-                p5.rect(posX + 25, posY - 105, 55, 45);
+                p5.rect(posX + 25, posY - 105, 90, 45);
             }
 
             if (this.secuence >= 25) {
+                p5.textSize(14);
                 p5.text("" + this.number, posX + 28, posY - 85)
+                p5.textSize(12);
+                p5.textStyle(p5.NORMAL);
+                p5.text("" + this.name, posX + 28, posY - 73)
             }
   
         };
