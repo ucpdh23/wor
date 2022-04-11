@@ -1,0 +1,14 @@
+<div class="groups">
+    <% _.each(groups, function(group){ %>
+        <% if (group.dist > 0) { %>
+            <div class="groups-item">
+                <span>&lt;-- <%= group.dist %> --&gt;</span>
+            </div>
+        <% } %>
+
+        <div class="groups-item">
+            <img class="invert" src="assets/<%= group.type %>.png" />
+            <span><%= group.label %></span>
+        </div>
+    <% }); %>
+</div>

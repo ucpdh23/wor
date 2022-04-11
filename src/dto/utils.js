@@ -118,7 +118,8 @@ function createOutputGroupsForWebSocket(list) {
     var item = list[i];
     output.push({id: item.id,
       name : item.name,
-      gap: item.gapMeters
+      gap: item.gapMeters,
+      size: item.cyclists.length
     });
   }
 
