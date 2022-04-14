@@ -1,14 +1,14 @@
 <div class="groups">
     <% _.each(groups, function(group){ %>
         <% if (group.dist > 0) { %>
-            <div class="groups-item">
-                <span>&lt;-- <%= group.dist %> --&gt;</span>
+            <div class="groups-gap">
+                <span class="small">à <%= group.dist %> m.</span>
             </div>
         <% } %>
 
         <div class="groups-item">
             <img class="invert" src="assets/<%= group.type %>.png" />
-            <span><%= group.label %></span>
+            <span class="group-label"><%= group.label %></span>
         </div>
     <% }); %>
 </div>

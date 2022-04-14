@@ -70,6 +70,9 @@ define([
 
       var clock = new ClockView({ el: $('#clock'), vent: this.vent, model: this.model});
       clock.render();
+      
+      var groups = new GroupsView({ el: $('#groups'), vent: this.vent, model: this.model});
+      groups.render();
 
       var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
       team.render();
