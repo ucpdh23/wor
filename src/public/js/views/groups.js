@@ -8,6 +8,7 @@ define([
     var GroupsView = Backbone.View.extend({
 
       template: _.template(template),
+      updatedTimestamp: null,
 
       initialize(options) {
         options.vent.bind("updatedStatus", this.render, this);
@@ -15,13 +16,17 @@ define([
       },
       
       events: {
-        'click .groups' : 'selectCyclist'
+        'click .groups-item' : 'selectCyclist'
       },
 
       render: function(){
         var groups = this.model.get("groups");
 
         if (groups === undefined) return;
+        
+        if (this.updatedTimestamp != null && Date.now() - this.updatedTimestamp < 5000) return;
+        console.log("updating groups...")
+        this.updatedTimestamp = Date.now();
 
         if (groups.length == 1) {
           //this.el.innerHTML = "Peloton Agrupado";
@@ -56,7 +61,8 @@ define([
             output.push({
               type: (group.size == 1)? 'bicycle' : 'group',
               label: (first)? 'Tete de la Course' : 'Grupo perseguidor (' + group.name + ')',
-              dist: (!first)? UtilsService.padAndRound(group.gap,0,2) : 0
+              dist: (!first)? UtilsService.padAndRound(group.gap,0,2) : 0,
+              firstCyclist: group.firstCyclistNumber
             });
 
             first = false;
@@ -66,9 +72,12 @@ define([
         return output;
       },
 
-      selectCyclist: function(item) {
-        console.log(item);
-        //this.vent.trigger("selectedCyclist", this.model.number);
+      selectCyclist: function(e) {
+        //console.log(item);
+        e.preventDefault();
+        var data = $(e.currentTarget).attr("data");
+        
+        this.vent.trigger("selectedCyclist", data);
       }
 
     }

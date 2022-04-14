@@ -119,7 +119,8 @@ function createOutputGroupsForWebSocket(list) {
     output.push({id: item.id,
       name : item.name,
       gap: item.gapMeters,
-      size: item.cyclists.length
+      size: item.cyclists.length,
+      firstCyclistNumber: item.cyclists[0].number
     });
   }
 
