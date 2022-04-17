@@ -12,21 +12,12 @@ canvas {
 
 .clock {
     font-size: x-large;
-    
 }
 
-.groups {
-    height: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
+
 
 .groups-item img {
     height: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .invert { filter: invert(100%); }
@@ -256,20 +247,43 @@ canvas {
   z-index: 400;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-content: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 3em;
 }
 
 .floating-bar-main {
-  min-width: 7em;
+  __width: 7em;
+  __flex-basis: 3em;
+  flex: 1 1 0px;
 }
 
-.clock {
+.floating-bar-secondary {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 2 0px;
+  overflow: scroll;
+}
+
+.___clock {
     position: absolute;
     z-index: 400;
 }
 
-.groups-item img {
+
+.groups-item {
+  display: inline-block;
+}
+
+.groups-item-wrapper {
+  white-space: nowrap;
+  overflow: scroll;
+  inline-size: 12em;
+}
+
+.groups-item-wrapper img {
     height: 30px;
 }
 
@@ -280,6 +294,7 @@ canvas {
 .group-gap {
   max-width: 5em;
   font-size: 0.5em;
+  display: inline-block;
 }
 
 .small {

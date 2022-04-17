@@ -49,6 +49,8 @@ define([
 
       composeGroups: function(groups) {
         let output = [];
+        
+        var index= 0;
 
         if (groups.length == 1) {
           output.push({
@@ -57,8 +59,10 @@ define([
           })
         } else {
           var first = true;
+          
           for (const group of groups) {
             output.push({
+              index: index++,
               type: (group.size == 1)? 'bicycle' : 'group',
               label: (first)? 'Tete de la Course' : 'Grupo perseguidor (' + group.name + ')',
               dist: (!first)? UtilsService.padAndRound(group.gap,0,2) : 0,
@@ -68,6 +72,15 @@ define([
             first = false;
           }
         }
+        /*for (var i=0;i<7;i++)
+        output.push({
+            index: index++,
+            type: 'group',
+            label: 'Test',
+            dist: 8,
+            firstCyclistNumber: 33
+          })*/
+        
     
         return output;
       },
