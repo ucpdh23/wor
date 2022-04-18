@@ -45,6 +45,8 @@ async function createStage(features) {
     populateTeams(stage);
     populateTeamsStrategy(stage);
 
+    stage.init();
+
     stage.status = 1;
 
     stages[1] = stage;

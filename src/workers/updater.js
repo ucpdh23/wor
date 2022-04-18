@@ -65,8 +65,7 @@ function update(delta, stage) {
     currGroup.addCyclist(list[i]);
   }
 
-  stage.groups = groups;
-
+  stage.setGroups(groups);
 
   var hullPoints = hull(localHull, 10);
   globalHull = hullPoints;

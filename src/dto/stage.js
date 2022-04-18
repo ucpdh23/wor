@@ -1,4 +1,5 @@
 const Vector = require('./cyclist')
+const GroupsManager = require('../service/groupsManager')
 
 class Stage {
   constructor(id) {
@@ -11,6 +12,15 @@ class Stage {
   teams = [];
   groups = [];
   profile = null;
+
+  init() {
+    this.groupsManager = new GroupsManager(this);
+    this.groupsManager.init();
+  }
+
+  setGroups(groups) {
+    this.groups = this.groupsManager.updateGroups(groups, this.groups);
+  }
 }
 
 module.exports = Stage;
