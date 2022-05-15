@@ -267,6 +267,14 @@ canvas {
   overflow: scroll;
 }
 
+.floating-bar-third {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 2 0px;
+}
+
 .___clock {
     position: absolute;
     z-index: 400;

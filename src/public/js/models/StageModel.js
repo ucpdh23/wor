@@ -7,6 +7,7 @@ define([
 
         initialize(options) {
             this.vent = options.vent;
+            this.vent.bind("updateSetup", this.setup, this);
         },
 
         initStage: function (data) {
@@ -17,8 +18,28 @@ define([
             this.set("teams", data.teams);
             this.set("myTeam", data.teams[data.myTeam]);
             this.set("clock", 0);
+            this.set("setup", {
+              audio: true
+            });
 
             this.vent.trigger("createStage", data);
+        },
+        
+    
+        setup: function(property) {
+          console.log(property);
+          var value = property.value;
+          var config = this.get("setup");
+          if (property.key == 'audio') {
+            var prev = config.audio;
+            if (prev != value) {
+              console.log('fgh');
+              config.audio = value;
+              this.set('setup',config);
+              this.vent.trigger("setupAudio", value);
+            }
+            
+          }
         },
 
         updateStatus: function (status) {

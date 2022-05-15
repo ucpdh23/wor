@@ -13,8 +13,9 @@ define([
   'views/clock',
   'views/team',
   'views/groups',
+  'views/contextMenu',
   'constants'
-], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView, GroupsView, Constants) {
+], function ($, _, Backbone, stageTemplate, stageMobileTemplate, /*p5, p5Sound, */ StageService, StageModel, ArenaView, ProfileView, ClockView, TeamView, GroupsView, ContextMenuView, Constants) {
 
   var globalVent = _.extend({}, Backbone.Events);
 
@@ -73,6 +74,9 @@ define([
       
       var groups = new GroupsView({ el: $('#groups'), vent: this.vent, model: this.model});
       groups.render();
+      
+      var contextMenu = new ContextMenuView({ el: $('#contextMenu'), vent: this.vent, model: this.model});
+      contextMenu.render();
 
       var team = new TeamView({ el: $('#team'), vent: this.vent, model: this.model});
       team.render();

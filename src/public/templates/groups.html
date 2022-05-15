@@ -7,7 +7,7 @@
          
         <% } %>
         <div class="groups-item" data="<%= group.firstCyclist %>">
-      <sup class="small"><%= group.index %></sup><span><img class="invert" src="assets/<%= group.type %>.png" /></span>
+      <sup class="small"><%= group.index %></sup><span class="small"><img class="invert" src="assets/<%= group.type %>.png" /><%= group.label %></span>
       </div>
     <% }); %>
     </div>

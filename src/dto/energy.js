@@ -15,7 +15,7 @@ class Energy {
       this.refProp = 15 + this.llano / 10;
         this.lastAcc = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       this.lastAccIndex = 0;
-        this.points = 100;
+        this.points = 100 + this.estadoForma / 2;
         this.maxPot = 450 - (100 - this.estadoForma);
         this.maxAnaerobicPot = this.maxPot + this.sprint;
         this.preForce = this.force = 0;
@@ -33,7 +33,7 @@ class Energy {
       }
   
       getPower() {
-          return (int) (this.pot * 100 / this.maxPot);
+          return Math.round(this.pot * 100 / this.maxPot);
       }
   
   

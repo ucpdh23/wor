@@ -31,7 +31,7 @@ class GroupsManager {
         for (var i = 0; i < group.cyclistsId.length; i++) {
             const id = group.cyclistsId[i];
             var candidate = this.cyclists[group.cyclistsId[id]];
-            if (candidate.index > best.index) {
+            if (candidate && candidate.index > best.index) {
                 this.best = candidate;
             }
         }

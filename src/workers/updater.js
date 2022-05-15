@@ -55,7 +55,7 @@ function update(delta, stage) {
   var currGroup = null;
   var prev = 1000000;
   var groupIndex = 0;
-  for (i = 0; i < items; i++) {
+  for (i = 0; i < list.length; i++) {
     if (prev - list[i].position.x > 10) {
       currGroup = new Group(prev - list[i].position.x, groupIndex++);
       groups.push(currGroup);

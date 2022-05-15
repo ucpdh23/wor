@@ -71,7 +71,9 @@ function createOutputCyclist(item) {
       montana: item.energy.montana, 
       bajada: item.energy.bajada,
       sprint: item.energy.sprint,
-      estadoForma: item.energy.estadoForma
+      estadoForma: item.energy.estadoForma,
+      points: item.energy.points,
+      powerRel: item.energy.getPower()
     },
     state: {value: item.peekStateMachine().value},
     operations: item.peekStateMachine().getCurrentOperations(),

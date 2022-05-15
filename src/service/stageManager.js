@@ -17,6 +17,8 @@ const NUM_CYCLISTS = 84;
 const NUM_CYCLISTS_TEAM = 7;
 const NUM_TEMS = 12;
 
+const DELTA = 25;
+
 const positions = [
     {x: -1, y: 0},
     {x: -3, y: 2}
@@ -64,7 +66,7 @@ function startStage(stageId) {
 
     var internal = setInterval(() => {
         if (stage.status == 2) {
-            var continueStage = updater.update(25, getStage(stageId));
+            var continueStage = updater.update(DELTA, getStage(stageId));
 
             if (!continueStage) {
                 console.log("Stage " + stageId + " finished");

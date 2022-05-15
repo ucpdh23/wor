@@ -12,6 +12,8 @@ define([
       initialize(options) {
           options.vent.bind("updatedStatus", this.updatedStatus, this);
           options.vent.bind("selectedCyclist", this.selectedCyclist, this);
+          options.vent.bind("setupAudio", this.setupMusic, this);
+          
           
           this.viewport = null;
           this.features = {
@@ -37,6 +39,18 @@ define([
           this.viewport.setPreselectedNumber(number);
         }
       },
+      
+      setupMusic: function(mute) {
+        if (mute) {
+          if (this.song.isPlaying()) {
+            this.song.stop();
+            this.race.stop();
+          }
+        } else {
+          this.song.play();
+          this.race.play();
+        }
+      },
 
       render: function(){
         var data = {};
@@ -45,16 +59,20 @@ define([
 
         var song;
         var race;
+        
+        var that = this;
 
         let sketch = p => {
             p.preload = () => {
-              song = p.loadSound('assets/music.ogg')
-              race = p.loadSound('assets/race.mp3')
+              that.song = p.loadSound('assets/music.ogg')
+              that.race = p.loadSound('assets/race.mp3')
             }
 
             p.setup = () => {
-                song.loop();
-                race.play();
+              if (that.model.get("setup").audio) {
+                that.song.loop();
+                that.race.play();
+              }
 
                 var canvas = p.createCanvas(this.features.canvasWidth, this.features.canvasHeight);
                 canvas.parent('sketch-holder')
