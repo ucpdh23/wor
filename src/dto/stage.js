@@ -21,6 +21,12 @@ class Stage {
   setGroups(groups) {
     this.groups = this.groupsManager.updateGroups(groups, this.groups);
   }
+  
+  getFirst() {
+    return this.groups[
+      this.groups.length-1
+      ].getFirst();
+  }
 }
 
 module.exports = Stage;

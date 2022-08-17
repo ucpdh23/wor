@@ -36,7 +36,6 @@ class Energy {
           return Math.round(this.pot * 100 / this.maxPot);
       }
   
-  
       computePhysics() {
           // Resistencia Aire
           var expected_r_air = this.cyclist.velocity.x / (this.draftReduction + 2) / this.llano * 100;
@@ -244,7 +243,6 @@ class Energy {
         //  this.forceCyclist = this.maxForce;
       }
   
-  
       resolvePercentage() {
         return parseInt(this.forceCyclist * 100 / this.maxForce);
       }
@@ -315,8 +313,6 @@ class Energy {
           return exp;
         }
       }
-  
-      
     
     computeDraftReduction() {
       var items = this.cyclist.computeItems(20,4).length;

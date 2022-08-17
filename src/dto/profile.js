@@ -92,7 +92,7 @@ class Profile {
     }
 
     getLengthInMeters() {
-        return this.data.length * this.segment;
+        return (this.data.length -1) * this.segment;
     }
 
     listeners = {};

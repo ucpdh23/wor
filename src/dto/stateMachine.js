@@ -1,7 +1,13 @@
-function createMachine(stateMachineDefinition) {
+function createMachine
+  (stateMachineDefinition,
+   listener) {
     const machine = {
         // machine object
         value: stateMachineDefinition.initialState,
+        context: {
+          lastChangeTimestamp: new Date().getTime(),
+          lastChangePosition: null
+        },
         execute(ctx) {
             const currentStateDefinition = stateMachineDefinition[machine.value];
 
@@ -9,8 +15,12 @@ function createMachine(stateMachineDefinition) {
                 actions.onExecute(ctx);
         },
         transition(ctx) {
-            const currentStateDefinition = stateMachineDefinition[machine.value];
-
+            const currentStateDefinition = stateMachineDefinition [machine.value];
+            
+            if (listener !== undefined) {
+              listener.loadContext(ctx);
+            }
+            
             const destinationTransition = currentStateDefinition.computeTransition(ctx);
             if (!destinationTransition) {
                 //currentStateDefinition.actions.onExecute(ctx);
@@ -18,14 +28,18 @@ function createMachine(stateMachineDefinition) {
                 return
             }
             const destinationState = destinationTransition.target
-            const destinationStateDefinition =
-                stateMachineDefinition[destinationState]
+            const destinationStateDefinition = stateMachineDefinition[destinationState];
             if (destinationTransition.hasOwnProperty('action')) {
                 destinationTransition.action(ctx)
             }
             //  destinationTransition.action(ctx)
-            currentStateDefinition.actions.onExit(ctx)
-            destinationStateDefinition.actions.onEnter(ctx)
+            currentStateDefinition.actions.onExit(ctx);
+            
+            if (listener !== undefined) {
+             listener.storeContext(ctx);
+            }
+
+            destinationStateDefinition.actions.onEnter(ctx);
             machine.value = destinationState
             return machine.value
         },

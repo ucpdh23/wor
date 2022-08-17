@@ -6,11 +6,15 @@ var nextTime = 0;
 var counter = 0;
 var sumTime = 0;
 
+/**
+ * delta in milliseconds
+ * stage context information
+ */
 function update(delta, stage) {
-  var one_timestamp = new Date().getTime()
+  // computo de variables
+  var one_timestamp=new Date().getTime()
 
   var delta = delta / 1000;
-
   var meters = 0;
 
   var cyclists = stage.cyclists;
@@ -19,25 +23,25 @@ function update(delta, stage) {
   var first = cyclists[0];
   var last = cyclists[0];
 
-  var items = cyclists.length;
-
-  var localHull = [];
-  localHull.push([cyclists[0].position.x, cyclists[0].position.y]);
-
-
-  for (i = 1; i < items; i++) {
-    if (first.position.x < cyclists[i].position.x)
-      first = cyclists[i];
-
-    if (last.position.x > cyclists[i].position.x)
-      last = cyclists[i];
-
-    localHull.push([cyclists[i].position.x, cyclists[i].position.y]);
+  var total_count = cyclists.length;
+  
+  // generamos list...
+  var list = cyclists.slice(0)
+  // ...Quitamos los que han acabado
+  list = list.filter(cyclist => cyclist.position.x < profile.getLengthInMeters());
+  // ...los ordenamos
+  list.sort((a, b) => {
+    return b.position.x - a.position.x;
+  });
+  // ...numero de elementos
+  var items = list.length;
+  
+  // info de debug
+  if (stage.timestamp  > nextTime) {
+    displayMetrics(stage, items, list);
   }
 
-  globalFirst = first;
-
-
+  // ordenacion de ciclistas
   var list = cyclists.slice(0)
   list.sort((a, b) => {
     return b.position.x - a.position.x;
@@ -46,65 +50,40 @@ function update(delta, stage) {
   // Quitar aquellos que ya hayan acabado la etapa.
   list = list.filter(cyclist => cyclist.position.x < profile.getLengthInMeters());
 
+  // debug
   if (stage.timestamp  > nextTime) {
     displayMetrics(stage, items, list);
   }
 
-
-  var groups = [];
-  var currGroup = null;
-  var prev = 1000000;
-  var groupIndex = 0;
-  for (i = 0; i < list.length; i++) {
-    if (prev - list[i].position.x > 10) {
-      currGroup = new Group(prev - list[i].position.x, groupIndex++);
-      groups.push(currGroup);
-    } 
-
-    prev = list[i].position.x;
-    currGroup.addCyclist(list[i]);
-  }
-
+  // actualizacion de grupos
+  var groups = computeGroups(list);
   stage.setGroups(groups);
-
-  var hullPoints = hull(localHull, 10);
-  globalHull = hullPoints;
-
-  for (i = 0; i < items; i++) {
-    var environment = profile.computeEnvironment(cyclists[i]);
-    cyclists[i].computeNeighbour(cyclists, i, first, last, environment);
+  
+  for (i=0;i<groups.length;i++) {
+    groups[i].update();
   }
-  /*
-    var list = cyclists.slice(0)
-    list.sort((a,b)=>{
-      return b.position.x - a.position.x;
-    });
-    
-    
-    var currGroup=null;
-    var prev = 1000000;
-    for (i = 0; i < items; i++) {
-      if (prev - list[i].position.x > 10) {
-        currGroup = new Group();
-      }
-      prev = list[i].position.x;
-      currGroup.addCyclist(list[i]);
-    }
-    */
-    if (stage.debug && stage.debug.cyclist) {
+
+  // para cada ciclista se calcula su entorno, se actualiza la maquina de estados, se calcula la energia que aplicar
+  for (i = 0; i < items; i++) {
+    var environment = profile.computeEnvironment(list[i]);
+    list[i].computeNeighbour(list, i, environment);
+  }
+
+  if (stage.debug && stage.debug.cyclist) {
       stage.debug.cyclist.logCyclist(profile);
     }
 
-    
+  // para cada ciclista se hace la actualizacion
   for (i = 0; i < items; i++) {
-    currMeters = cyclists[i].update(delta);
+    currMeters = list[i].update(delta);
     if (currMeters > meters)
       meters = currMeters
   }
 
   //  profile.update(delta);
+  // se acrualizan los equipos
   stage.teams.forEach(item => {
-    item.update();
+    item.update(stage);
   })
 
   stage.timestamp += delta;
@@ -118,6 +97,24 @@ function update(delta, stage) {
 
 
   return true;
+}
+
+function computeGroups(list) {
+  var groups = [];
+  var currGroup = null;
+  var prev = 1000000;
+  var groupIndex = 0;
+  for (i = 0; i < list.length; i++) {
+    if (prev - list[i].position.x > 10) {
+      currGroup = new Group(prev - list[i].position.x, groupIndex++);
+      groups.push(currGroup);
+    } 
+
+    prev = list[i].position.x;
+    currGroup.addCyclist(list[i]);
+  }
+  
+  return groups;
 }
 
 function displayMetrics(stage, items, list) {

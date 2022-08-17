@@ -1,6 +1,9 @@
 var CSV = require('winston-csv-format').default;
 var Vector = require('./NewVector').Vector;
 var Utils = require('./utils');
+var CyclistListener = require('./cyclistListener');
+const GroupUtils = require('../dto/groupUtils');
+const ProfileUtils = require('../dto/profileUtils');
 
 var { createLogger, transports } = require('winston');
 
@@ -74,8 +77,10 @@ class Cyclist {
         this._stateMachine = [];
         this._smCtx = { first: null, cyclist: this };
         this.actualBodyColor = new Vector(144 - this.id, 255 - this.id, this.id);
+        
+        this.cyclistListener = new CyclistListener();
 
-        this.pushStateMachine(CyclistStateMachine.createDefaultStateMachine());
+        this.pushStateMachine(CyclistStateMachine.createDefaultStateMachine(this.cyclistListener));
 
         this.energy = new Energy(this, input);
 
@@ -88,6 +93,18 @@ class Cyclist {
         require('./cyclistStrategy')
         require('./cyclistComputeForces')
 
+    }
+
+    computePullingLevel(ctx) {
+      var delta = ProfileUtils.positionInProfile(ctx.cyclist.profile, ctx.cyclist);
+      console.log('delta:'+delta)
+      if (delta < 0.30) {
+        return 45;
+      } else if (delta < 0.60) {
+        return 60;
+      } else {
+        return 75;
+      }
     }
 
     setPsicology(leader, innovador, metodico, gregario) {
@@ -402,6 +419,7 @@ class Cyclist {
     inBorder() {
         var item = -1;
 
+        var globalHull = this.group.hullPoints;
         for (var i = 0; i < globalHull.length - 1; i++) {
             var x = globalHull[i][0];
             var y = globalHull[i][1];
@@ -491,7 +509,6 @@ class Cyclist {
         }
 
         return items;
-
     }
 
 
@@ -626,6 +643,19 @@ class Cyclist {
 
         return new Vector(0, 0);
     }
+    
+    shouldReviewPositionInGroup(ctx) {
+      var ts = new Date().getTime();
+      var limit = 200000 - this.psicology.leader * 1000;
+      if (ts - ctx.lastChangeTimestamp < limit) return false;
+      if(this.psicology.metodico > 85) {
+        var pos = GroupUtils.positionInGroup(this.group, this);
+        if (pos < 0.3) {
+          return true;
+        }
+      }
+      return false;
+    }
 
     shouldReduceDraft() {
         return (this.energy.pulse2 > 120)
@@ -720,10 +750,11 @@ class Cyclist {
 
 
     computeAvVel() {
-        if (this.first == this) return 0;
+        if (this.group.getFirst() == this) return 0;
 
         if (this.position.x < 100)
-            return this.first.velocity.x;
+            return this.group.
+            getFirst().velocity.x;
 
         let inRange = this.computeItems(170, 5);
 
@@ -791,8 +822,7 @@ class Cyclist {
         this._stateMachine.pop();
     }
 
-    computeNeighbour(cyclists, i, first, last, environment) {
-        this.first = first;
+    computeNeighbour(cyclists, i, environment) {
         this.environment = environment;
         var slope = environment.slope;
         this.roadWidth = environment.width;

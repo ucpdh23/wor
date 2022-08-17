@@ -1,8 +1,11 @@
+const hull = require('../service/hull');
+
 class Group {
     cyclists = [];
     cyclistsId = [];
 
     tirando = []
+    hullItems = []
 
     constructor(gapMeters, index) {
       this.id = 10000;
@@ -15,12 +18,19 @@ class Group {
     addCyclist(cyclist){
       this.cyclists.push(cyclist);
       this.cyclistsId.push(cyclist.id);
+      this.hullItems.push([cyclist.position.x, cyclist.position.y]);
       
       cyclist.group = this;
       if (this.avg < this.computeAvg(cyclist)) {
         this.id = cyclist.id;
         this.name = cyclist.number;
       }
+    }
+    
+    update() {
+      this.hullPoints = hull(
+        this.hullItems,
+        10);
     }
 
     computeAvg(cyclist) {
@@ -33,6 +43,12 @@ class Group {
     
     getFirst(){
       return this.cyclists[0];
+    }
+    
+    getLast() {
+      return this.cyclists[
+          this.cyclists.length - 1
+        ]
     }
   }
 

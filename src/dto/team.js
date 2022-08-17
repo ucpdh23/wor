@@ -9,6 +9,7 @@ class Team {
     
     addCyclist(item) {
       this.cyclists.push(item);
+      item.team = this;
     }
     
     computeMedium() {
@@ -166,7 +167,7 @@ class Team {
         to: 500,
         prob: 90,
         action: 'tira',
-        payload: 65
+        payload: 50
       });
       llano[2].addAction({
         from: 2500,
@@ -204,7 +205,8 @@ class Team {
       });
     }
     
-    update() {
+    update(stage) {
+      var globalFirst=stage.getFirst();
       if (this.strategy==1) {
         if (Math.random() < 0.001) {
           let diff = globalFirst.position.x - this.leader.position.x;

@@ -1,7 +1,25 @@
 const StateMachine = require('./stateMachine')
 const Utils = require('../dto/utils')
 
-function createDefaultStateMachine() {
+function createJumpingStateMachine(listener) {
+  return StateMachine.createMachine({
+    initialState: 'phase_1',
+    phase_1: {
+      actions: {
+        onEnter(ctx) {},
+        onExit(ctx) {},
+        onExecute(ctx) {}
+      },
+      operations: [],
+      computeTransition(ctx) {
+        
+      }
+    }
+  }, listener);
+}
+
+
+function createDefaultStateMachine(listener) {
     return StateMachine.createMachine({
         initialState: 'init',
         init: {
@@ -14,7 +32,7 @@ function createDefaultStateMachine() {
                     ctx.cyclist.computeForces_1(ctx.first);
                 }
             },
-            operations: ['pull', 'takeUp', 'takeDown'],
+            operations: ['pull', 'takeUp', 'takeDown','avanza'],
             computeTransition(ctx) {
                 if (ctx.message == 'tira'
                     || ctx.message == 'pull') {
@@ -101,6 +119,14 @@ function createDefaultStateMachine() {
                                 action() { },
                             };
                         }
+                    } else if (ctx.cyclist.shouldReviewPositionInGroup(ctx)) {
+                      return {
+                        target: 'preparePulling',
+                        action(ctx) {
+                            ctx._preparePullingNext = 'init'
+                            ctx._preparePullingMeters = 5;
+                        }
+                    };
                     }
                 }
             },
@@ -176,7 +202,7 @@ function createDefaultStateMachine() {
             actions: {
                 onEnter(ctx) {
                     if (ctx._pullingLevel == null) {
-                        ctx._pullingLevel = 60;
+                        ctx._pullingLevel = ctx.cyclist.computePullingLevel(ctx);
                     }
                 },
                 onExit(ctx) {
@@ -460,9 +486,6 @@ function createDefaultStateMachine() {
             }
         },
 
-
-
-
         adelanta: {
             actions: {
                 onEnter(ctx) {
@@ -498,7 +521,7 @@ function createDefaultStateMachine() {
             }
 
         },
-    });
+    }, listener);
 }
 
 

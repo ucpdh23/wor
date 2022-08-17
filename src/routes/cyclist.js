@@ -56,7 +56,10 @@ router.post('/:id/operation/:operation', async (req, res) => {
     payload = level;
   }
   
-  cyclist.sendMessage(req.params.operation,payload);
+  cyclist.sendMessage(
+    req.params.operation,
+    payload);
+
   console.log('done op:'+operation)
   res.end();
 });
