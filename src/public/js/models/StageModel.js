@@ -80,6 +80,15 @@ define([
 
         updateGroups: function (groups) {
             this.set("groups", groups);
+            var indexOfGroupsByCyclist = {};
+            for (group in groups) {
+              for (cyclist in group.cyclists) {
+                indexOfGroupsByCyclist[cyclist.number] = geoup.id
+              }
+            }
+            
+            this.set("groupsByCyclist", indexOfGroupsByCyclist);
+            
         },
 
         updateTimestamp: function (timestamp) {

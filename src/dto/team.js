@@ -1,3 +1,5 @@
+const StageUtils = require('../dto/stageUtils');
+
 class Team {
     static _id = 0;
     
@@ -32,8 +34,12 @@ class Team {
       this.medium=medium;
     }
     
-    build(profile) {
+    build(stage) {
+      var profile = stage.profile
       console.log("building team " + this.id);
+      
+      var profileType=profile.getType();
+      var actors = StageUtils.computeMainActors(profileType, stage.cyclists);
 
       this.sortCyclists();
       this.computeStatistics();
@@ -205,21 +211,25 @@ class Team {
       });
     }
     
-    update(stage) {
+    update_strategy_1(stage) {
       var globalFirst=stage.getFirst();
-      if (this.strategy==1) {
-        if (Math.random() < 0.001) {
+
+      if (Math.random() < 0.001) {
           let diff = globalFirst.position.x - this.leader.position.x;
           if (diff > 15) {
             this.leader.sendMessage('acelera#1');
           }
-        } else {
-          if (this.leader.slope > 0) {
-            
-          }
         }
-        
-        
+    }
+    
+    update(stage) {
+      switch (this.strategy) {
+        case 1:
+          this.update_strategy_1(stage);
+          break;
+        case 2:
+        case 3:
+        default:
       }
     }
   }

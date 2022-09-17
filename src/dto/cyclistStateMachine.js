@@ -124,7 +124,10 @@ function createDefaultStateMachine(listener) {
                         target: 'preparePulling',
                         action(ctx) {
                             ctx._preparePullingNext = 'init'
-                            ctx._preparePullingMeters = 5;
+                            ctx._preparePullingMeters = Utils.computeRandomValue(
+                     5,
+                     5 + (100 - ctx.cyclist.psicology.leader)/ 100 * 10
+                              );
                         }
                     };
                     }

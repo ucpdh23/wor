@@ -34,6 +34,7 @@ class Cyclist {
         this.id = id;
         this.number = number;
         this.stage = stage;
+        this.profile = stage.profile;
         this.name = (input)? input.name : "name_" + id;
 
         this.enabled = true;
@@ -93,6 +94,10 @@ class Cyclist {
         require('./cyclistStrategy')
         require('./cyclistComputeForces')
 
+    }
+    
+    setMainActor(index) {
+      this.mainActor = index;
     }
 
     computePullingLevel(ctx) {
@@ -646,14 +651,31 @@ class Cyclist {
     
     shouldReviewPositionInGroup(ctx) {
       var ts = new Date().getTime();
-      var limit = 200000 - this.psicology.leader * 1000;
-      if (ts - ctx.lastChangeTimestamp < limit) return false;
-      if(this.psicology.metodico > 85) {
+      
+      var reviewPIGNextCheck = ctx.reviewPIGNextCheck;
+      
+      var compute = false;
+      
+      if (reviewPIGNextCheck === undefined || reviewPIGNextCheck < ts - 5000) {
+        compute = true;
+      } else if (reviewPIGNextCheck < ts) {
+        compute = true;
+        if(this.psicology.metodico > 85) {
         var pos = GroupUtils.positionInGroup(this.group, this);
         if (pos < 0.3) {
           return true;
         }
       }
+      }
+      
+      if (compute) {
+       ctx.reviewPIGNextCheck =
+       Utils.computeRandomValue(
+         ts+50000,
+         ts+50000 + (100 - this.psicology.leader) * 3000
+        );
+      }
+      
       return false;
     }
 

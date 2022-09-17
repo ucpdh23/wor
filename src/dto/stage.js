@@ -9,6 +9,8 @@ class Stage {
   }
   
   cyclists = [];
+  finishedCyclists = [];
+  
   teams = [];
   groups = [];
   profile = null;
@@ -20,6 +22,24 @@ class Stage {
 
   setGroups(groups) {
     this.groups = this.groupsManager.updateGroups(groups, this.groups);
+  }
+  
+  setActors(mainActors) {
+    this.actors = mainActors;
+  }
+  
+  addFinished(cyclist) {
+    if (!cyclist.isFinished) {
+      this.finishedCyclists.push({
+        timestamp: this.timestamp,
+        cyclist: cyclist
+      });
+      cyclist.isFinished = true;
+    }
+  }
+  
+  setProfile(profile) {
+    this.profile = profile;
   }
   
   getFirst() {

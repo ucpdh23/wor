@@ -10,6 +10,8 @@ const Status = require('../dto/status');
 const Team = require('../dto/team');
 const Utils = require('../dto/utils');
 
+const StageUtils = require('../dto/stageUtils');
+
 const { MongoClient } = require('mongodb');
 
 
@@ -94,7 +96,7 @@ function populateTeamsStrategy(stage) {
     var profile = stage.profile;
     for (var team of stage.teams) {
         team.computeMedium();
-        team.build(profile);
+        team.build(stage);
     }
 }
 
@@ -140,7 +142,7 @@ function populateProfile(stage) {
     var clasificacion = new Clasificacion();
     var profile = new Profile(clasificacion, etapa, 1000);
 
-    stage.profile = profile;
+    stage.setProfile(profile);
 }
 
 function resolveCyclists() {
@@ -172,6 +174,8 @@ function populateCyclists(stage, inputs) {
     }
 
     stage.cyclists = cyclists;
+    var mainActors = StageUtils.computeMainActors(stage.profile.getType(), cyclists);
+    stage.setActors(mainActors);
 }
 
 function resolveStatus(client) {

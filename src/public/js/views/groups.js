@@ -44,7 +44,6 @@ define([
           this.$el.html( this.template(data) );
         }
 
-
       },
 
       composeGroups: function(groups) {

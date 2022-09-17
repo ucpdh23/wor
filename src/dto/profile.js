@@ -7,6 +7,8 @@ class Profile {
 
     clasificacion = null;
     etapa = null;
+    
+    desnivelAcumulado = 0;
 
     constructor(clasificacion, etapa, segment) {
         this.etapa = etapa;
@@ -35,6 +37,11 @@ class Profile {
             dist += this.segment;
             elevation += slope * this.segment / 100;
             this.data.push({ x: dist, y: elevation })
+            
+            if (slope > 0) {
+              var counter = this.segment * 10 / 1000;
+              this.desnivelAcumulado = this.desnivelAcumulado + slope * counter;
+            }
 
             if (prevSlope == 0 && slope > 0 && portInfo == null) {
                 this.addListener(i * this.segment, (cyclist, portNumber) => {
@@ -86,7 +93,7 @@ class Profile {
             this.portInfos.push(portInfo);
         }
 
-        this._computePortsInfo();
+        //this._computePortsInfo();
        
         console.log("desnivel acumulado :" + this.desnivelAcumulado);
     }
@@ -159,6 +166,39 @@ class Profile {
         };
     }
 
+
+    /**
+     * type:
+     *  - 1: plane
+     *  - 2: medium-montain
+     *  - 3: montain
+     * 
+     * end:
+     *  - 1: plane
+     *  - 2: medium-montain
+     *  - 3: montain
+     * 
+     * distante:
+     *  - 1: short
+     *  - 2: medium
+     *  - 3: long
+     * 
+     */
+    getType(){
+      var type = (this.desnivelAcumulado < 100)? 1 : (this.desnivelAcumulado < 1000)?
+            2 : 3;
+      
+      var end = 3;
+      var dist=this.getLengthInMeters();
+      var distance = (dist < 40)? 1 : 
+        (dist < 45)? 2 : 3;
+        
+      return {
+        type: type,
+        end: end,
+        distance: distance
+      };
+    }
 
     computeSlope(position) {
         var index = parseInt(position / this.segment);

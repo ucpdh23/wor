@@ -27,12 +27,24 @@ function update(delta, stage) {
   
   // generamos list...
   var list = cyclists.slice(0)
+  
+  var aux_list = [];
+  list.forEach(cyclist => {
+    if (cyclist.position.x < profile.getLengthInMeters()) {
+      aux_list.push(cyclist);
+    } else {
+      stage.addFinished(cyclist);
+    }
+  });
+  
   // ...Quitamos los que han acabado
-  list = list.filter(cyclist => cyclist.position.x < profile.getLengthInMeters());
+  list = aux_list;
+  
   // ...los ordenamos
   list.sort((a, b) => {
     return b.position.x - a.position.x;
   });
+  
   // ...numero de elementos
   var items = list.length;
   

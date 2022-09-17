@@ -122,7 +122,8 @@ function createOutputGroupsForWebSocket(list) {
       name : item.name,
       gap: item.gapMeters,
       size: item.cyclists.length,
-      firstCyclistNumber: item.cyclists[0].number
+      firstCyclistNumber: item.cyclists[0].number,
+      cyclists: item.cyclists.map(cyclist => {return {id: cyclist.id,number: cyclist.number};})
     });
   }
 
@@ -165,6 +166,11 @@ function inRange(value, range) {
   return value > range[0] && value < range[1]
 }
 
+function computeRandomValue(minValue, maxValue) {
+  var delta = maxValue - minValue;
+  return minValue + Math.random() * delta;
+}
+
 exports.incrementalUpdate = incrementalUpdate;
 exports.dec = dec;
 exports.createOutputCyclists = createOutputCyclists;
@@ -174,3 +180,4 @@ exports.strTime = strTime;
 exports.createOutputCyclist = createOutputCyclist;
 exports.inRange = inRange;
 exports.createOutputGroupsForWebSocket = createOutputGroupsForWebSocket;
+exports.computeRandomValue = computeRandomValue;
