@@ -3,10 +3,8 @@ define([
     'underscore',
     'backbone',
     'text!templates/arena.html',
-    'graphics/ViewportManager',
-    'phaser/bootloader',
-    'phaser/scenePlay'
-  ], function($, _, Backbone, template, ViewportManager, Bootloader, ScenePlay){
+    'graphics/ViewportManager'
+  ], function($, _, Backbone, template, ViewportManager){
     var ArenaView = Backbone.View.extend({
       
       template: _.template(template),
@@ -15,7 +13,6 @@ define([
           options.vent.bind("updatedStatus", this.updatedStatus, this);
           options.vent.bind("selectedCyclist", this.selectedCyclist, this);
           options.vent.bind("setupAudio", this.setupMusic, this);
-          options.vent.bind("createStage", this.createStage, this);
           
           
           this.viewport = null;
@@ -28,11 +25,6 @@ define([
             scale: ($( window ).height() > 300)? 1.8 : 1.1,
           };
       },
-      
-      createStage: function() {
-        console.log('createStage');
-        this.emitter.emit('createStage');
-      },
 
       updatedStatus: function(status) {
         var maxMeters = this.model.get("maxMeters");
@@ -40,17 +32,11 @@ define([
         if (this.viewport != null) {
           this.viewport.updateViewport(this.model, maxMeters);
         }
-        if (this.emitter) {
-          this.emitter.emit('updatedStatus', this.model);
-        }
       },
 
       selectedCyclist: function(number) {
         if (this.viewport != null) {
           this.viewport.setPreselectedNumber(number);
-        } else if (this.emitter) {
-          var item = this.model.getByNumber(number);
-          this.emitter.emit('selectedCyclist', item.id);
         }
       },
       
@@ -75,7 +61,7 @@ define([
         var race;
         
         var that = this;
-/*
+
         let sketch = p => {
             p.preload = () => {
               that.song = p.loadSound('assets/music.ogg')
@@ -102,44 +88,10 @@ define([
             }
 
         };
-        */
-        //console.log("Bootstrap", Bootstrap);
-        var config = {
-          width: window.innerWidth, //320,
-          height: 200,
-          parent: 'sketch-holder',
-          type: Phaser.AUTO,
-          scene: [
-            Bootloader,
-            ScenePlay
-            ]
-          /*{
-            preload: function()  {
-              console.log(this)
-              console.log('preload')
-              this.load.image('pajaro', 'assets/bird.png');
-            },
-            create: function() {
-              console.log('create')
-              this.add.image(100, 100, 'pajaro');
-            },
-            update: function() {
-              // console.log('update')
-            }
-          }*/
-        };
-        
-        this.emitter = new Phaser.Events.EventEmitter();
 
-        this.sketchHolder = new Phaser.Game(config);
-        var data = {
-          'emitter' : this.emitter,
-          'model' : this.model
-        };
-        this.sketchHolder.scene.start('bootloader', data);
- 
+        var sketchHolder = new p5(sketch);
 
-        //this.viewport = new ViewportManager(sketchHolder, this.features);
+        this.viewport = new ViewportManager(sketchHolder, this.features);
 
       }
     });

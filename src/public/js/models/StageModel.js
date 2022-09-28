@@ -21,6 +21,8 @@ define([
             this.set("setup", {
               audio: true
             });
+            
+            console.log('loaded data');
 
             this.vent.trigger("createStage", data);
         },
