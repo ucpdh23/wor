@@ -17,6 +17,7 @@ define([
     }
     
     create() {
+      /*
       this.line1 = this.add.line(
         0,0,
         0, 20 - 60,
@@ -47,6 +48,9 @@ define([
           i*10*1000+ 5000, 20+60,
           0xffff00);
       }
+      */
+      
+      this.add.tileSprite(0, 0, 1000000, 200, 'road');
       
       this.cyclists = [];
       
@@ -56,7 +60,7 @@ define([
       }
       
       //this.cameras.main.setSize(200, 200);
-      this.cameras.main.startFollow(this.cyclists[10]);
+      this.cameras.main.startFollow(this.cyclists[0]);
       
       this.emitter.on('updatedStatus', this.updatedStatus, this);
       this.emitter.on('selectedCyclist', this.selectedCyclist, this);
