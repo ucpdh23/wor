@@ -152,6 +152,8 @@ class Cyclist {
         };
 
         dataLogger.log('info', jsonMessage);
+        
+        return;
 
         var message = "";
         message += "Cyclist " + this.number + "(" + this.id + ") "

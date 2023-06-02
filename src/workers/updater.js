@@ -132,9 +132,13 @@ function computeGroups(list) {
 function displayMetrics(stage, items, list) {
   var avg = sumTime / counter
 
-  console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
-  for (i = 0; i < items; i++) {
-    // list[i].logCyclist();
+  if (process.env.CREATE_METRICS === undefined) {
+    
+  } else if (process.env.CREATE_METRICS == 'true'){
+     console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
+     for (i = 0; i < items; i++) {
+       list[i].logCyclist();
+     }
   }
 
   counter = 0;
