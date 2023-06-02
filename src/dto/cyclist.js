@@ -24,7 +24,7 @@ const dataLogger = createLogger({
     level: 'info',
     format: CSV([ 'posX', 'posY', 'velX', 'velY', 'accX', 'accY', 'feaLla', 'feaMon', 'feaSpr', 'resAir', 'resVel', 'resMon', 'pulse', 'neighbour', 'state', 'stageKms', 'stageAngle', 'pendingKms', 'pendingAngle', 'leader','innovador','metodico','gregario', 'inquieto'], { delimiter: ',' }),
     transports: [
-      new transports.File({ filename: 'tmp/data.csv' }),
+      new transports.File({ filename: (process.env.LOG_PATH === undefined)? 'tmp/data.csv' : process.env.LOG_PATH }),
     ],
   });
 

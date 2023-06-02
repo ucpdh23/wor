@@ -64,6 +64,21 @@ define([
       
       this.emitter.on('updatedStatus', this.updatedStatus, this);
       this.emitter.on('selectedCyclist', this.selectedCyclist, this);
+      
+      this.input.on("pointermove",
+         function (p) {
+           //console.log('pointermove');
+           if (!p.isDown) return;
+           //console.log('pointermove2');
+           
+           var xOffset = (p.x - p.prevPosition.x) / this.cameras.main.zoom;
+           //console.log(xOffset);
+           var currOffset = this.cameras.main.followOffset.x;
+           this.cameras.main.setFollowOffset(currOffset - xOffset, 0)
+           
+           
+         }
+      );
     }
     
     updatedStatus(){

@@ -28,7 +28,7 @@ define([], function () {
     
     preload() {
       this.load.image('pajaro', 'assets/bird.png');
-      this.load.image('cyclist', 'assets/cyclist_xs.png');
+      this.load.image('cyclist', 'assets/cyclist_xs_2.png');
       this.load.image('road', 'assets/road.png');
     }
     

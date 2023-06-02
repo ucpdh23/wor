@@ -275,6 +275,12 @@ canvas {
   flex: 1 2 0px;
 }
 
+.under-arena {
+  background-color: red;
+  width: 100%;
+  height: 10px;
+}
+
 .___clock {
     position: absolute;
     z-index: 400;
