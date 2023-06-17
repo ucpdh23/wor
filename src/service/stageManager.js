@@ -67,13 +67,13 @@ function startStage(stageId) {
     var stage = getStage(stageId);
 
     var internal = setInterval(() => {
-        if (stage.status == 2) {
+        if (stage.status < 10) {
             var continueStage = updater.update(DELTA, getStage(stageId));
 
             if (!continueStage) {
                 console.log("Stage " + stageId + " finished");
                 clearInterval(getInterval(stageId));
-                stage.status = 3;
+                stage.status = 10;
             }
         }
 
@@ -128,7 +128,8 @@ function populateTeams(stage) {
 }
 
 function populateProfile(stage) {
-    var etapa = [
+  var etapa = [0,0,0,0,0];
+    /*var etapa = [
       0, 2, 4, 6, 2,
       -3, -5, -4, -3, 0,
       0, 0, 0, 4, 5,
@@ -137,7 +138,7 @@ function populateProfile(stage) {
       -6, -7, -2, -5, -7,
       -9, -2, 0, 0, 0,
       0, 0, 4, 0, 6,
-      7, 11, 10, 3];
+      7, 11, 10, 3];*/
 
     var clasificacion = new Clasificacion();
     var profile = new Profile(clasificacion, etapa, 1000);

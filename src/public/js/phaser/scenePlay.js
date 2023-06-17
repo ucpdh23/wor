@@ -9,7 +9,6 @@ define([
     init(data) {
       this.emitter = data.emitter;
       this.model = data.model;
-      console.log('init acene okay')
     }
     
     preload() {
@@ -17,12 +16,13 @@ define([
     }
     
     create() {
+      console.log("create scene")
       /*
-      this.line1 = this.add.line(
-        0,0,
-        0, 20 - 60,
-        45000 * 10, 20 - 60, 0xff0000);
-      
+      this.add.line(
+        0, 0,
+        0, 0,
+        1000000, 60, 0xffff00);
+      /*
       this.line2 = this.add.line(
         0,0,
         0, 20 + 60,
@@ -51,6 +51,35 @@ define([
       */
       
       this.add.tileSprite(0, 0, 1000000, 200, 'road');
+      
+      var profile = this.model.get('profile');
+      
+      console.log("profole.etapa", profile.etapa);
+      
+      let kms_index = profile.etapa.length;
+      
+      for (var i=0; i < kms_index; i++) {
+        this.add.line(
+        0, 0,
+        i*10000, 0,
+        i*10000, 750, 0xffff00);
+        this.add.text(
+          i*10000, 20,
+          ""+i+"km"
+          );
+      }
+      
+      for (var i=0; i<5; i++) {
+        this.add.line(
+        0, 0,
+        kms_index*10000 - i*1000, 0,
+        kms_index*10000 - i*1000, 750, 0xff0000);
+        this.add.text(
+          kms_index*10000 - i*1000, 0,
+          ""+i+"00 mts"
+          );
+      }
+      
       
       this.cyclists = [];
       

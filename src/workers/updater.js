@@ -53,6 +53,7 @@ function update(delta, stage) {
     displayMetrics(stage, items, list);
   }
 
+/* 20230607 quito esto porque esta duplicado con lo de antes
   // ordenacion de ciclistas
   var list = cyclists.slice(0)
   list.sort((a, b) => {
@@ -61,6 +62,9 @@ function update(delta, stage) {
 
   // Quitar aquellos que ya hayan acabado la etapa.
   list = list.filter(cyclist => cyclist.position.x < profile.getLengthInMeters());
+  
+  */
+  
 
   // debug
   if (stage.timestamp  > nextTime) {
@@ -98,7 +102,8 @@ function update(delta, stage) {
     item.update(stage);
   })
 
-  stage.timestamp += delta;
+  
+  stage.updateTimestamp(delta);
 
   var two_timestamp = new Date().getTime()
 
@@ -107,8 +112,7 @@ function update(delta, stage) {
   sumTime += diff;
   counter++;
 
-
-  return true;
+  return stage.status < 10;
 }
 
 function computeGroups(list) {
