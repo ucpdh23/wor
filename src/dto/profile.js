@@ -1,3 +1,6 @@
+const Utils = require('./profileUtils')
+
+
 class Profile {
     data = [];
 
@@ -10,10 +13,46 @@ class Profile {
     
     desnivelAcumulado = 0;
 
+    infoPendiente = [];
+
+    tiempoExpected = 0;
+    
+
+    //features
+    _computeFeatures() {
+        var items = this.etapa.length;
+
+        var itemsToAdd = 0;
+        var accDesnivel = 0;
+        var accLlano = 0;
+        var accMon = 0;
+        var accBajada = 0;
+        for (var i = this.etapa.length-1; i >= 0; i--) {
+            console.log(i)
+            
+            if (this.etapa[i] > 0) {
+                accDesnivel += this.etapa[i]*10;
+                accMon += 1;
+            } else if (this.etapa[i] == 0) {
+                accLlano += 1;
+            } else if (this.etapa[i] < 0) {
+                accBajada += 1;
+            }
+
+            this.infoPendiente.unshift({accDesnivel: accDesnivel, accMon: accMon, accLlano: accLlano, accBajada: accBajada});
+        }
+
+        console.log(this.infoPendiente);
+    }
+
     constructor(clasificacion, etapa, segment) {
         this.etapa = etapa;
         this.segment = segment;
         this.totalMeters = this.etapa.length * this.segment;
+
+        this._computeFeatures();
+        this.tiempoExpected = Utils.tiempoObjetivoProfile(this.infoPendiente[0])
+        console.log("tiempoExpected:" , this.tiempoExpected)
 
         var prevSlope = 0;
         var port = 0;

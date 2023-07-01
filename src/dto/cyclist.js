@@ -22,7 +22,7 @@ const ITEMS = 100;
 
 const dataLogger = createLogger({
     level: 'info',
-    format: CSV([ 'posX', 'posY', 'velX', 'velY', 'accX', 'accY', 'feaLla', 'feaMon', 'feaSpr', 'resAir', 'resVel', 'resMon', 'pulse', 'neighbour', 'state', 'stageKms', 'stageAngle', 'pendingKms', 'pendingAngle', 'leader','innovador','metodico','gregario', 'inquieto'], { delimiter: ',' }),
+    format: CSV([ 'posX', 'posY', 'velX', 'velY', 'accX', 'accY', 'feaLla', 'feaMon', 'feaSpr', 'resAir', 'resVel', 'resMon', 'pulse', 'neighbour', 'state', 'stageKms', 'stageAngle', 'pendingKms', 'pendingAngle', 'remainderOverallTime', 'remainderActualTime', 'leader','innovador','metodico','gregario', 'inquieto'], { delimiter: ',' }),
     transports: [
       new transports.File({ filename: (process.env.LOG_PATH === undefined)? 'tmp/data.csv' : process.env.LOG_PATH }),
     ],
@@ -91,6 +91,8 @@ class Cyclist {
             this._mSeparation = this._mSeparation - 0.2;
         }
 
+        this.tiempoExpected = this.stage.profile.tiempoExpected;
+
         require('./cyclistStrategy')
         require('./cyclistComputeForces')
 
@@ -144,6 +146,8 @@ class Cyclist {
             stageAngle: Utils.dec(profileStatistics.stageAngle, 2),
             pendingKms: Utils.dec(profileStatistics.pendingKms, 2),
             pendingAngle: Utils.dec(profileStatistics.pendingAngle, 2),
+            remainderOverallTime: Utils.dec(this.stage.profile.tiempoExpected - this.stage.timestamp, 2),
+            remainderActualTime: Utils.dec(this.tiempoExpected - this.stage.timestamp, 2),
             leader: Utils.dec(this.psicology.leader, 2),
             innovador: Utils.dec(this.psicology.innovador, 2),
             metodico: Utils.dec(this.psicology.metodico, 2),
@@ -154,23 +158,6 @@ class Cyclist {
         dataLogger.log('info', jsonMessage);
         
         return;
-
-        var message = "";
-        message += "Cyclist " + this.number + "(" + this.id + ") "
-        message += " -pos:" + Utils.dec(this.position.x, 2) + "-" + Utils.dec(this.position.y, 2)
-        message += " -vel:" + Utils.dec(this.velocity.x, 2) + "-" + Utils.dec(this.velocity.y, 2)
-        message += " -acc:" + Utils.dec(this.acceleration.x, 2) + "-" + Utils.dec(this.acceleration.y, 2)
-        message += " -st:" + this._stateMachine[0].value
-        message += " -ne:" + this.neighbour.length
-        message += " -ll:" + Utils.dec(this.energy.llano, 2)
-        message += " -mo:" + Utils.dec(this.energy.montana, 2)
-        message += " -sp:" + Utils.dec(this.energy.sprint, 2)
-        message += " -rAir:" + Utils.dec(this.energy.r_air, 2)
-        message += " -rVel:" + Utils.dec(this.energy.r_vel, 2)
-        message += " -rMo:" + Utils.dec(this.energy.r_pend, 2)
-        message += " -ppm:" + Utils.dec(this.energy.pulse2, 2)
-        
-        console.log(message)
     }
 
     setViewingAngle(angle) {
@@ -831,7 +818,17 @@ class Cyclist {
 
         this.neighbour = []
 
+        this._updateExpectedTime();
+
         return this.position.x
+    }
+
+    _updateExpectedTime() {
+        var index = Math.floor(this.position.x / 1000);
+        if (index < 0) index = 0;
+        const infoPendiente = this.stage.profile.infoPendiente[index];
+
+        this.tiempoExpected = ProfileUtils.tiempoObjetivoProfileCyclist(infoPendiente, this);
     }
 
     pushStateMachine(stateMachine) {

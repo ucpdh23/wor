@@ -1,4 +1,8 @@
 const StageUtils = require('../dto/stageUtils');
+const Planner = require('./ai/Planner');
+const Memory = require('./ai/Memory');
+
+
 
 class Team {
     static _id = 0;
@@ -37,6 +41,10 @@ class Team {
     build(stage) {
       var profile = stage.profile
       console.log("building team " + this.id);
+
+      this.planner = new Planner(this, stage);
+      this.planner.init();
+
       
       var profileType=profile.getType();
       var actors = StageUtils.computeMainActors(profileType, stage.cyclists);
@@ -223,6 +231,9 @@ class Team {
     }
     
     update(stage) {
+      if (Math.random() > 0.8) 
+        this.planner.update(stage);
+
       switch (this.strategy) {
         case 1:
           this.update_strategy_1(stage);

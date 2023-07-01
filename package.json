@@ -9,6 +9,7 @@
   "scripts": {
     "test": "jest",
     "start": "node src/index.js",
+    "local": "CREATE_METRICS=true node src/index.js",
     "dev": "nodemon --watch src src/index.js"
   },
   "keywords": [],
