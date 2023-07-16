@@ -1,5 +1,6 @@
 const Goals = require('./GoalsFactory')
 const Actions = require('./ActionsFactory')
+const Memory = require('./Memory')
 
 class Planner {
     constructor(team, stage) {
