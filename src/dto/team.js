@@ -389,7 +389,7 @@ class Team {
     }
     
     update(stage) {
-      this.logTeam();
+      // this.logTeam();
 
       if (Math.random() > 0.8) 
         this.planner.update(stage);
