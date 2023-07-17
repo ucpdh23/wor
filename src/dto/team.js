@@ -404,57 +404,90 @@ class Team {
       }
     }
 
-    logTeam() {
-      let jsonMessage = {};
+    computeLogInfo() {
+      this.jsonMessage = {};
 
       for (var i=0;i < this.cyclists.length; i++) {
-        jsonMessage['posX_'+ i] = Utils.dec(this.cyclists[i].position.x, 2);
-        jsonMessage['posY_'+ i] = Utils.dec(this.cyclists[i].position.y, 2);
-        jsonMessage['velX_'+i] = Utils.dec(this.cyclists[i].velocity.x, 2);
-        jsonMessage['velY_'+i] = Utils.dec(this.cyclists[i].velocity.y, 2);
-        jsonMessage['accX_'+i] = Utils.dec(this.cyclists[i].acceleration.x, 2);
-        jsonMessage['accY_'+i] = Utils.dec(this.cyclists[i].acceleration.y, 2);
-        jsonMessage['feaLla_'+i] = Utils.dec(this.cyclists[i].energy.llano, 2);
-        jsonMessage['feaMon_'+i] = Utils.dec(this.cyclists[i].energy.montana, 2);
-        jsonMessage['feaSpr_'+i] = Utils.dec(this.cyclists[i].energy.sprint, 2);
-        jsonMessage['pulse_'+i] =  Utils.dec(this.cyclists[i].energy.pulse2, 2);
-        jsonMessage['neighbour_'+i] =  this.cyclists[i].neighbour.length;
-        jsonMessage['state_'+i] =  this.cyclists[i]._stateMachine[0].value;
+        this.jsonMessage['posX_'+ i] = Utils.dec(this.cyclists[i].position.x, 2);
+        this.jsonMessage['posY_'+ i] = Utils.dec(this.cyclists[i].position.y, 2);
+        this.jsonMessage['velX_'+i] = Utils.dec(this.cyclists[i].velocity.x, 2);
+        this.jsonMessage['velY_'+i] = Utils.dec(this.cyclists[i].velocity.y, 2);
+        this.jsonMessage['accX_'+i] = Utils.dec(this.cyclists[i].acceleration.x, 2);
+        this.jsonMessage['accY_'+i] = Utils.dec(this.cyclists[i].acceleration.y, 2);
+        this.jsonMessage['feaLla_'+i] = Utils.dec(this.cyclists[i].energy.llano, 2);
+        this.jsonMessage['feaMon_'+i] = Utils.dec(this.cyclists[i].energy.montana, 2);
+        this.jsonMessage['feaSpr_'+i] = Utils.dec(this.cyclists[i].energy.sprint, 2);
+        this.jsonMessage['pulse_'+i] =  Utils.dec(this.cyclists[i].energy.pulse2, 2);
+        this.jsonMessage['neighbour_'+i] =  this.cyclists[i].neighbour.length;
+        this.jsonMessage['state_'+i] =  this.cyclists[i]._stateMachine[0].value;
+        this.jsonMessage['leader_'+i] = Utils.dec(this.cyclists[i].psicology.leader, 2);
+        this.jsonMessage['innovador_'+i] = Utils.dec(this.cyclists[i].psicology.innovador, 2);
+        this.jsonMessage['metodico_'+i] = Utils.dec(this.cyclists[i].psicology.metodico, 2);
+        this.jsonMessage['gregario_'+i] = Utils.dec(this.cyclists[i].psicology.gregario, 2);
+        this.jsonMessage['inquieto_'+i] = Utils.dec(this.cyclists[i].inquieto, 2);
+      }
+
+      for (var i = 0; i < 60; /*this.profile.etapa.length;*/ i++) {
+        if (i < this.profile.etapa.length) {
+          this.jsonMessage['profile_'+i] = this.profile.etapa[i];
+        } else {
+          this.jsonMessage['profile_'+i] = 0;
+        }
+      }
+
+      for (var i=0; i < this.full_cyclists.length; i++) {
+        this.jsonMessage['other_posX_'+ i] = Utils.dec(this.full_cyclists[i].position.x, 2);
+        this.jsonMessage['other_posY_'+ i] = Utils.dec(this.full_cyclists[i].position.y, 2);
+        this.jsonMessage['other_velX_'+i] = Utils.dec(this.full_cyclists[i].velocity.x, 2);
+        this.jsonMessage['other_velY_'+i] = Utils.dec(this.full_cyclists[i].velocity.y, 2);
+        this.jsonMessage['other_accX_'+i] = Utils.dec(this.full_cyclists[i].acceleration.x, 2);
+        this.jsonMessage['other_accY_'+i] = Utils.dec(this.full_cyclists[i].acceleration.y, 2);
+        this.jsonMessage['other_feaLla_'+i] = Utils.dec(this.full_cyclists[i].energy.llano, 2);
+        this.jsonMessage['other_feaMon_'+i] = Utils.dec(this.full_cyclists[i].energy.montana, 2);
+        this.jsonMessage['other_feaSpr_'+i] = Utils.dec(this.full_cyclists[i].energy.sprint, 2);
+        this.jsonMessage['other_state_'+i] =  this.full_cyclists[i]._stateMachine[0].value;
+      }
+    }
+
+    logTeam() {
+      if (this.jsonMessage === undefined) {
+        this.computeLogInfo();
+      }
+
+      for (var i=0;i < this.cyclists.length; i++) {
+        this.jsonMessage['posX_'+ i] = Utils.dec(this.cyclists[i].position.x, 2);
+        this.jsonMessage['posY_'+ i] = Utils.dec(this.cyclists[i].position.y, 2);
+        this.jsonMessage['velX_'+i] = Utils.dec(this.cyclists[i].velocity.x, 2);
+        this.jsonMessage['velY_'+i] = Utils.dec(this.cyclists[i].velocity.y, 2);
+        this.jsonMessage['accX_'+i] = Utils.dec(this.cyclists[i].acceleration.x, 2);
+        this.jsonMessage['accY_'+i] = Utils.dec(this.cyclists[i].acceleration.y, 2);
+        this.jsonMessage['pulse_'+i] =  Utils.dec(this.cyclists[i].energy.pulse2, 2);
+        this.jsonMessage['neighbour_'+i] =  this.cyclists[i].neighbour.length;
+        this.jsonMessage['state_'+i] =  this.cyclists[i]._stateMachine[0].value;
         /*jsonMessage['stageKms_'+i] =  Utils.dec(profileStatistics.stageKms, 2);
         jsonMessage['stageAngle_'+i] =  Utils.dec(profileStatistics.stageAngle, 2);
         jsonMessage['pendingKms_'+i] = Utils.dec(profileStatistics.pendingKms, 2);
         jsonMessage['pendingAngle_'+i] = Utils.dec(profileStatistics.pendingAngle, 2);
         jsonMessage['remainderOverallTime_'+i] = Utils.dec(this.stage.profile.tiempoExpected - this.stage.timestamp, 2);
         jsonMessage['remainderActualTime_'+i] = Utils.dec(this.tiempoExpected - this.stage.timestamp, 2);*/
-        jsonMessage['leader_'+i] = Utils.dec(this.cyclists[i].psicology.leader, 2);
-        jsonMessage['innovador_'+i] = Utils.dec(this.cyclists[i].psicology.innovador, 2);
-        jsonMessage['metodico_'+i] = Utils.dec(this.cyclists[i].psicology.metodico, 2);
-        jsonMessage['gregario_'+i] = Utils.dec(this.cyclists[i].psicology.gregario, 2);
-        jsonMessage['inquieto_'+i] = Utils.dec(this.cyclists[i].inquieto, 2);
-    }
-
-    for (var i = 0; i < 60; /*this.profile.etapa.length;*/ i++) {
-      if (i < this.profile.etapa.length) {
-        jsonMessage['profile_'+i] = this.profile.etapa[i];
-      } else {
-        jsonMessage['profile_'+i] = 0;
-      }
+        this.jsonMessage['leader_'+i] = Utils.dec(this.cyclists[i].psicology.leader, 2);
+        this.jsonMessage['innovador_'+i] = Utils.dec(this.cyclists[i].psicology.innovador, 2);
+        this.jsonMessage['metodico_'+i] = Utils.dec(this.cyclists[i].psicology.metodico, 2);
+        this.jsonMessage['gregario_'+i] = Utils.dec(this.cyclists[i].psicology.gregario, 2);
+        this.jsonMessage['inquieto_'+i] = Utils.dec(this.cyclists[i].inquieto, 2);
     }
 
     for (var i=0; i < this.full_cyclists.length; i++) {
-      jsonMessage['other_posX_'+ i] = Utils.dec(this.full_cyclists[i].position.x, 2);
-      jsonMessage['other_posY_'+ i] = Utils.dec(this.full_cyclists[i].position.y, 2);
-      jsonMessage['other_velX_'+i] = Utils.dec(this.full_cyclists[i].velocity.x, 2);
-      jsonMessage['other_velY_'+i] = Utils.dec(this.full_cyclists[i].velocity.y, 2);
-      jsonMessage['other_accX_'+i] = Utils.dec(this.full_cyclists[i].acceleration.x, 2);
-      jsonMessage['other_accY_'+i] = Utils.dec(this.full_cyclists[i].acceleration.y, 2);
-      jsonMessage['other_feaLla_'+i] = Utils.dec(this.full_cyclists[i].energy.llano, 2);
-      jsonMessage['other_feaMon_'+i] = Utils.dec(this.full_cyclists[i].energy.montana, 2);
-      jsonMessage['other_feaSpr_'+i] = Utils.dec(this.full_cyclists[i].energy.sprint, 2);
-      jsonMessage['other_state_'+i] =  this.full_cyclists[i]._stateMachine[0].value;
+      this.jsonMessage['other_posX_'+ i] = Utils.dec(this.full_cyclists[i].position.x, 2);
+      this.jsonMessage['other_posY_'+ i] = Utils.dec(this.full_cyclists[i].position.y, 2);
+      this.jsonMessage['other_velX_'+i] = Utils.dec(this.full_cyclists[i].velocity.x, 2);
+      this.jsonMessage['other_velY_'+i] = Utils.dec(this.full_cyclists[i].velocity.y, 2);
+      this.jsonMessage['other_accX_'+i] = Utils.dec(this.full_cyclists[i].acceleration.x, 2);
+      this.jsonMessage['other_accY_'+i] = Utils.dec(this.full_cyclists[i].acceleration.y, 2);
+      this.jsonMessage['other_state_'+i] =  this.full_cyclists[i]._stateMachine[0].value;
     }
 
-      dataLogger.log('info', jsonMessage);
+      dataLogger.log('info', this.jsonMessage);
     }
   }
 

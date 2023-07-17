@@ -139,10 +139,16 @@ function displayMetrics(stage, items, list) {
   if (process.env.CREATE_METRICS === undefined) {
     
   } else if (process.env.CREATE_METRICS == 'true'){
-     console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
-     for (i = 0; i < items; i++) {
-       list[i].logCyclist();
-     }
+    console.log("tic:" + parseInt(stage.timestamp) + " secs [" + avg + "]")
+/*    for (i = 0; i < items; i++) {
+      list[i].logCyclist();
+    }*/
+
+    // Log Team
+    stage.teams.forEach(item => {
+      item.logTeam();
+    })
+
   }
 
   counter = 0;
