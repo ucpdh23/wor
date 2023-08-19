@@ -3,11 +3,11 @@ class Action {
         this.name = name;
         this.preconditions = preconditions;
         this.postconditions = postconditions;
-        this.execute = execute;
+        this._execute = execute;
     }
 
-    execute(state) {
-        this.execute(state);
+    execute(state, memory) {
+        return this._execute(state);
     }
 
     getPreconditions() {
